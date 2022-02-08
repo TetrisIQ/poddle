@@ -15,6 +15,10 @@ jobs:
         run: |
           yarn install --frozen-lockfile
           yarn run build
+          mkdir dist/poll-dapp
+          mv dist/assets/ dist/poll-dapp/
+          mv dist/index.html dist/poll-dapp/
+          mv dist/favocpm.ico dist/poll-dapp/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
