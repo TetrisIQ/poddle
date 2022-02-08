@@ -15,10 +15,9 @@ jobs:
         run: |
           yarn install --frozen-lockfile
           yarn run build
-          ls
           
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           branch: gh-pages
-          folder: public
+          folder: dist
