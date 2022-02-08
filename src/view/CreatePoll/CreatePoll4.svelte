@@ -28,7 +28,7 @@
                 <span class="font-bold mb-3 text-left">Name</span>
                 <input bind:value={$currentPoll.creatorName}
                        class="rounded-md peer pl-12 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300" type="text"
-                       name="title" placeholder="Name"/>
+                       name="title" placeholder="Name" required/>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      class="absolute bottom-0 left-0 -mb-0.5 transform translate-x-1/2 -translate-y-1/2 text-black peer-placeholder-shown:text-gray-300 h-6 w-6"
                      viewBox="0 0 16 16">
@@ -50,7 +50,7 @@
         </div>
     </div>
     <div class="px-6 pt-4 pb-2">
-        <button on:click={() => console.log("NASE")} type="submit"
+        <button type="submit"
                 class="hover:bg-gray-700 mb-5 bg-gray-900 text-white px-3 py-2 rounded-md ml-auto text-sm font-medium"
                 aria-current="page">Finish
         </button>

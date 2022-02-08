@@ -66,7 +66,7 @@
         </div>
     </div>
     <div class="px-6 pt-4 pb-2">
-        <button on:click={() => console.log("NASE")} type="submit"
+        <button type="submit"
                 class="hover:bg-gray-700 mb-5 bg-gray-900 text-white px-3 py-2 rounded-md ml-auto text-sm font-medium"
                 aria-current="page">Continue
         </button>

@@ -6,6 +6,7 @@
     let selectedTab = "text";
 
     let optionsIdCount = 1;
+    let showHint = false;
 
     $pollOptions = [
         new Option(optionsIdCount++),
@@ -19,8 +20,14 @@
     }
 
     function next() {
-        $pollOptions = $pollOptions.slice(0, -1)
-        page.set(CreatePoll3)
+        console.log($pollOptions[0].option !== "", $pollOptions[1].option !== "")
+        if ($pollOptions[0].option !== "" && $pollOptions[1].option !== "") {
+            $pollOptions = $pollOptions.slice(0, -1)
+            page.set(CreatePoll3)
+        } else {
+            console.log("SHOW HINT")
+            showHint = true;
+        }
     }
 
 
@@ -46,8 +53,9 @@
                 Text
             </button>
         </nav>
+        <div class="{showHint ? '' : 'hidden'} mt-3">You must select at least 2 Options</div>
         {#each $pollOptions as option, i}
-            <div class="flex flex-wrap gap-3 w-full p-5">
+            <div class="flex flex-wrap gap-3 w-full pb-8 px-5">
                 <label class="relative w-full flex flex-col">
                     <span class="font-bold mb-3 text-left">Option</span>
                     <input bind:value={option.option}

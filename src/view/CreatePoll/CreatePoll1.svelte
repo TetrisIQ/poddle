@@ -13,7 +13,7 @@ import CreatePoll2 from "./CreatePoll2.svelte";
         <div class="flex flex-wrap gap-3 w-full p-5">
             <label class="relative w-full flex flex-col">
                 <span class="font-bold mb-3 text-left">Title</span>
-                <input bind:value={$currentPoll.title} class="rounded-md peer pl-12 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300" type="text" name="title" placeholder="Enter title" />
+                <input bind:value={$currentPoll.title} class="rounded-md peer pl-12 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300" type="text" name="title" placeholder="Enter title" required />
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="absolute bottom-0 left-0 -mb-0.5 transform translate-x-1/2 -translate-y-1/2 text-black peer-placeholder-shown:text-gray-300 h-6 w-6" viewBox="0 0 16 16">
                     <path d="M10.943 4H5.057L5 6h.5c.18-1.096.356-1.192 1.694-1.235l.293-.01v6.09c0 .47-.1.582-.898.655v.5H9.41v-.5c-.803-.073-.903-.184-.903-.654V4.755l.298.01c1.338.043 1.514.14 1.694 1.235h.5l-.057-2z"/>
                     <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
@@ -41,7 +41,7 @@ import CreatePoll2 from "./CreatePoll2.svelte";
         </div>
     </div>
     <div class="px-6 pt-4 pb-2">
-        <button on:click={() => console.log("NASE")} type="submit" class="hover:bg-gray-700 mb-5 bg-gray-900 text-white px-3 py-2 rounded-md ml-auto text-sm font-medium"
+        <button type="submit" class="hover:bg-gray-700 mb-5 bg-gray-900 text-white px-3 py-2 rounded-md ml-auto text-sm font-medium"
                 aria-current="page">Continue</button>
     </div>
 </form>
