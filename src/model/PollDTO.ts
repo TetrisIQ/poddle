@@ -22,7 +22,7 @@ export class PollDTO {
     }
     participant: Array<{
         name: string;
-        chosenOptions: Array<number>;
+        chosenOptions: Array<{ id: number, value: "yes" | "no" | "ifNeededBe" }>
     }>
 
     constructor(poll: Poll, settings: Settings, options: Array<Option>, participants: Array<Participant>) {
@@ -39,7 +39,7 @@ export class PollDTO {
             deadline: settings.deadline,
         }
         this.options = new Array<{ id: number; option: string }>();
-        this.participant = new Array<{ name: string; chosenOptions: Array<number> }>()
+        this.participant = new Array<{ name: string; chosenOptions: Array<{ id: number, value: "yes" | "no" | "ifNeededBe" }> }>()
         options.forEach(o => this.options.push({id: o.id, option: o.option}))
         participants.forEach(p => this.participant.push({name: p.name, chosenOptions: p.chosenOptions}))
     }

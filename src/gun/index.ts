@@ -10,11 +10,11 @@ class PollMutations {
     async getPoll(key: string, password: string) {
         db.get("poll").get(key)
             .map()
-            .on(async (data, id) => {
-                console.log("NOSE", id)
+            .once(async (data, id) => {
                 if (id === "encryptedData") {
-                    console.log("Nose1", data)
-                    pollDTO.set(<PollDTO>await SEA.decrypt(data, password));
+                    const test = <PollDTO>await SEA.decrypt(data, password);
+                    console.log("test", test)
+                    pollDTO.set(test as PollDTO);
                 } else {
                     console.log(data)
                 }
@@ -32,7 +32,7 @@ class PollMutations {
     }
 
     async createPoll(data: PollDTO, key: string, password: string) {
-        console.log(JSON.stringify(data))
+        console.log(data)
         const enc = await SEA.encrypt(JSON.stringify(data), password)
         db.get("poll").get(key).put({
             timestamp: new Date().toDateString(),
