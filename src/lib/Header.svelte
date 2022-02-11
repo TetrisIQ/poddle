@@ -59,7 +59,8 @@
                 </button>
             </div>
             <!--    Navigation        -->
-            <div on:click={() => open(Home)} class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+            <div on:click={() => open(Home)}
+                 class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="flex-shrink-0 flex items-center">
                     <img class="block lg:hidden h-8 w-auto"
                          src="{logo}" alt="Workflow">
@@ -123,17 +124,25 @@
     <div class="{openMenuOnMobile ? '' : 'hidden'}" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
-               aria-current="page">Features</a>
+            <button on:click={() => open(Features)}
+                    class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                    aria-current="page">Features
+            </button>
 
-            <a href="#"
-               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Integrations</a>
+            <button on:click={() => open(Integrations)}
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                Integrations
+            </button>
 
-            <a href="#"
-               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Resources</a>
+            <button on:click={() => open(Resources)}
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                Resources
+            </button>
 
-            <a href="#"
-               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+            <button on:click={() => open(Contact)}
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                Contact
+            </button>
 
         </div>
     </div>
