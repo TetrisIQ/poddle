@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import {currentPoll, pollDTO, pollOptions, pollParticipants, pollSettings} from "../store";
+    import {currentPoll, pollDTO, pollOptions, pollParticipants, pollSettings, pollComments, myName} from "../store";
     import {gun} from "../gun";
     import {Poll} from "../model/Poll";
     import {Participant} from "../model/PollParticipant";
@@ -9,9 +9,11 @@
     import YNINB from "../lib/YNINB.svelte";
     import {PollDTO} from "../model/PollDTO";
     import HiddenInput from "../lib/HiddenInput.svelte";
+    import {PollComment} from "../model/PollComment";
 
     let params = new URLSearchParams(document.location.search);
     let key = params.get("k");
+    let newComment;
 
     function formatCreated(date) {
         return "Some time ago"
@@ -46,11 +48,18 @@
             let opt: Array<Option> = []
             $pollDTO.options.forEach(o => opt.push(new Option(o.id, o.option)))
             pollOptions.set(opt)
+
+            console.log("Comments from db", $pollDTO.comments)
+            let com = []
+            $pollDTO.comments.forEach(c => com.push(new PollComment(c.name, c.comment, new Date(c.time))))
+            pollComments.set(com)
+
+            pollDTO.set(undefined)
         }
     }
 
     $: {
-        gun.updatePoll(new PollDTO($currentPoll, $pollSettings, $pollOptions, $pollParticipants), $currentPoll.id, $currentPoll.password)
+        gun.updatePoll(new PollDTO($currentPoll, $pollSettings, $pollOptions, $pollParticipants, $pollComments), $currentPoll.id, $currentPoll.password)
     }
 
 
@@ -71,6 +80,13 @@
         }
         return true;
     }
+
+    function addComment() {
+        $pollComments.push(new PollComment($myName, newComment, new Date()))
+        newComment = "";
+        $pollComments = $pollComments;
+    }
+
 
 </script>
 
@@ -204,5 +220,50 @@
             {/each}
             </tbody>
         </table>
+
+        <h2 class="text-2xl mt-8">Comments</h2>
+        {#if $pollComments !== undefined}
+            {#each $pollComments as comment}
+                <div class="my-2 -mx-3">
+                    <h3 class="comment"><span class="text-gray-500">{comment.name}
+                        said on {comment.getPrintableDate()}</span>
+                    </h3>
+                    {comment.comment}
+                </div>
+            {/each}
+        {/if}
+
+        <div class="flex mx-auto items-center justify-center shadow-lg mt-t max-w-lg">
+            <form on:submit|preventDefault={addComment} class="w-full max-w-xl bg-white rounded-lg px-4 pt-2">
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <span class="px-4 pt-3 pb-2 text-gray-800 text-lg">Add a new comment as</span>
+                    <HiddenInput class="px-4 pt-3 pb-2 text-gray-800 text-lg text-right"
+                                 value={$myName === undefined ? 'Anonymous' : $myName}
+                                 on:change={(e) => myName.set(e.detail)}/>
+                    <div class="w-full md:w-full px-3 mb-2 mt-2">
+                    <textarea
+                            bind:value={newComment}
+                            class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+                            name="body" placeholder='Type Your Comment' required></textarea>
+                    </div>
+                    <div class="w-full md:w-full flex items-start md:w-full px-3">
+                        <!--                    Maybe we support MD in future-->
+                        <!--   <div class="flex items-start w-1/2 text-gray-700 px-2 mr-auto">
+                               <svg fill="none" class="w-5 h-5 text-gray-600 mr-1" viewBox="0 0 24 24" stroke="currentColor">
+                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                               </svg>
+                               <p class="text-xs md:text-sm pt-px">Some HTML is okay.</p>
+                           </div>-->
+                        <div class="-mr-1">
+                            <input type='submit'
+                                   class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100"
+                                   value='Post Comment'>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {currentPoll, page, pollOptions, pollParticipants, pollSettings} from "../../store";
+    import {currentPoll, page, pollOptions, pollParticipants, pollSettings, pollComments} from "../../store";
     import {uuidv4} from "../../lib/util";
     import Poll from "../Poll.svelte";
     import {Participant} from "../../model/PollParticipant";
@@ -13,7 +13,7 @@
         $pollParticipants.push(new Participant($currentPoll.creatorName, true, $pollOptions))
         //save to DB
 
-        gun.createPoll(new PollDTO($currentPoll, $pollSettings, $pollOptions, $pollParticipants), $currentPoll.id, $currentPoll.password)
+        gun.createPoll(new PollDTO($currentPoll, $pollSettings, $pollOptions, $pollParticipants, $pollComments), $currentPoll.id, $currentPoll.password)
         page.set(Poll)
     }
 </script>
