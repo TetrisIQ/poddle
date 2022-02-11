@@ -10,7 +10,7 @@
         const uid = uuidv4().replace(/-/g, "");
         $currentPoll.id = uid.slice(0, 12);
         $currentPoll.password = uid.slice(12);
-        $pollParticipants.push(new Participant($currentPoll.creatorName, true))
+        $pollParticipants.push(new Participant($currentPoll.creatorName, true, $pollOptions))
         //save to DB
 
         gun.createPoll(new PollDTO($currentPoll, $pollSettings, $pollOptions, $pollParticipants), $currentPoll.id, $currentPoll.password)
