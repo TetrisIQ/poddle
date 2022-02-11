@@ -39,7 +39,7 @@
         </div>
         <div class="mt-4">
             <div class="text-left w-80 pl-28">
-                <div class="font-bold text-xl"><span class="text-gray-700">(Planned) </span> Yes, No, If needed be</div>
+                <div class="font-bold text-xl">Yes, No, If needed be</div>
                 <div class="">You can set the option, that your participants can choose between Yes, No and If needed
                     be.
                 </div>
