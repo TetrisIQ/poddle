@@ -1,18 +1,25 @@
 <script lang="ts">
     import logo from '../assets/svelte.png'
-    import {page, showNotification} from "../store";
+    import {page, resetPollStore, showNotification} from "../store";
     import CreateNewPoll from "../view/CreatePoll/CreatePoll1.svelte";
     import Features from "../view/Features.svelte";
     import Integrations from "../view/Integrations.svelte";
     import Resources from "../view/Resources.svelte";
     import Contact from "../view/Contact.svelte";
     import Home from "../view/Home.svelte";
+    import {SvelteComponent} from "svelte";
 
 
     let openMenuOnMobile: boolean = false;
 
     function openMenu() {
         openMenuOnMobile = !openMenuOnMobile
+    }
+
+    function open(newPage: SvelteComponent, path: string = "/", title: string = document.title) {
+        page.set(newPage)
+        window.history.pushState({}, title, path);
+        resetPollStore()
     }
 
 </script>
@@ -52,7 +59,7 @@
                 </button>
             </div>
             <!--    Navigation        -->
-            <div on:click={() => page.set(Home)} class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+            <div on:click={() => open(Home)} class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="flex-shrink-0 flex items-center">
                     <img class="block lg:hidden h-8 w-auto"
                          src="{logo}" alt="Workflow">
@@ -64,22 +71,22 @@
                 <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                        <button on:click={() => page.set(Features)}
+                        <button on:click={() => open(Features)}
                                 class="hover:bg-gray-700 bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                 aria-current="page">Features
                         </button>
 
-                        <button on:click={() => page.set(Integrations)}
+                        <button on:click={() => open(Integrations)}
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                             Integrations
                         </button>
 
-                        <button on:click={() => page.set(Resources)}
+                        <button on:click={() => open(Resources)}
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                             Resources
                         </button>
 
-                        <button on:click={() => page.set(Contact)}
+                        <button on:click={() => open(Contact)}
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                             Contact
                         </button>
@@ -87,7 +94,7 @@
                 </div>
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button on:click={() => page.set(CreateNewPoll)}
+                <button on:click={() => open(CreateNewPoll)}
                         class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 inline-flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-plus-lg" viewBox="0 0 16 16">

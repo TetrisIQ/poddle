@@ -40,6 +40,7 @@ export class PollDTO {
         }
         this.options = new Array<{ id: number; option: string }>();
         this.participant = new Array<{ name: string; chosenOptions: Array<{ id: number, value: "yes" | "no" | "ifNeededBe" }> }>()
+
         options.forEach(o => this.options.push({id: o.id, option: o.option}))
         participants.forEach(p => this.participant.push({name: p.name, chosenOptions: p.chosenOptions}))
     }

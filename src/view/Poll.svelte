@@ -142,7 +142,7 @@
             </tr>
             {#each $pollParticipants as participant}
                 <tr>
-                    <td class="border border-slate-300 py-2 px-5">
+                    <td class="border border-slate-300 px-5">
                         <div class="grid grid-cols-6 gap-4">
                             {#if participant.edit}
                                 <input bind:value={participant.name}
@@ -168,10 +168,10 @@
                         {#if option.option !== ""}
                             <td class="border justify-center">
                                 {#if participant.edit}
-                                    <YNINB value={participant.chosenOptions.find(o => o.id === option.id)?.value}
+                                    <YNINB twoOptions={!$pollSettings.treeOptions} value={participant.chosenOptions.find(o => o.id === option.id)?.value}
                                            participant={participant} option={option}/>
                                 {:else }
-                                    <YNINB value={participant.chosenOptions.find(o => o.id === option.id)?.value}
+                                    <YNINB twoOptions={!$pollSettings.treeOptions} value={participant.chosenOptions.find(o => o.id === option.id)?.value}
                                            participant={participant} option={option} disabled/>
                                 {/if}
                             </td>
