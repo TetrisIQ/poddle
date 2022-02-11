@@ -8,6 +8,7 @@
     import {Settings} from "../model/PollSettings";
     import YNINB from "../lib/YNINB.svelte";
     import {PollDTO} from "../model/PollDTO";
+    import HiddenInput from "../lib/HiddenInput.svelte";
 
     let params = new URLSearchParams(document.location.search);
     let key = params.get("k");
@@ -39,14 +40,13 @@
                 new Settings($pollDTO.settings.treeOptions, $pollDTO.settings.fcfs, $pollDTO.settings.onlyOneOption, $pollDTO.settings.deadline)
             )
             let arr: Array<Participant> = []
-            $pollDTO.participant.forEach(p => arr.push(new Participant(p.name, false, p.chosenOptions)))
+            $pollDTO.participant.forEach(p => arr.push(new Participant(p.name, false, undefined, p.chosenOptions)))
             pollParticipants.set(arr)
 
             let opt: Array<Option> = []
             $pollDTO.options.forEach(o => opt.push(new Option(o.id, o.option)))
             pollOptions.set(opt)
         }
-        console.log($currentPoll)
     }
 
     $: {
@@ -87,7 +87,8 @@
                         <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                     </svg>
                 </div>
-                <div class="text-left col-start-2 col-end-4">{$currentPoll.location}</div>
+                <HiddenInput class="text-left" value={$currentPoll.location}
+                             on:change={(e) => $currentPoll.location = e.detail}/>
             </div>
             <div class="grid grid-cols-3 gap-4">
                 <div class="text-right col-end-2">
@@ -98,7 +99,9 @@
                               d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5Zm0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5Zm8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Z"/>
                     </svg>
                 </div>
-                <div class="text-left col-start-2 col-end-4">{$currentPoll.note}</div>
+                <HiddenInput class="text-left" value={$currentPoll.note}
+                             textarea="true"
+                             on:change={(e) => {$currentPoll.note = e.detail}}/>
             </div>
 
             {#if $pollSettings.deadline}
