@@ -16,17 +16,24 @@
         return "Some time ago"
     }
 
+    function formatDate(date: Date): string {
+        if (date !== undefined) {
+            return `${date.getDay()}.${date.getMonth() + 1}.${date.getFullYear()}`
+        } else {
+            return "Error"
+        }
+    }
+
     if ($currentPoll.title !== undefined) {
-        window.history.pushState("", `Poll ${$currentPoll.title}`, `?k=${$currentPoll.id + $currentPoll.password}`);
+        window.history.pushState("", `Poll ${$currentPoll.title}`, `/poll-dapp/?k=${$currentPoll.id + $currentPoll.password}`);
     } else {
         gun.getPoll(key.slice(0, 12), key.slice(12))
     }
 
     $:{
-        console.log($pollDTO)
         if ($pollDTO !== undefined) {
             currentPoll.set(
-                new Poll(key.slice(0, 12), key.slice(12), $pollDTO.title, $pollDTO.creatorName, $pollDTO.creatorEmail, $pollDTO.location, $pollDTO.note, $pollDTO.created)
+                new Poll(key.slice(0, 12), key.slice(12), $pollDTO.title, $pollDTO.creatorName, $pollDTO.creatorEmail, $pollDTO.location, $pollDTO.note, new Date($pollDTO.created), new Date($pollDTO.deadline))
             )
             pollSettings.set(
                 new Settings($pollDTO.settings.treeOptions, $pollDTO.settings.fcfs, $pollDTO.settings.onlyOneOption, $pollDTO.settings.deadline)
@@ -39,6 +46,7 @@
             $pollDTO.options.forEach(o => opt.push(new Option(o.id, o.option)))
             pollOptions.set(opt)
         }
+        console.log($currentPoll)
     }
 
     $: {
@@ -57,23 +65,16 @@
         $pollParticipants = $pollParticipants;
     }
 
-    function updateParticipant(participant, id, test) {
-        console.log("nase", test)
-        return;
-        if (participant.chosenOptions.includes(id + 1)) {
-            //remove
-            $pollParticipants.find(ps => ps.name === participant.name).chosenOptions = participant.chosenOptions.filter(o => o !== id + 1)
-        } else {
-            //add
-            $pollParticipants.find(ps => ps.name === participant.name).chosenOptions.push(id + 1)
+    function deadlineIsNotReached() {
+        if ($pollSettings.deadline) {
+            return $currentPoll.deadline > new Date("2022-02-20");
         }
-        $pollParticipants = $pollParticipants;
+        return true;
     }
 
 </script>
 
 <div class="mx-auto max-w-4xl rounded overflow-hidden shadow-lg">
-    <!--    <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains">-->
     <div class="px-6 py-4">
         <div class="font-bold text-xl">{$currentPoll.title}</div>
         <div class="font-normal mb-8">by {$currentPoll.creatorName} • {formatCreated($currentPoll.created)}</div>
@@ -99,6 +100,19 @@
                 </div>
                 <div class="text-left col-start-2 col-end-4">{$currentPoll.note}</div>
             </div>
+
+            {#if $pollSettings.deadline}
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="text-right col-end-2">
+                        <svg class="ml-auto h-full bi bi-geo-alt" xmlns="http://www.w3.org/2000/svg" width="16"
+                             height="16"
+                             fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
+                        </svg>
+                    </div>
+                    <div class="text-left col-start-2 col-end-4">{formatDate($currentPoll.deadline)}</div>
+                </div>
+            {/if}
         </div>
 
         <table class="border-collapse border mx-auto mt-8 border-slate-400">
@@ -119,11 +133,13 @@
                     <div class="grid grid-cols-6">
                         <span class="col-start-1 col-end-6 text-left">{$pollParticipants.length}
                             participants</span>
-                        <svg on:click={addNewParticipant} xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                             fill="currentColor"
-                             class="text-right hover:bg-gray-200 inline ml-auto" viewBox="0 0 16 16">
-                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                        </svg>
+                        {#if deadlineIsNotReached()}
+                            <svg on:click={addNewParticipant} xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                 fill="currentColor"
+                                 class="text-right hover:bg-gray-200 inline ml-auto" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        {/if}
                     </div>
 
 
@@ -151,14 +167,16 @@
                             {:else }
                                 <span class="w-full col-start-1 col-end-6 text-left ml-auto">{participant.name}</span>
                             {/if}
-                            <div on:click={() => participant.edit = !participant.edit}
-                                 class="inline ml-auto hover:bg-gray-200"
-                                 style="height: 32px; width: 32px">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="m-auto h-full" viewBox="0 0 16 16">
-                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                                </svg>
-                            </div>
+                            {#if deadlineIsNotReached()}
+                                <div on:click={() => participant.edit = !participant.edit}
+                                     class="inline ml-auto hover:bg-gray-200"
+                                     style="height: 32px; width: 32px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="m-auto h-full" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                    </svg>
+                                </div>
+                            {/if}
 
                         </div>
 
@@ -167,11 +185,13 @@
                     {#each $pollOptions as option, id}
                         {#if option.option !== ""}
                             <td class="border justify-center">
-                                {#if participant.edit}
-                                    <YNINB twoOptions={!$pollSettings.treeOptions} value={participant.chosenOptions.find(o => o.id === option.id)?.value}
+                                {#if participant.edit && deadlineIsNotReached()}
+                                    <YNINB twoOptions={!$pollSettings.treeOptions}
+                                           value={participant.chosenOptions.find(o => o.id === option.id)?.value}
                                            participant={participant} option={option}/>
                                 {:else }
-                                    <YNINB twoOptions={!$pollSettings.treeOptions} value={participant.chosenOptions.find(o => o.id === option.id)?.value}
+                                    <YNINB twoOptions={!$pollSettings.treeOptions}
+                                           value={participant.chosenOptions.find(o => o.id === option.id)?.value}
                                            participant={participant} option={option} disabled/>
                                 {/if}
                             </td>

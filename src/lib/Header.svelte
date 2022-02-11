@@ -16,7 +16,7 @@
         openMenuOnMobile = !openMenuOnMobile
     }
 
-    function open(newPage: SvelteComponent, path: string = "/", title: string = document.title) {
+    function open(newPage: SvelteComponent, path: string = "/poll-dapp/", title: string = document.title) {
         page.set(newPage)
         window.history.pushState({}, title, path);
         resetPollStore()

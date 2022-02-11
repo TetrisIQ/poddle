@@ -32,7 +32,7 @@ class PollMutations {
     }
 
     async createPoll(data: PollDTO, key: string, password: string) {
-        console.log(data)
+        console.log("Create POLL",data)
         const enc = await SEA.encrypt(JSON.stringify(data), password)
         db.get("poll").get(key).put({
             timestamp: new Date().toDateString(),

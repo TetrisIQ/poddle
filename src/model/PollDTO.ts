@@ -9,7 +9,8 @@ export class PollDTO {
     creatorEmail?: string;
     location?: string;
     note?: string;
-    created: Date;
+    created: string;
+    deadline: string;
     options: Array<{
         id: number;
         option: string;
@@ -31,12 +32,21 @@ export class PollDTO {
         this.creatorEmail = poll.creatorEmail;
         this.location = poll.location;
         this.note = poll.note;
+        if(poll.created === undefined){
+            poll.created = new Date();
+        }
+        //@ts-ignore
         this.created = poll.created;
         this.settings = {
             treeOptions: settings.treeOptions,
             fcfs: settings.fcfs,
             onlyOneOption: settings.onlyOneOption,
             deadline: settings.deadline,
+        }
+        if (this.settings.deadline) {
+            console.log("NAE", poll.deadline)
+            //@ts-ignore
+            this.deadline = poll.deadline;
         }
         this.options = new Array<{ id: number; option: string }>();
         this.participant = new Array<{ name: string; chosenOptions: Array<{ id: number, value: "yes" | "no" | "ifNeededBe" }> }>()
