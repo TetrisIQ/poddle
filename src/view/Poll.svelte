@@ -76,7 +76,7 @@
 
     function deadlineIsNotReached() {
         if ($pollSettings.deadline) {
-            return $currentPoll.deadline > new Date("2022-02-20");
+            return $currentPoll.deadline > new Date();
         }
         return true;
     }

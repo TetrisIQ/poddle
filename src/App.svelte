@@ -3,6 +3,7 @@
   import Notification from "./lib/Notification.svelte";
   import {page, pollDTO} from "./store";
   import Poll from './view/Poll.svelte'
+  import Footer from "./lib/Footer.svelte";
 
   $: { //TODO: find a better way to handle this
       if($pollDTO !== undefined) {
@@ -18,7 +19,8 @@
 
 <Header/>
 <Notification/>
-<main class="mx-auto text-center">
+<main class="mx-auto h-screen xl:px-40 l:px-14 text-center">
     <svelte:component this={$page}/>
 </main>
+<Footer class="mt-auto"/>
 
