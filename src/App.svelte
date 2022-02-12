@@ -19,7 +19,7 @@
 
 <Header/>
 <Notification/>
-<main class="mx-auto h-screen xl:px-40 l:px-14 text-center">
+<main class="mx-auto h-min xl:px-40 l:px-14 text-center">
     <svelte:component this={$page}/>
 </main>
 <Footer class="mt-auto"/>
