@@ -5,7 +5,6 @@
     import DatePicker from "@beyonk/svelte-datepicker/src/components/DatePicker.svelte";
     import dayjs from "dayjs";
 
-    $:console.log("DEADLINE", $currentPoll.deadline)
 </script>
 
 

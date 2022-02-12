@@ -28,7 +28,7 @@
     }
 
     if ($currentPoll.title !== undefined) {
-        window.history.pushState("", `Poll ${$currentPoll.title}`, `/poll-dapp/?k=${$currentPoll.id + $currentPoll.password}`);
+        window.history.pushState("", `Poll ${$currentPoll.title}`, `${window.location.pathname}?k=${$currentPoll.id + $currentPoll.password}`);
     } else {
         gun.getPoll(key.slice(0, 12), key.slice(12))
     }
