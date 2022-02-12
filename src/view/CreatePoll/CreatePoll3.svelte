@@ -46,8 +46,8 @@
                     <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
                 </svg>
                 <div>
-                    <h2 class="font-bold">Limit participants to a single vote</h2>
-                    <p>Participants can only select one option.</p>
+                    <h2 class="font-bold">Vote Limit</h2>
+                    <p>Participants can only select X option.</p>
                 </div>
                 <Checkbox disabled={$pollSettings.treeOptions} bind:checked={$pollSettings.onlyOneOption}
                           primaryColor="#f7be00" class="my-auto ml-5"/>
