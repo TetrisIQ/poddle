@@ -4,7 +4,17 @@ import type {PollDTO} from "../model/PollDTO";
 import {page, pollDTO} from "../store";
 import Error from "../view/404.svelte"
 
-const db = process.env.NODE_ENV === "development" ? new GUN("http://localhost:8765/gun") : new GUN('https://gun.tetrisiq.de/gun');
+const db = getGUN();
+
+function getGUN() {
+    if (process.env.NODE_ENV === "development") {
+        return new GUN("http://localhost:8765/gun")
+    } else if (process.env.NODE_ENV === "production") {
+        return new GUN('https://gun.tetrisiq.de/gun')
+    } else {
+        return new GUN();
+    }
+}
 
 class PollMutations {
     async getPoll(key: string, password: string) {
