@@ -9,9 +9,6 @@
     import {SvelteComponent} from "svelte";
     import ToggleDarkMode from "./ToggleDarkMode.svelte";
 
-
-    let openMenuOnMobile: boolean = false;
-
     function open(newPage: SvelteComponent, title: string = document.title, path: string = window.location.pathname) {
         page.set(newPage)
         window.history.pushState({}, title, path);

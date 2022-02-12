@@ -16,7 +16,8 @@
     }
 
     function showReviewHint(): boolean {
-        return process.env.NODE_ENV === "review"
+        //return process.env.NODE_ENV === "review"
+        return true
     }
 
 </script>
@@ -24,7 +25,7 @@
     <Header/>
     <Notification/>
     {#if showReviewHint()}
-        <div class="w-full mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">This instance is only for reviewing and
+        <div class="w-full dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">This instance is only for reviewing and
             tests. Polls are not synchronised with other browsers!
         </div>
     {/if}
