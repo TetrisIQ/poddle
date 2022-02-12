@@ -16,12 +16,12 @@
     }
 
 </script>
-<div class="min-h-screen">
+<div class="flex flex-col min-h-screen">
     <Header/>
     <Notification/>
-    <main class="mx-auto h-full xl:px-40 l:px-14 text-center">
+    <main class="mx-auto flex-grow xl:px-40 l:px-14 text-center">
         <svelte:component this={$page}/>
     </main>
-    <Footer class="mt-40"/>
+    <Footer/>
 </div>
 
