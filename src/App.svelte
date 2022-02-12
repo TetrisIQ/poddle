@@ -16,11 +16,12 @@
     }
 
 </script>
-
-<Header/>
-<Notification/>
-<main class="mx-auto h-min xl:px-40 l:px-14 text-center">
-    <svelte:component this={$page}/>
-</main>
-<Footer class="mt-auto"/>
+<div class="min-h-screen">
+    <Header/>
+    <Notification/>
+    <main class="mx-auto h-full xl:px-40 l:px-14 text-center">
+        <svelte:component this={$page}/>
+    </main>
+    <Footer class="mt-40"/>
+</div>
 
