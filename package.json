@@ -6,7 +6,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "start": "http-server dist",
+    "heroku-postbuild": "vite build --base /"
   },
   "devDependencies": {
     "@beyonk/svelte-datepicker": "^12.0.0",
@@ -25,6 +27,7 @@
     "vite": "^2.7.2"
   },
   "dependencies": {
-    "gun": "^0.2020.1235"
+    "gun": "^0.2020.1235",
+    "http-server" : "^14.1.0"
   }
 }
