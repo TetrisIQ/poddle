@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "start": "http-server dist",
-    "heroku-postbuild": "vite build --base / --mode review"
+    "heroku-postbuild": "vite build --mode review --base /"
   },
   "devDependencies": {
     "@beyonk/svelte-datepicker": "^12.0.0",
