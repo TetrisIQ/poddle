@@ -22,6 +22,7 @@
     {#if textarea}
         <textarea on:focusout={() => onChange()}
                   placeholder={placeholder}
+                  style="min-height: 3rem;"
                   class="{showInput ? '' : 'hidden'} h-auto w-full rounded-md h-min px-2 py-2 border-2 border-gray-200 placeholder-gray-300"
                   bind:value
                   type="text"></textarea>
