@@ -16,8 +16,12 @@
     }
 
     function showReviewHint(): boolean {
-        //return process.env.NODE_ENV === "review"
-        return true
+        return process.env.NODE_ENV === "review"
+    }
+
+    function showStagingHint(): boolean {
+        return process.env.NODE_ENV === "staging"
+
     }
 
 </script>
@@ -25,8 +29,16 @@
     <Header/>
     <Notification/>
     {#if showReviewHint()}
-        <div class="w-full dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">This instance is only for reviewing and
-            tests. Polls are not synchronised with other browsers!
+        <div class="w-full dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">This
+            instance is only for reviewing and
+            tests. Polls are not synchronised with other browsers!<a
+                    class="text-blue-900 pl-3" href="https://tetrisiq.github.io/poll-dapp/">Use the Live instance</a>
+        </div>
+    {/if}
+    {#if showStagingHint()}
+        <div class="w-full dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">You are
+            on the staging instance. The Relay server loses all information after 15 minutes!<a
+                    class="text-blue-900 pl-3" href="https://tetrisiq.github.io/poll-dapp/">Use the Live instance</a>
         </div>
     {/if}
     <main class="mx-auto flex-grow w-full xl:px-40 l:px-14 text-center">
