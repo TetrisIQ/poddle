@@ -5,11 +5,6 @@
     import DatePicker from "@beyonk/svelte-datepicker/src/components/DatePicker.svelte";
     import dayjs from "dayjs";
 
-    function test(voteLimit: number, test) {
-        console.log(voteLimit)
-
-    }
-
 </script>
 
 
@@ -40,7 +35,7 @@
                     <h2 class="font-bold">Limit the number of votes per option</h2>
                     <p>First come, first served. Once the spots are filled, the option is no longer available.</p>
                 </div>
-                <Checkbox disabled={$pollSettings.treeOptions} bind:checked={$pollSettings.fcfs}
+                <Checkbox disabled={$pollSettings.treeOptions || true} bind:checked={$pollSettings.fcfs}
                           primaryColor="#f7be00" class="my-auto ml-5"/>
             </div>
             <div class="grid justify-end grid-cols-3 gap-4 py-4">
