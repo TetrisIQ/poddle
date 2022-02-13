@@ -1,9 +1,9 @@
 <script lang="ts">
     import Header from "./lib/Header.svelte";
-    import Notification from "./lib/Notification.svelte";
     import {page, pollDTO} from "./store";
     import Poll from './view/Poll.svelte'
     import Footer from "./lib/Footer.svelte";
+    import NotificationArea from "./lib/NotificationArea.svelte";
 
     $: { //TODO: find a better way to handle this
         if ($pollDTO !== undefined) {
@@ -27,7 +27,6 @@
 </script>
 <div class="flex flex-col min-h-screen">
     <Header/>
-    <Notification/>
     {#if showReviewHint()}
         <div class="w-full dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">This
             instance is only for reviewing and
@@ -42,6 +41,7 @@
         </div>
     {/if}
     <main class="mx-auto flex-grow w-full xl:px-40 l:px-14 text-center">
+        <NotificationArea/>
         <svelte:component this={$page}/>
     </main>
     <Footer/>
