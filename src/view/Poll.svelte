@@ -10,6 +10,7 @@
     import {PollDTO} from "../model/PollDTO";
     import HiddenInput from "../lib/HiddenInput.svelte";
     import {PollComment} from "../model/PollComment";
+    import NotificationControl from "../lib/NotificationControl";
 
     let params = new URLSearchParams(document.location.search);
     let key = params.get("k");
@@ -39,7 +40,7 @@
                 new Poll(key.slice(0, 12), key.slice(12), $pollDTO.title, $pollDTO.creatorName, $pollDTO.creatorEmail, $pollDTO.location, $pollDTO.note, new Date($pollDTO.created), new Date($pollDTO.deadline))
             )
             pollSettings.set(
-                new Settings($pollDTO.settings.treeOptions, $pollDTO.settings.fcfs, $pollDTO.settings.onlyOneOption, $pollDTO.settings.deadline)
+                new Settings($pollDTO.settings.treeOptions, $pollDTO.settings.fcfs, $pollDTO.settings.voteLimit, $pollDTO.settings.voteLimitAmount, $pollDTO.settings.deadline)
             )
             let arr: Array<Participant> = []
             $pollDTO.participant.forEach(p => arr.push(new Participant(p.name, false, undefined, p.chosenOptions)))
@@ -58,10 +59,28 @@
         }
     }
 
-    $: {
-        gun.updatePoll(new PollDTO($currentPoll, $pollSettings, $pollOptions, $pollParticipants, $pollComments), $currentPoll.id, $currentPoll.password)
+    function updatePoll() {
+        let valid = true;
+        if ($pollSettings.voteLimit) {
+            $pollParticipants.forEach(p => {
+                let amount = p.chosenOptions.filter(o => o.value === "yes").length
+                if (amount > $pollSettings.voteLimitAmount) {
+                    NotificationControl.error("Cannot update Poll", `${p.name} has more than ${$pollSettings.voteLimitAmount} votes`);
+                    valid = false;
+                }
+            })
+        }
+        if (valid) {
+            closeEditOnAllParticipants();
+            NotificationControl.info("Poll updated", "The Poll has been updated!")
+            gun.updatePoll(new PollDTO($currentPoll, $pollSettings, $pollOptions, $pollParticipants, $pollComments), $currentPoll.id, $currentPoll.password)
+        }
     }
 
+    function closeEditOnAllParticipants() {
+        $pollParticipants.forEach(p => p.edit = false);
+        $pollParticipants = $pollParticipants;
+    }
 
     function defaultOptionNoArray() {
         let arr = [];
@@ -103,7 +122,8 @@
                         <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                     </svg>
                 </div>
-                <HiddenInput class="text-left" value={$currentPoll.location}
+                <HiddenInput class="text-left"
+                             value={$currentPoll.location === undefined ? 'Enter a location ...' : $currentPoll.location}
                              on:change={(e) => $currentPoll.location = e.detail}/>
             </div>
             <div class="grid grid-cols-3 gap-4">
@@ -115,7 +135,8 @@
                               d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5Zm0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5Zm8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Z"/>
                     </svg>
                 </div>
-                <HiddenInput class="text-left" value={$currentPoll.note}
+                <HiddenInput class="text-left"
+                             value={$currentPoll.note === undefined ? 'Enter a note ...': $currentPoll.note}
                              textarea="true"
                              on:change={(e) => {$currentPoll.note = e.detail}}/>
             </div>
@@ -130,6 +151,19 @@
                         </svg>
                     </div>
                     <div class="text-left col-start-2 col-end-4">{formatDate($currentPoll.deadline)}</div>
+                </div>
+            {/if}
+
+            {#if $pollSettings.voteLimit}
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="text-right col-end-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="ml-auto h-full" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="1.5"/>
+                            <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                        </svg>
+                    </div>
+                    <div class="text-left col-start-2 col-end-4">{`Everyone has ${$pollSettings.voteLimitAmount} Vote(s)`}</div>
                 </div>
             {/if}
         </div>
@@ -220,7 +254,10 @@
             {/each}
             </tbody>
         </table>
-
+        <button on:click={() => updatePoll()}
+                class="inline-flex mt-5 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+            Update
+        </button>
         <h2 class="text-2xl mt-8">Comments</h2>
         {#if $pollComments !== undefined}
             {#each $pollComments as comment}

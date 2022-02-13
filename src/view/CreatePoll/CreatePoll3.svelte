@@ -1,9 +1,14 @@
 <script lang="ts">
-    import {page, pollSettings, currentPoll} from "../../store";
+    import {page, pollSettings, currentPoll, pollOptions} from "../../store";
     import Checkbox from "../../lib/Checkbox.svelte";
     import CreatePoll4 from "./CreatePoll4.svelte";
     import DatePicker from "@beyonk/svelte-datepicker/src/components/DatePicker.svelte";
     import dayjs from "dayjs";
+
+    function test(voteLimit: number, test) {
+        console.log(voteLimit)
+
+    }
 
 </script>
 
@@ -47,8 +52,11 @@
                 <div>
                     <h2 class="font-bold">Vote Limit</h2>
                     <p>Participants can only select X option.</p>
+                    {#if $pollSettings.voteLimit}
+                        <input bind:value={$pollSettings.voteLimitAmount} type="number" min="1" max={$pollOptions.length - 1} class="w-full rounded-md peer mx-auto pl-5 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300"/>
+                    {/if}
                 </div>
-                <Checkbox disabled={$pollSettings.treeOptions} bind:checked={$pollSettings.onlyOneOption}
+                <Checkbox disabled={$pollSettings.treeOptions} bind:checked={$pollSettings.voteLimit}
                           primaryColor="#f7be00" class="my-auto ml-5"/>
             </div>
             <div class="grid justify-end grid-cols-3 gap-4 py-4">
