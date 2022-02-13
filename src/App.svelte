@@ -28,14 +28,14 @@
 <div class="flex flex-col min-h-screen">
     <Header/>
     {#if showReviewHint()}
-        <div class="w-full dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">This
+        <div class="w-full h-auto dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">This
             instance is only for reviewing and
             tests. Polls are not synchronised with other browsers!<a
                     class="text-blue-900 pl-3" href="https://tetrisiq.github.io/poll-dapp/">Use the Live instance</a>
         </div>
     {/if}
     {#if showStagingHint()}
-        <div class="w-full dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">You are
+        <div class="w-full h-auto dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-yellow-400 p-1 text-lg">You are
             on the staging instance. The Relay server loses all information after 15 minutes!<a
                     class="text-blue-900 pl-3" href="https://tetrisiq.github.io/poll-dapp/">Use the Live instance</a>
         </div>

@@ -8,7 +8,8 @@
 </script>
 
 
-<form on:submit|preventDefault={() => page.set(CreatePoll4)} class="mx-auto max-w-4xl rounded overflow-hidden shadow-lg">
+<form on:submit|preventDefault={() => page.set(CreatePoll4)}
+      class="mx-auto max-w-4xl rounded overflow-hidden shadow-lg">
     <!--    <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains">-->
     <div class="px-6 py-4">
         <div class="font-bold text-xl mb-2">Poll settings</div>
@@ -48,7 +49,9 @@
                     <h2 class="font-bold">Vote Limit</h2>
                     <p>Participants can only select X option.</p>
                     {#if $pollSettings.voteLimit}
-                        <input bind:value={$pollSettings.voteLimitAmount} type="number" min="1" max={$pollOptions.length - 1} class="w-full rounded-md peer mx-auto pl-5 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300"/>
+                        <input bind:value={$pollSettings.voteLimitAmount} type="number" min="1"
+                               max={$pollOptions.length - 1}
+                               class="w-full rounded-md peer mx-auto pl-5 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300"/>
                     {/if}
                 </div>
                 <Checkbox disabled={$pollSettings.treeOptions} bind:checked={$pollSettings.voteLimit}
@@ -63,7 +66,8 @@
                     <h2 class="font-bold">Set deadline</h2>
                     <p>Set a deadline to receive votes in time. After the deadline, no more votes is allowed.</p>
                     {#if $pollSettings.deadline}
-                        <DatePicker start={dayjs().add(1, "day")} bind:selected={$currentPoll.deadline} time={false} range={false}/>
+                        <DatePicker start={dayjs().add(1, "day")} bind:selected={$currentPoll.deadline} time={false}
+                                    range={false}/>
                     {/if}
                 </div>
                 <Checkbox bind:checked={$pollSettings.deadline}
