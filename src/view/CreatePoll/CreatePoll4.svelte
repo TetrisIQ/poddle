@@ -5,6 +5,8 @@
     import {Participant} from "../../model/PollParticipant";
     import {gun} from "../../gun";
     import {PollDTO} from "../../model/PollDTO";
+    import {lstore} from "../../gun/LStore";
+    import {onMount} from "svelte";
 
     function finish() {
         const uid = uuidv4().replace(/-/g, "");
@@ -12,10 +14,15 @@
         $currentPoll.password = uid.slice(12);
         $pollParticipants.push(new Participant($currentPoll.creatorName, true, $pollOptions))
         //save to DB
+        lstore.setMyName($currentPoll.creatorName)
 
         gun.createPoll(new PollDTO($currentPoll, $pollSettings, $pollOptions, $pollParticipants, $pollComments), $currentPoll.id, $currentPoll.password)
         page.set(Poll)
     }
+
+    onMount(() => {
+        $currentPoll.creatorName = lstore.getMyName();
+    })
 </script>
 
 

@@ -15,7 +15,6 @@
 
     function test() {
         if (!disabled) {
-            console.log("2Opti", twoOptions)
             if (twoOptions) {
                 switch (value) {
                     case "no":
