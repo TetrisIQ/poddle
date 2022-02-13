@@ -105,6 +105,7 @@
         $pollComments.push(new PollComment(lstore.getMyName(), newComment, new Date()))
         newComment = "";
         $pollComments = $pollComments;
+        updatePoll();
     }
 
 
