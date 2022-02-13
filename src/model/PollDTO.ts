@@ -19,7 +19,8 @@ export class PollDTO {
     settings: {
         treeOptions: boolean;
         fcfs: boolean; //First come, first served
-        onlyOneOption: boolean;
+        voteLimit: boolean; // 0 is disabled
+        voteLimitAmount: number; // 0 is disabled
         deadline: boolean;
     }
     participant: Array<{
@@ -46,7 +47,8 @@ export class PollDTO {
         this.settings = {
             treeOptions: settings.treeOptions,
             fcfs: settings.fcfs,
-            onlyOneOption: settings.onlyOneOption,
+            voteLimit: settings.voteLimit,
+            voteLimitAmount: settings.voteLimitAmount,
             deadline: settings.deadline,
         }
         if (this.settings.deadline) {
