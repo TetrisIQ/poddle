@@ -11,6 +11,8 @@ function getGUN() {
         return new GUN("http://localhost:8765/gun")
     } else if (process.env.NODE_ENV === "production") {
         return new GUN('https://gun.tetrisiq.de/gun')
+    }else if(process.env.NODE_ENV === "staging") {
+        return new GUN("https://poll-dapp-staging-gun.herokuapp.com/gun")
     } else {
         return new GUN();
     }
