@@ -1,4 +1,4 @@
-export class PollComment {
+export class Comment {
     name: string;
     comment: string;
     time: Date;

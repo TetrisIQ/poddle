@@ -3,7 +3,7 @@
 
     import {Participant} from "../model/PollParticipant";
     import {Option} from "../model/Option";
-    import {pollParticipants} from "../store";
+    import {currentPoll} from "../store";
 
     export let disabled = false;
     export let participant: Participant;
@@ -41,7 +41,7 @@
                 participant.chosenOptions.push({id: option.id, value: value})
             }
             participant.chosenOptions.find(o => o.id === option.id).value = value;
-            $pollParticipants = $pollParticipants;
+            $currentPoll = $currentPoll;
         }
 
     }

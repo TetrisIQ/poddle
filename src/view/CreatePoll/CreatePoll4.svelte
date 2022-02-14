@@ -1,28 +1,26 @@
 <script lang="ts">
-    import {currentPoll, page, pollOptions, pollParticipants, pollSettings, pollComments} from "../../store";
+    import {currentPoll, page} from "../../store";
     import {uuidv4} from "../../lib/util";
     import Poll from "../Poll.svelte";
     import {Participant} from "../../model/PollParticipant";
     import {gun} from "../../gun";
-    import {PollDTO} from "../../model/PollDTO";
+    import {PollDTOV1} from "../../model/DTO/PollDTOV1";
     import {lstore} from "../../gun/LStore";
-    import {onMount} from "svelte";
 
     function finish() {
         const uid = uuidv4().replace(/-/g, "");
+
         $currentPoll.id = uid.slice(0, 12);
         $currentPoll.password = uid.slice(12);
-        $pollParticipants.push(new Participant($currentPoll.creatorName, true, $pollOptions))
-        //save to DB
+        $currentPoll.participants.push(new Participant($currentPoll.creatorName, false, $currentPoll.options));
         lstore.setMyName($currentPoll.creatorName)
+        $currentPoll = $currentPoll;
+        //save to DB
 
-        gun.createPoll(new PollDTO($currentPoll, $pollSettings, $pollOptions, $pollParticipants, $pollComments), $currentPoll.id, $currentPoll.password)
+        gun.createPoll(new PollDTOV1($currentPoll), $currentPoll.id, $currentPoll.password)
         page.set(Poll)
     }
 
-    onMount(() => {
-        $currentPoll.creatorName = lstore.getMyName();
-    })
 </script>
 
 
