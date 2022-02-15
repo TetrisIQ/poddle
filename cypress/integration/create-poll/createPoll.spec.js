@@ -7,7 +7,7 @@ describe('example to-do app', () => {
     })
 
     it('Create poll - Ok', () => {
-        cy.visit('http://localhost:3000')
+        cy.visit('http://localhost:8080')
         const title = "Test Title"
         const text = "Test Location";
         const note = "Test Note"
