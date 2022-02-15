@@ -1,32 +1,32 @@
 <script lang="ts">
-    import {page, pollOptions} from "../../store";
+    import {currentPoll, page} from "../../store";
     import CreatePoll3 from "./CreatePoll3.svelte";
     import {Option} from "../../model/Option";
-    // import CreatePoll3 from "./CreatePoll3.svelte";
+    import NotificationControl from "../../lib/NotificationControl";
+
     let selectedTab = "text";
 
     let optionsIdCount = 1;
-    let showHint = false;
 
-    $pollOptions = [
+    // Create local options
+    let pollOptions = [
         new Option(optionsIdCount++),
         new Option(optionsIdCount++)]
 
-    $:{
-        const options = $pollOptions
-        if (options === undefined || options[options.length - 1].option !== "") {
-            $pollOptions.push(new Option(optionsIdCount++));
+    $:{ // check if last option is filled, then add a new Option
+        if (pollOptions === undefined || pollOptions[pollOptions.length - 1].option !== "") {
+            pollOptions.push(new Option(optionsIdCount++));
         }
     }
 
     function next() {
-        console.log($pollOptions[0].option !== "", $pollOptions[1].option !== "")
-        if ($pollOptions[0].option !== "" && $pollOptions[1].option !== "") {
-            $pollOptions = $pollOptions.slice(0, -1)
+        //check if min. the first 2 options have content
+        if (pollOptions[0].option !== "" && pollOptions[1].option !== "") {
+            pollOptions = pollOptions.slice(0, -1)
+            $currentPoll.options = pollOptions;
             page.set(CreatePoll3)
-        } else {
-            console.log("SHOW HINT")
-            showHint = true;
+        } else { // if not create a notification
+            NotificationControl.error("Cannot continue", "Please fill out at least tow options.")
         }
     }
 
@@ -53,8 +53,7 @@
                 Text
             </button>
         </nav>
-        <div class="{showHint ? '' : 'hidden'} mt-3">You must select at least 2 Options</div>
-        {#each $pollOptions as option, i}
+        {#each pollOptions as option, i}
             <div class="flex flex-wrap gap-3 w-full pb-8 px-5">
                 <label class="relative w-full flex flex-col">
                     <span class="font-bold mb-3 text-left">Option</span>

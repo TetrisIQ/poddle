@@ -1,6 +1,6 @@
 import GUN, {SEA} from "gun"
 import "gun/sea"
-import type {PollDTO} from "../model/PollDTO";
+import type {PollDTOV1} from "../model/DTO/PollDTOV1";
 import {page, pollDTO} from "../store";
 import Error from "../view/404.svelte"
 
@@ -24,15 +24,15 @@ class PollMutations {
             .map()
             .once(async (data, id) => {
                 if (id === "encryptedData") {
-                    const test = <PollDTO>await SEA.decrypt(data, password);
-                    pollDTO.set(test as PollDTO);
+                    const test = <PollDTOV1>await SEA.decrypt(data, password);
+                    pollDTO.set(test as PollDTOV1);
                 }
             });
         page.set(Error)
 
     }
 
-    async createPoll(data: PollDTO, key: string, password: string) {
+    async createPoll(data: PollDTOV1, key: string, password: string) {
         const enc = await SEA.encrypt(JSON.stringify(data), password)
         db.get("poll").get(key).put({
             timestamp: new Date().toDateString(),
@@ -40,7 +40,7 @@ class PollMutations {
         });
     }
 
-    updatePoll(pollDTO: PollDTO, id: string, password: string) {
+    updatePoll(pollDTO: PollDTOV1, id: string, password: string) {
         console.log("UPDATE")
         this.createPoll(pollDTO, id, password)
     }
