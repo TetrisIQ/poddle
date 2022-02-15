@@ -91,11 +91,8 @@
     }
 
     function updateEdit(participant) {
-        console.log("NASE")
         $currentPoll.participants.find(p => p.name === participant.name).edit = !participant.edit;
-        console.log("NASE 2")
         $currentPoll = $currentPoll;
-        console.log("NASE 4")
     }
 
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import imgSrc from "../assets/6308.jpg"
+    import imgSrc from "../assets/Element1.png"
 
 </script>
 
@@ -24,7 +24,7 @@
         </div>
         <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
             <img class="object-cover object-center rounded" alt="hero" height="920" width="800" src={imgSrc}>
-            <a href="https://www.freepik.com">Designed by pch.vector / Freepik</a>
+            <a href="https://www.freepik.com">Origin by pch.vector / Freepik</a>
         </div>
     </div>
 </section>

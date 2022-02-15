@@ -12,7 +12,7 @@
 
         $currentPoll.id = uid.slice(0, 12);
         $currentPoll.password = uid.slice(12);
-        $currentPoll.participants.push(new Participant($currentPoll.creatorName, false, $currentPoll.options));
+        $currentPoll.participants.push(new Participant($currentPoll.creatorName, true, $currentPoll.options));
         lstore.setMyName($currentPoll.creatorName)
         $currentPoll = $currentPoll;
         //save to DB

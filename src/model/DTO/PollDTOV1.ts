@@ -68,9 +68,9 @@ export class PollDTOV1 {
     }
 
     static getPoll(dto: PollDTOV1, id: string, password: string): Poll {
-        const participant: Array<Participant> = dto.participant.map(p => new Participant(p.name, false, p.chosenOptions.map(o => new Option(o.id, o.value))))
-        const comments: Array<Comment> = dto.comments.map(c => new Comment(c.name, c.comment, new Date(c.time)));
+        const participant: Array<Participant> = dto.participant.map(p => new Participant(p.name, false, undefined, p.chosenOptions))
         const options: Array<Option> = dto.options.map(o => new Option(o.id, o.option))
+        const comments: Array<Comment> = dto.comments.map(c => new Comment(c.name, c.comment, new Date(c.time)));
         return new Poll(id, password, dto.title, dto.creatorName, dto.location, dto.note, new Date(dto.created), new Date(dto.deadline), participant, comments, dto.settings, options)
     }
 
