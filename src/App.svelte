@@ -42,21 +42,21 @@
     {#if $releaseMessage !== undefined && !ttlIsOver()}
         {#if $releaseMessage.kind === "release"}
             <div on:click={() => releaseMessage.set(undefined)}
-                 class="w-full h-auto dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-indigo-400 p-1 text-lg">
+                 class="w-full h-auto dark:text-black mx-auto text-center h-9 bg-indigo-400 p-1 text-lg">
                 <span>📦</span>
                 <span class="font-bold pr-2">{$releaseMessage.title}</span>
                 <span>{$releaseMessage.content}</span>
             </div>
         {:else if ($releaseMessage.kind === "celebrate")}
             <div on:click={() => releaseMessage.set(undefined)}
-                 class="w-full h-auto dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-indigo-400 p-1 text-lg">
+                 class="w-full dark:text-black h-auto mx-auto text-center h-9 bg-indigo-400 p-1 text-lg">
                 <span>🎉</span>
                 <span class="font-bold pr-2">{$releaseMessage.title}</span>
                 <span>{$releaseMessage.content}</span>
             </div>
         {:else if ($releaseMessage.kind === "warning")}
             <div on:click={() => releaseMessage.set(undefined)}
-                 class="w-full h-auto dark:text-black dark:bg-yellow-600 mx-auto text-center h-9 bg-gray-200 p-1 text-lg">
+                 class="w-full dark:bg-gray-500 dark:text-black h-auto mx-auto text-center h-9 bg-gray-200 p-1 text-lg">
                 <span>👷</span>
                 <span class="font-bold pr-2">{$releaseMessage.title}</span>
                 <span>{$releaseMessage.content}</span>
