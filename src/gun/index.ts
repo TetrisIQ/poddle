@@ -24,15 +24,16 @@ class PollMutations {
 
     async getReleaseMessage() {
         db.get("message").once(async (message) => {
-
-            SEA.verify(message?.message, this.adminPubKey).then(res => {
-                if (res === undefined) {
-                    console.error("Verify of message Failed")
-                    releaseMessage.set(undefined)
-                    return;
-                }
-                releaseMessage.set(res as ReleaseMessage)
-            })
+            if (message !== undefined) {
+                SEA.verify(message.message, this.adminPubKey).then(res => {
+                    if (res === undefined) {
+                        console.error("Verify of message Failed")
+                        releaseMessage.set(undefined)
+                        return;
+                    }
+                    releaseMessage.set(res as ReleaseMessage)
+                })
+            }
         })
     }
 
