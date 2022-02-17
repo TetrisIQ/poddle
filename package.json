@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "vite build --base /poll-dapp/",
     "preview": "vite preview",
+    "cypressUI": "cypress open",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "start": "http-server dist",
     "heroku-postbuild": "vite build --mode review --base /"
