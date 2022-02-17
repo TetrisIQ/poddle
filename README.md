@@ -1,10 +1,10 @@
 # poll-dapp
 decentralized doodle alternative
 
-##INSTALATION
+## INSTALATION
 
 yarn install
 
-##RUN 
+## RUN 
 
 yarn dev
