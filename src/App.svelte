@@ -1,6 +1,6 @@
 <script lang="ts">
     import Header from "./lib/Header.svelte";
-    import {page, pollDTO, releaseMessage} from "./store";
+    import {page, releaseMessage} from "./store";
     import Poll from './view/Poll.svelte'
     import Footer from "./lib/Footer.svelte";
     import NotificationArea from "./lib/NotificationArea.svelte";
@@ -31,8 +31,7 @@
     function ttlIsOver() {
         if ($releaseMessage !== undefined) {
             const ttlInDays = +$releaseMessage.ttl;
-            const isOver = dayjs().isAfter(dayjs($releaseMessage.createdOn).add(ttlInDays, 'day').endOf('day').toISOString())
-            return isOver
+            return dayjs().isAfter(dayjs($releaseMessage.createdOn).add(ttlInDays, 'day').endOf('day').toISOString())
         }
     }
 
