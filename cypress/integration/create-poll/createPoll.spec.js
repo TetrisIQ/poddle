@@ -115,15 +115,34 @@ describe('Create Poll', () => {
 
         cy.get(':nth-child(1) > .text-left > span').should("contain.text", text)
 
-        cy.get(':nth-child(2) > .text-left > span').should("contain.text",note)
+        cy.get(':nth-child(2) > .text-left > span').should("contain.text", note)
 
         cy.get('thead > tr > :nth-child(2)').should("contain.text", options[0])
-        cy.get('thead > tr > :nth-child(3)').should("contain.text",options[1])
-        cy.get('thead > tr > :nth-child(4)').should("contain.text",options[2])
+        cy.get('thead > tr > :nth-child(3)').should("contain.text", options[1])
+        cy.get('thead > tr > :nth-child(4)').should("contain.text", options[2])
         cy.reload()
         cy.get(':nth-child(3) > .gb-gray-200 > svg').should('have.css', 'fill').and('eq', 'rgb(34, 197, 94)')
         cy.get(':nth-child(2) > .gb-gray-200 > svg').should('have.css', 'fill').and('eq', 'rgb(234, 179, 8)')
 
+    })
+
+    it('Create poll - without title', () => {
+        cy.get("button").contains("Create Poll").click()
+        cy.get("form").find("input").eq(1).type("Test Location");
+        cy.get("form").find("input").eq(2).type("Test Note");
+        cy.get("form").find("button").click()
+        cy.get('.py-4 > .text-xl').should("contain.text", "Create new Poll")
+    });
+
+    it('Create poll - without Options', () => {
+        cy.get("button").contains("Create Poll").click()
+        cy.get("form").find("input").eq(0).type("Test Title");
+        cy.get("form").find("input").eq(1).type("Test Location");
+        cy.get("form").find("input").eq(2).type("Test Note");
+        cy.get("form").find("button").click()
+        cy.get("form").submit()
+        // Check if notification contains red svg
+        cy.get("#notificationArea > div").first().find("svg").should("have.css", "fill").and('eq', 'rgb(239, 68, 68)')
     })
 
 })
