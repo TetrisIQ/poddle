@@ -29,10 +29,12 @@
 
 
     function ttlIsOver() {
-        const ttlInDays = +$releaseMessage.ttl;
-        const isOver = dayjs().isAfter(dayjs($releaseMessage.createdOn).add(ttlInDays, 'day').endOf('day').toISOString())
-        console.log("isOver", isOver)
-        return isOver
+        if ($releaseMessage !== undefined) {
+            const ttlInDays = +$releaseMessage.ttl;
+            const isOver = dayjs().isAfter(dayjs($releaseMessage.createdOn).add(ttlInDays, 'day').endOf('day').toISOString())
+            console.log("isOver", isOver)
+            return isOver
+        }
     }
 
 
