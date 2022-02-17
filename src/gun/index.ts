@@ -8,10 +8,11 @@ const db = getGUN();
 
 function getGUN() {
     if (process.env.NODE_ENV === "development") {
-        return new GUN("http://localhost:8765/gun")
+        // return new GUN("http://localhost:8765/gun")
+        return new GUN()
     } else if (process.env.NODE_ENV === "production") {
         return new GUN('https://gun.tetrisiq.de/gun')
-    } else if (process.env.NODE_ENV === "staging") {
+    } else if (process.env.NODE_ENV === "staging") { // Staging instance has been removed for now, maybe in future I will add a new
         return new GUN("https://poll-dapp-staging-gun.herokuapp.com/gun")
     } else {
         return new GUN();
@@ -24,7 +25,7 @@ class PollMutations {
     async getReleaseMessage() {
         db.get("message").once(async (message) => {
 
-            SEA.verify(message.message, this.adminPubKey).then(res => {
+            SEA.verify(message?.message, this.adminPubKey).then(res => {
                 if (res === undefined) {
                     console.error("Verify of message Failed")
                     releaseMessage.set(undefined)
