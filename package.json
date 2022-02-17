@@ -6,16 +6,17 @@
     "dev": "vite",
     "build": "vite build --base /poll-dapp/",
     "preview": "vite preview",
+    "cypressUI": "cypress open",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "start": "http-server dist",
     "heroku-postbuild": "vite build --mode review --base /"
   },
   "devDependencies": {
     "@beyonk/svelte-datepicker": "^12.0.0",
-    "dayjs": "^1.10.7",
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
     "@tsconfig/svelte": "^2.0.1",
     "autoprefixer": "^10.4.2",
+    "dayjs": "^1.10.7",
     "postcss": "^8.4.5",
     "postcss-load-config": "^3.1.1",
     "svelte": "3.39.0",
@@ -27,7 +28,8 @@
     "vite": "^2.7.2"
   },
   "dependencies": {
+    "cypress": "^9.4.1",
     "gun": "^0.2020.1235",
-    "http-server" : "^14.1.0"
+    "http-server": "^14.1.0"
   }
 }
