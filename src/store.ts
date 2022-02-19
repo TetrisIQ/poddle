@@ -6,7 +6,6 @@ import type {ReleaseMessage} from "./model/ReleaseMessage";
 
 
 export const page = writable(Home);
-export const showNotification = writable<boolean>()
 export const currentPoll = writable<Poll>(new Poll())
 export const pollDTO = writable<PollDTOV1>()
 export const releaseMessage = writable<ReleaseMessage>()

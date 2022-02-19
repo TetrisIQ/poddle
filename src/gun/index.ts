@@ -63,12 +63,31 @@ class PollMutations {
             timestamp: new Date().toDateString(),
             encryptedData: enc
         });
+        await this.incrementPollCounter()
     }
 
     updatePoll(pollDTO: PollDTOV1, id: string, password: string) {
         console.log("UPDATE")
         this.createPoll(pollDTO, id, password)
     }
+
+    async getPollCounter(): Promise<number> {
+        // @ts-ignore
+        return db.get("poll-counter").get("currentCount").once(counter => counter);
+    }
+
+    private async incrementPollCounter() {
+        let currentCount: number = await this.getPollCounter()
+        if (currentCount === undefined) {
+            // counter is 0
+            currentCount = 0;
+        }
+        currentCount = currentCount + 1;
+        db.get("poll-counter").put({currentCount})
+
+    }
 }
 
+// @ts-ignore
 export const gun = new PollMutations();
+//

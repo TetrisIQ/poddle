@@ -6,6 +6,7 @@
     import {gun} from "../../gun";
     import {PollDTOV1} from "../../model/DTO/PollDTOV1";
     import {lstore} from "../../gun/LStore";
+    import NotificationControl from "../../lib/NotificationControl";
 
     function finish() {
         const uid = uuidv4().replace(/-/g, "");
@@ -19,6 +20,7 @@
 
         gun.createPoll(new PollDTOV1($currentPoll), $currentPoll.id, $currentPoll.password)
         page.set(Poll)
+        NotificationControl.info("Poll Created", "Leave your browser open so that the data can be synchronized")
     }
 
 </script>
