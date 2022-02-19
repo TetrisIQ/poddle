@@ -10,6 +10,10 @@
     import {onMount} from "svelte";
     import NotificationControl from "../lib/NotificationControl";
     import {PollDTOV1} from "../model/DTO/PollDTOV1";
+    import RelativeTime from "dayjs/plugin/relativeTime"
+    import dayjs from "dayjs";
+
+    dayjs.extend(RelativeTime)
 
     let params = new URLSearchParams(document.location.search);
     let key = params.get("k");
@@ -17,15 +21,14 @@
     console.log("NASE")
 
     function formatCreated(date) {
-        return "Some time ago"
+        return dayjs(date).fromNow()
     }
 
     function formatDate(date: Date): string {
-        if (date !== undefined) {
-            return `${date.getDay()}.${date.getMonth() + 1}.${date.getFullYear()}`
-        } else {
-            return "Error"
+        if(deadlineIsNotReached()) {
+            return "This poll is over since " + dayjs(date.toUTCString()).fromNow(true)
         }
+        return "in " + dayjs(date.toUTCString()).toNow(false)
     }
 
     onMount(() => {
@@ -52,7 +55,7 @@
             $currentPoll.participants.forEach(p => {
                 let amount = p.chosenOptions.filter(o => o.value === "yes").length
                 if (amount > $currentPoll.settings.voteLimitAmount) {
-                    NotificationControl.error("Cannot update Poll", `${p.name} has more than ${$currentPoll.settings.voteLimitAmount} votes`);
+                    NotificationControl.error("Cannot update Poll", `${p.name} cannot select more than ${$currentPoll.settings.voteLimitAmount} option`);
                     valid = false;
                 }
             })

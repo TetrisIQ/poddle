@@ -43,18 +43,6 @@
                 </svg>
             </label>
         </div>
-        <div class="flex flex-wrap gap-3 w-full p-5">
-            <label class="relative w-full flex flex-col">
-                <span class="font-bold mb-3 text-left">Email</span>
-                <input bind:value={$currentPoll.creatorEmail}
-                       class="rounded-md peer pl-12 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300" type="text"
-                       name="Add location" placeholder="Email"/>
-                <svg class="absolute bottom-0 left-0 -mb-0.5 transform translate-x-1/2 -translate-y-1/2 text-black peer-placeholder-shown:text-gray-300 h-6 w-6"
-                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
-                </svg>
-            </label>
-        </div>
     </div>
     <div class="px-6 pt-4 pb-2">
         <button type="submit"
