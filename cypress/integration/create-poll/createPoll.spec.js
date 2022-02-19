@@ -92,8 +92,8 @@ describe('Create Poll', () => {
 
         // Click continue
         cy.get('.pt-4 > button').click()
-        // Click If needed Be
-        cy.get(':nth-child(1) > .checkbox > input.s-1OLEAndxnfGJ').click()
+        // Click If needed Be (The first input in Settings
+        cy.get('form input').eq(0).click()
 
         // Click continue
         cy.get('.pt-4 > button').click()
