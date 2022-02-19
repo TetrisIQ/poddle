@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {page, pollSettings, currentPoll} from "../../store";
+    import {page, currentPoll} from "../../store";
     import Checkbox from "../../lib/Checkbox.svelte";
     import CreatePoll4 from "./CreatePoll4.svelte";
     import DatePicker from "@beyonk/svelte-datepicker/src/components/DatePicker.svelte";
