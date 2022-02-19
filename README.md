@@ -10,19 +10,21 @@
 <br />
 <!-- badges -->
 <div align="center">
-  <!-- Stability -->
-    <img src="https://img.shields.io/badge/Version-preAlpha-red?style=flat-square"
-      alt="API stability" />
+  <!-- Version -->
+    <img src="https://img.shields.io/badge/Version-alpha-red?style=flat-square"
+      alt="Version" />
   <!-- Build Status -->
     <img src="https://img.shields.io/github/checks-status/tetrisiq/poll-dapp/main?style=flat-square"
       alt="Build Status" />
   <!-- Test status -->
-    <img src="https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/byzw5k&style=flat-square&logo=cypress" />
+    <img src="https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/byzw5k&style=flat-square&logo=cypress" alt="Cypress Status" />
+  <!-- Netlify Status -->
+      <img src="https://api.netlify.com/api/v1/badges/412902dd-d80b-474f-9f66-24619a932a73/deploy-status" alt="Netlify Status" />
 </div>
 
 <div align="center">
   <h3>
-    <a href="https://tetrisiq.github.io/poll-dapp/">
+    <a href="https://poll-dapp.netlify.app">
       Website
     </a>
     <span> | </span>
@@ -35,7 +37,7 @@
 
 ## Table of Contents
 - [Features](#features)
-- [What means decentralized](#What means decentralized)
+- [What means decentralized](#what-means-decentralized)
 - [FAQ](#faq)
 - [Installation](#installation)
 - [See Also](#see-also)
