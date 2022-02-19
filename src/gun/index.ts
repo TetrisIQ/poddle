@@ -1,21 +1,16 @@
 import GUN, {SEA} from "gun"
 import "gun/sea"
 import type {PollDTOV1} from "../model/DTO/PollDTOV1";
-import {page, pollDTO, releaseMessage} from "../store";
+import {pollDTO, releaseMessage} from "../store";
 import type {ReleaseMessage} from "../model/ReleaseMessage";
 
 const db = getGUN();
 
 function getGUN() {
     if (process.env.NODE_ENV === "development") {
-        // return new GUN("http://localhost:8765/gun")
-        return new GUN()
-    } else if (process.env.NODE_ENV === "production") {
-        return new GUN('https://gun.tetrisiq.de/gun')
-    } else if (process.env.NODE_ENV === "staging") { // Staging instance has been removed for now, maybe in future I will add a new
-        return new GUN("https://poll-dapp-staging-gun.herokuapp.com/gun")
+        return new GUN("http://localhost:8765/gun")
     } else {
-        return new GUN();
+        return new GUN('https://gun.tetrisiq.de/gun')
     }
 }
 
