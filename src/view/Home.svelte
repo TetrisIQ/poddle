@@ -1,5 +1,7 @@
 <script lang="ts">
     import imgSrc from "../assets/Element1.png"
+    import {page} from "../store";
+    import CreatePoll1 from "./CreatePoll/CreatePoll1.svelte";
 
 </script>
 
@@ -14,10 +16,10 @@
             <p class="mb-8 leading-relaxed">Save time scheduling your day<br>
                 All your information are secured and encrypted, with the power of gun.js</p>
             <div class="flex justify-center">
-                <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                <button on:click={() => page.set(CreatePoll1)} class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
                     Start now
                 </button>
-                <button class="ml-4 inline-flex dark:text-gray-400 dark:bg-gray-800 text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none dark:hover:bg-gray-700 dark:hover:text-white hover:bg-gray-200 rounded text-lg">
+                <button on:click={() => window.open("https://github.com/tetrisiq/poll-dapp", "_blank")} class="ml-4 inline-flex dark:text-gray-400 dark:bg-gray-800 text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none dark:hover:bg-gray-700 dark:hover:text-white hover:bg-gray-200 rounded text-lg">
                     Learn more
                 </button>
             </div>
