@@ -4,13 +4,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base /poll-dapp/",
+    "build": "vite build --base /",
     "preview": "vite preview",
     "cypressUI": "cypress open",
     "test": "cypress run",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "start": "http-server dist",
-    "heroku-postbuild": "vite build --mode review --base /"
+    "start": "http-server dist --port 3000"
   },
   "devDependencies": {
     "@beyonk/svelte-datepicker": "^12.0.0",
@@ -31,7 +30,7 @@
   "dependencies": {
     "cypress": "^9.4.1",
     "gun": "^0.2020.1235",
-    "http-server": "^14.1.0"
+    "http-server": "14.1.0"
   },
   "license": "MIT"
 }

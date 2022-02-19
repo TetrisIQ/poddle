@@ -3,7 +3,7 @@
 
 describe('Create Poll', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:8080')
+        cy.visit('http://localhost:3000')
     })
 
     it('Create poll - Ok', () => {
@@ -40,7 +40,7 @@ describe('Create Poll', () => {
         // Click finish
         cy.get('.pt-4 > button').click()
         //Click Option 2
-        cy.get(':nth-child(3) > .gb-gray-200 > input.s-tgccq2OiNLI-').click()
+        cy.get('tbody tr:nth-child(3) > td:nth-child(3)').click()
         //Click update
         cy.get('.py-4 > .inline-flex').click()
         // write Comment
@@ -92,8 +92,8 @@ describe('Create Poll', () => {
 
         // Click continue
         cy.get('.pt-4 > button').click()
-        // Click If needed Be
-        cy.get(':nth-child(1) > .checkbox > input.s-1OLEAndxnfGJ').click()
+        // Click If needed Be (The first input in Settings
+        cy.get('form input').eq(0).click()
 
         // Click continue
         cy.get('.pt-4 > button').click()
@@ -102,10 +102,10 @@ describe('Create Poll', () => {
         // Click finish
         cy.get('.pt-4 > button').click()
         //Click Option 2
-        cy.get(':nth-child(3) > .gb-gray-200 > input.s-tgccq2OiNLI-').click()
+        cy.get('tbody tr:nth-child(3) > td:nth-child(3)').click()
         //CLick Option 1 twice
-        cy.get(':nth-child(2) > .gb-gray-200 > input.s-tgccq2OiNLI-').click()
-        cy.get(':nth-child(2) > .gb-gray-200 > input.s-tgccq2OiNLI-').click()
+        cy.get('tbody tr:nth-child(3) > td:nth-child(2)').click()
+        cy.get('tbody tr:nth-child(3) > td:nth-child(2)').click()
         //Click update
         cy.get('.py-4 > .inline-flex').click()
 
