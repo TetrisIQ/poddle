@@ -40,7 +40,7 @@ describe('Create Poll', () => {
         // Click finish
         cy.get('.pt-4 > button').click()
         //Click Option 2
-        cy.get(':nth-child(3) > .gb-gray-200 > input.s-tgccq2OiNLI-').click()
+        cy.get('tbody tr:nth-child(3) > td:nth-child(3)').click()
         //Click update
         cy.get('.py-4 > .inline-flex').click()
         // write Comment
@@ -102,10 +102,10 @@ describe('Create Poll', () => {
         // Click finish
         cy.get('.pt-4 > button').click()
         //Click Option 2
-        cy.get(':nth-child(3) > .gb-gray-200 > input.s-tgccq2OiNLI-').click()
+        cy.get('tbody tr:nth-child(3) > td:nth-child(3)').click()
         //CLick Option 1 twice
-        cy.get(':nth-child(2) > .gb-gray-200 > input.s-tgccq2OiNLI-').click()
-        cy.get(':nth-child(2) > .gb-gray-200 > input.s-tgccq2OiNLI-').click()
+        cy.get('tbody tr:nth-child(3) > td:nth-child(2)').click()
+        cy.get('tbody tr:nth-child(3) > td:nth-child(2)').click()
         //Click update
         cy.get('.py-4 > .inline-flex').click()
 
