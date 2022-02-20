@@ -52,7 +52,7 @@
 > For planed features take a look at the GitHub issues
 
 ## What means decentralized
-tbd
+...
 
 ## FAQ
 ### Why can nobody see my poll?
@@ -70,5 +70,5 @@ To start the test with cypress enter `cypress run` into your console.
 
 ## See Also
 - [gun.eco](https://gun.eco) - decentralised Database 
-- [Svelte in 100 sec.](https://www.youtube.com/watch?v=rv3Yq-B8qp4) - tiny library for modular UI
+- [Svelte in 100 Seconds](https://www.youtube.com/watch?v=rv3Yq-B8qp4) - video by Fireship
 - [svelte Tutorial](https://svelte.dev/tutorial/basics/) - A very good start point for learning svelte
