@@ -66,9 +66,14 @@ class PollMutations {
         await this.incrementPollCounter()
     }
 
-    updatePoll(pollDTO: PollDTOV1, id: string, password: string) {
+    async updatePoll(pollDTO: PollDTOV1, id: string, password: string) {
         console.log("UPDATE")
-        this.createPoll(pollDTO, id, password)
+        const enc = await SEA.encrypt(JSON.stringify(pollDTO), password)
+        db.get("poll").get(id).put({
+            dtoVersion: 1,
+            timestamp: new Date().toDateString(),
+            encryptedData: enc
+        });
     }
 
     async getPollCounter(): Promise<number> {
