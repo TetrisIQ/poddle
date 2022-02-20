@@ -85,11 +85,11 @@ describe('Create Poll - with Settings', () => {
         cy.firstNotificationHeaderContainsText("Poll Created").click();
         // should show notification "Cannot update Poll"
         cy.updatePoll();
-        cy.firstNotificationHeaderContainsText("Cannot update Poll").click()
+        cy.firstNotificationHeaderContainsText("Cannot save Poll").click()
         // fix poll (click on Option 1)
         cy.clickOnOption(1, 1);
         cy.updatePoll();
-        cy.firstNotificationHeaderContainsText("Poll updated").click()
+        cy.firstNotificationHeaderContainsText("Poll saved").click()
     });
 
 })

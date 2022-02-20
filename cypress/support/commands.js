@@ -64,12 +64,11 @@ Cypress.Commands.add('checkOption', (row, col, result = "yes" | "no" | "ifNeeded
     cy.get("body").should("not.exist") // must fail No valid enum
 })
 Cypress.Commands.add('updatePoll', () => {
-    cy.get("button").contains("Update").click()
+    cy.get("button").contains("Save").click()
 });
 
 Cypress.Commands.add('firstNotificationHeaderContainsText', (text = 1) => {
     return cy.get("#notificationArea > div > div > div > div > div").should("contain.text", text)
-
 });
 
 
