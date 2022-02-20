@@ -1,28 +1,28 @@
 <script lang="ts">
     let darkMode = true;
 
-    (function setMode(){
-        if(localStorage.getItem('mode') == 'dark'){
+    function setMode() {
+        if (localStorage.getItem('mode') == 'dark') {
             document.querySelector('html').classList.add(localStorage.getItem('mode'))
             darkMode = false
-        }
-        else{
+        } else {
             darkMode = true
         }
-    })()
+    }
 
-    
-       function changeMode() {
-        if(darkMode) {
+    setMode();
+
+    function changeMode() {
+        if (darkMode) {
             document.querySelector("html").classList.add('dark');
-            localStorage.setItem('mode','dark')
+            localStorage.setItem('mode', 'dark')
         } else {
             document.querySelector("html").classList.remove('dark');
-            localStorage.setItem('mode','')
+            localStorage.setItem('mode', '')
         }
-        console.log(darkMode,localStorage.getItem('mode'))
+        console.log(darkMode, localStorage.getItem('mode'))
         darkMode = !darkMode;
-    }}
+    }
 
 </script>
 
