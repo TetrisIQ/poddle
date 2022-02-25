@@ -212,7 +212,8 @@
                                 <svg on:click={addNewParticipant} xmlns="http://www.w3.org/2000/svg" width="32"
                                      height="32"
                                      fill="currentColor"
-                                     class="text-right dark:hover:bg-gray-700 hover:bg-gray-200 inline ml-auto" viewBox="0 0 16 16">
+                                     class="text-right dark:hover:bg-gray-700 hover:bg-gray-200 inline ml-auto"
+                                     viewBox="0 0 16 16">
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                 </svg>
                             {/if}
@@ -295,7 +296,8 @@
                 </tbody>
             </table>
             <button on:click={() => save()}
-                    class="inline-flex mt-5 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                    class="inline-flex mt-5 dark:bg-gray-800 bg-gray-300 border-0 py-2 px-6 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base md:mt-0"
+                    style="margin-top: 1rem">
                 Save
             </button>
             <h2 class="text-2xl mt-8">Comments</h2>
@@ -315,9 +317,9 @@
 
             <div class="flex mx-auto items-center justify-center shadow-lg mt-t max-w-lg">
                 <form on:submit|preventDefault={addComment}
-                      class="w-full max-w-xl bg-white rounded-lg px-4 pt-2">
+                      class="w-full max-w-xl dark:bg-gray-700 bg-white rounded-lg px-4 pt-2">
                     <div class="flex flex-wrap -mx-3 mb-6">
-                        <span class="px-4 pt-3 pb-2 text-gray-800 text-lg">Add a new comment as</span>
+                        <span class="px-4 dark:text-gray-200 pt-3 pb-2 text-gray-800 text-lg">Add a new comment as</span>
                         <select bind:value={newComment.name}
                                 class="bg-transparent my-auto h-min border-solid border-2  border rounded border-gray-400">
                             <option value={myName}
@@ -330,7 +332,7 @@
                         <div class="w-full md:w-full px-3 mb-2 mt-2">
                     <textarea
                             bind:value={newComment.comment}
-                            class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+                            class="bg-gray-100 dark:bg-gray-200 dark:text-black rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
                             name="body" placeholder='Type Your Comment' required></textarea>
                         </div>
                         <div class="w-full md:w-full flex items-start md:w-full px-3">
@@ -345,7 +347,7 @@
                             </div>-->
                             <div class="-mr-1">
                                 <input type='submit'
-                                       class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100"
+                                       class="inline-flex items-center dark:bg-gray-800 bg-gray-300 border-0 py-1 px-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
                                        value='Post Comment'>
                             </div>
                         </div>
