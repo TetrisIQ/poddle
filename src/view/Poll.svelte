@@ -1,16 +1,18 @@
 <script lang="ts">
 
-    import {currentPoll, pollDTO} from "../store";
-    import {gun} from "../gun";
+    import {currentPoll} from "../store";
     import {Participant} from "../model/PollParticipant";
     import YNINB from "../lib/YNINB.svelte";
     import {lstore} from "../gun/LStore";
     import {Comment} from "../model/Comment";
     import {onMount} from "svelte";
     import NotificationControl from "../lib/NotificationControl";
-    import {PollDTOV1} from "../model/DTO/PollDTOV1";
+    import dayjs, {Dayjs} from "dayjs";
+    import {pollGun} from "../gun/PollGun";
+    import {Option} from "../model/Option";
+    import {commentGun} from "../gun/CommentGun";
+    import {gun} from "../gun";
     import RelativeTime from "dayjs/plugin/relativeTime"
-    import dayjs from "dayjs";
 
     dayjs.extend(RelativeTime)
 
@@ -20,33 +22,59 @@
     let myName: string = lstore.getMyName();
 
     function formatCreated(date) {
-        return dayjs(date).fromNow()
-    }
-
-    function formatDate(date: Date): string {
-        if (deadlineIsNotReached()) {
-            return "This poll is over since " + dayjs(date.toUTCString()).fromNow(true)
+        console.log(typeof date)
+        if(date !== undefined) {
+            return dayjs(date).fromNow()
+        } else {
+            return "NOT DAYJS"
         }
-        return "in " + dayjs(date.toUTCString()).toNow(false)
     }
 
-    onMount(() => {
-        console.log($currentPoll)
+    function formatDate(date: Dayjs): string {
+        if(date === undefined) {
+            return "undefined";
+        }
+        if (deadlineIsNotReached()) {
+            return "This poll is over since " + dayjs(date).fromNow(true)
+        }
+        return "in " + dayjs(date).toNow(false)
+    }
+
+    onMount(async () => {
         if ($currentPoll.title !== "") {
             window.history.pushState("", `Poll ${$currentPoll.title}`, `${window.location.pathname}?k=${$currentPoll.id + $currentPoll.password}`);
         } else {
-            gun.getPoll(key.slice(0, 12), key.slice(12))
-            console.log("KEY", key)
-        }
-    })
+            const id = key.slice(0, 12);
+            const password = key.slice(12);
+            if (await gun.detectOldPoll(id, password)) {
+                console.log("OLD POLL DETECTED")
+                // For old Polls
+                await gun.getPoll(id, password);
+                // Save as new Poll
 
-    $:{
-        if ($pollDTO !== undefined) {
-            currentPoll.set(PollDTOV1.getPoll($pollDTO, key.slice(0, 12), key.slice(12)))
+
+
+            } else {
+                $currentPoll.password = password;
+                $currentPoll.id = id;
+                pollGun.getEntity(id, password, "title").then(t => $currentPoll.title = t as string);
+                pollGun.getEntity(id, password, "creatorName").then(t => $currentPoll.creatorName = t as string);
+                pollGun.getEntity(id, password, "options").then(t => $currentPoll.options = t as Array<Option>);
+                pollGun.getEntity(id, password, "location").then(t => $currentPoll.location = t as string);
+                pollGun.getEntity(id, password, "note").then(t => $currentPoll.note = t as string);
+                pollGun.getEntity(id, password, "settings.deadline").then(t => $currentPoll.settings.deadline = t as boolean);
+                pollGun.getEntity(id, password, "settings.fcfs").then(t => $currentPoll.settings.fcfs = t as boolean);
+                pollGun.getEntity(id, password, "settings.voteLimit").then(t => $currentPoll.settings.voteLimit = t as boolean);
+                pollGun.getEntity(id, password, "settings.voteLimitAmount").then(t => $currentPoll.settings.voteLimitAmount = t as number);
+                pollGun.getEntity(id, password, "deadline").then(t => $currentPoll.deadline = dayjs(t as string));
+
+                $currentPoll.participants = await pollGun.getAllParticipant(id, password)
+                $currentPoll.comments = await commentGun.getAllComments(id, password)
+            }
             $currentPoll = $currentPoll;
-            pollDTO.set(undefined)
         }
-    }
+        console.log($currentPoll)
+    })
 
     function save() {
         let valid = true;
@@ -63,7 +91,8 @@
             closeEditOnAllParticipants();
             $currentPoll = $currentPoll;
             NotificationControl.info("Poll saved", "The Poll has been saved!");
-            gun.updatePoll(new PollDTOV1($currentPoll), $currentPoll.id, $currentPoll.password);
+            const myParticipant = $currentPoll.participants.find(p => p.name === lstore.getMyName())
+            pollGun.addParticipant(myParticipant, $currentPoll.id, $currentPoll.password);
         }
     }
 
@@ -88,6 +117,7 @@
 
     function addComment() {
         newComment.updateTime();
+        commentGun.addComment(newComment, $currentPoll.id, $currentPoll.password)
         $currentPoll.comments.push(newComment)
         newComment = new Comment(myName);
         $currentPoll = $currentPoll;
