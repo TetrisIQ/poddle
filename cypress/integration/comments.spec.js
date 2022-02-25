@@ -23,7 +23,7 @@ describe('Test poll comments', () => {
         // write comment
         cy.get('.mb-2 > .bg-gray-100').clear().type(comment)
         // Post comment
-        cy.get('.-mr-1 > .bg-white').click();
+        cy.get('input[type=submit]').contains("Post").click();
         // Validate the result
         cy.get("div.text-left.ml-2").should("contain.text", comment);
         cy.reload();
@@ -35,7 +35,7 @@ describe('Test poll comments', () => {
         cy.get("form").find("select").select(1)
         cy.get('.mb-2 > .bg-gray-100').clear().type(comment)
         // Post comment
-        cy.get('.-mr-1 > .bg-white').click();
+        cy.get('input[type=submit]').contains("Post").click();
         // Validate the result
         cy.get(".text-right.col-end-2 > span").should("contain.text", "Anonymous");
         cy.get("div.text-left.ml-2").should("contain.text", comment);
