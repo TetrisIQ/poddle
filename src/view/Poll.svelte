@@ -41,7 +41,7 @@
         } else {
             const id = key.slice(0, 12);
             const password = key.slice(12);
-            if (await gun.detectOldPoll(id, password)) {
+            if (await gun.detectOldPoll(id)) {
                 console.log("OLD POLL DETECTED")
                 // For old Polls
                 await gun.getPoll(id, password);

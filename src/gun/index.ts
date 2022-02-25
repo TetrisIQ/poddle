@@ -3,10 +3,10 @@ import "gun/sea"
 import {PollDTOV1} from "../model/DTO/PollDTOV1";
 import {currentPoll, pollDTO, releaseMessage} from "../store";
 import type {ReleaseMessage} from "../model/ReleaseMessage";
-import NotificationControl from "../lib/NotificationControl";
 import type {def} from "./PollGun";
 import {pollGun} from "./PollGun";
 import {commentGun} from "./CommentGun";
+import {lstore} from "./LStore";
 
 class PollMutations {
     adminPubKey = "zgocnIYfpe41Rmocp1GI8OtN4rHVeG65T_V8QkhG0aA.rx0glUxtJUpxl1sc-AOh1tg3qhiykE7ektEHWkShFCA";
@@ -15,6 +15,7 @@ class PollMutations {
     private static getGUN() {
         if (process.env.NODE_ENV === "development") {
             return new GUN("http://localhost:8765/gun")
+            // return new GUN();
         } else {
             return new GUN('https://gun.tetrisiq.de/gun')
         }
@@ -41,7 +42,7 @@ class PollMutations {
     }
 
 
-    async detectOldPoll(key: string, password: string) {
+    async detectOldPoll(key: string) {
         // @ts-ignore
         const encCreatorName: string = await this.db.get("poll").get(key).get("creatorName").once(data => data);
         return encCreatorName === undefined;
@@ -105,18 +106,36 @@ class PollMutations {
     }
 
     async getPollCounter(): Promise<number> {
-        // @ts-ignore
-        return this.db.get("poll-counter").get("currentCount").once(counter => counter);
+        const value = await this.db.get("poll-counter");
+        let pollCount: number = 0;
+        for (let valueKey in value) {
+            if (valueKey !== "_") {
+                // @ts-ignore
+                const counter: number = await this.db.get("poll-counter").get(valueKey).get("counter").once(counter => counter);
+                if(counter !== undefined) {
+                    pollCount = pollCount + counter;
+                }
+            }
+        }
+        //@ts-ignore  legacy counter
+        const legacyCounter: number = await this.db.get("poll-counter").get("currentCount").once(counter => counter);
+        if (legacyCounter !== undefined) {
+            pollCount = pollCount + legacyCounter;
+        }
+        return pollCount;
     }
 
     async incrementPollCounter() {
-        let currentCount: number = await this.getPollCounter()
+        // @ts-ignore
+        const promis: Promise<number> = this.db.get("poll-counter").get(lstore.getClientID()).get("counter").on(counter => counter)
+        let currentCount: number;
+        await promis.then(res => currentCount = res)
         if (currentCount === undefined) {
             // counter is 0
-            currentCount = 0;
+            await this.db.get("poll-counter").get(lstore.getClientID()).put({counter: 1})
+        } else {
+            await this.db.get("poll-counter").get(lstore.getClientID()).put({counter: (currentCount + 1) as number})
         }
-        currentCount = currentCount + 1;
-        this.db.get("poll-counter").put({currentCount})
 
     }
 }
