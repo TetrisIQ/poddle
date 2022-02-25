@@ -21,23 +21,18 @@
     let newComment: Comment = new Comment(lstore.getMyName());
     let myName: string = lstore.getMyName();
 
-    function formatCreated(date) {
-        console.log(typeof date)
-        if(date !== undefined) {
-            return dayjs(date).fromNow()
-        } else {
-            return "NOT DAYJS"
-        }
+    function formatCreated(date: Dayjs) {
+        return dayjs(date).fromNow()
     }
 
     function formatDate(date: Dayjs): string {
-        if(date === undefined) {
+        if (date === undefined) {
             return "undefined";
         }
-        if (deadlineIsNotReached()) {
-            return "This poll is over since " + dayjs(date).fromNow(true)
+        if (deadlineIsNotReachedValue) {
+            return "Deadline ends in " + dayjs(date).toNow(false)
         }
-        return "in " + dayjs(date).toNow(false)
+        return "This poll is over since " + dayjs(date).fromNow(true)
     }
 
     onMount(async () => {
@@ -53,12 +48,12 @@
                 // Save as new Poll
 
 
-
             } else {
                 $currentPoll.password = password;
                 $currentPoll.id = id;
                 pollGun.getEntity(id, password, "title").then(t => $currentPoll.title = t as string);
                 pollGun.getEntity(id, password, "creatorName").then(t => $currentPoll.creatorName = t as string);
+                pollGun.getEntity(id, password, "created").then(t => $currentPoll.created = dayjs(t as string));
                 pollGun.getEntity(id, password, "options").then(t => $currentPoll.options = t as Array<Option>);
                 pollGun.getEntity(id, password, "location").then(t => $currentPoll.location = t as string);
                 pollGun.getEntity(id, password, "note").then(t => $currentPoll.note = t as string);
@@ -107,11 +102,14 @@
         $currentPoll = $currentPoll;
     }
 
-    function deadlineIsNotReached() {
+    let deadlineIsNotReachedValue: boolean;
+
+    $: {
         if ($currentPoll.settings.deadline) {
-            return $currentPoll.deadline > new Date();
+            deadlineIsNotReachedValue = dayjs($currentPoll.deadline).isAfter(dayjs());
+        } else {
+            deadlineIsNotReachedValue = true;
         }
-        return true;
     }
 
 
@@ -210,7 +208,7 @@
                         <div class="grid grid-cols-6">
                         <span class="col-start-1 my-auto col-end-6 text-left">{$currentPoll.participants.length}
                             participants</span>
-                            {#if deadlineIsNotReached()}
+                            {#if deadlineIsNotReachedValue}
                                 <svg on:click={addNewParticipant} xmlns="http://www.w3.org/2000/svg" width="32"
                                      height="32"
                                      fill="currentColor"
@@ -253,7 +251,7 @@
                         {#each $currentPoll.options as option, id}
                             {#if option.option !== ""}
                                 <td class="border justify-center">
-                                    {#if participant.edit && deadlineIsNotReached()}
+                                    {#if participant.edit && deadlineIsNotReachedValue}
                                         <YNINB twoOptions={!$currentPoll.settings.treeOptions}
                                                value={participant.chosenOptions.find(o => o.id === option.id)?.value}
                                                participant={participant} option={option}/>
@@ -266,7 +264,7 @@
                             {/if}
                         {/each}
                         <td class="border-hidden pl-3" style="border-left-style: solid;">
-                            {#if deadlineIsNotReached()}
+                            {#if deadlineIsNotReachedValue}
                                 {#if myName === participant.name || participant.edit}
                                     <div on:click={() => nameEntered(participant)}
                                          class="inline ml-auto hover:bg-gray-200"
