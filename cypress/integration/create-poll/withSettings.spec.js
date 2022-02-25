@@ -45,6 +45,7 @@ describe('Create Poll - with Settings', () => {
         cy.checkOption(1, 3, "no");
 
     })
+
     it('Deadline', () => {
         // Click on create Poll button in header
         cy.get('button').contains("Create Poll").click();
@@ -64,6 +65,8 @@ describe('Create Poll - with Settings', () => {
         cy.checkOption(1, 2, "yes")
         cy.updatePoll();
         cy.clock(dayjs().add(2, "day").toDate())
+        cy.reload()
+        cy.wait(1000)
         cy.get(".grid").find("div").should("contain.text", "is over");
     })
 
