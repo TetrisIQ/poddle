@@ -212,7 +212,7 @@
                                 <svg on:click={addNewParticipant} xmlns="http://www.w3.org/2000/svg" width="32"
                                      height="32"
                                      fill="currentColor"
-                                     class="text-right hover:bg-gray-200 inline ml-auto" viewBox="0 0 16 16">
+                                     class="text-right dark:hover:bg-gray-700 hover:bg-gray-200 inline ml-auto" viewBox="0 0 16 16">
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                 </svg>
                             {/if}
@@ -266,8 +266,9 @@
                         <td class="border-hidden pl-3" style="border-left-style: solid;">
                             {#if deadlineIsNotReachedValue}
                                 {#if myName === participant.name || participant.edit}
+                                    <!-- Show ICON -->
                                     <div on:click={() => nameEntered(participant)}
-                                         class="inline ml-auto hover:bg-gray-200"
+                                         class="inline ml-auto dark:text-white dark:hover:text-gray-200 hover:bg-gray-200"
                                          style="height: 32px; width: 32px">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                              fill="currentColor"
@@ -276,8 +277,9 @@
                                         </svg>
                                     </div>
                                 {:else }
+                                    <!-- Hide icon -->
                                     <div on:click={() => nameEntered(participant)}
-                                         class="inline ml-auto text-white hover:text-black hover:bg-gray-200"
+                                         class="inline ml-auto dark:text-gray-900 text-white dark:hover:text-white dark:hover:bg-gray-200 hover:text-black hover:bg-gray-200"
                                          style="height: 32px; width: 32px">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                              fill="currentColor"
