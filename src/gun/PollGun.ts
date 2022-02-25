@@ -2,9 +2,10 @@ import type {Poll} from "../model/Poll";
 import {gun} from "./index";
 import {Participant} from "../model/PollParticipant";
 import {SEA} from "gun";
+import dayjs from "dayjs";
 
 export interface def {
-    pollPaths: "title" | "creatorName" | "location" | "note" | "settings.fcfs" | "settings.deadline" | "settings.voteLimit" | "settings.voteLimitAmount" | "deadline" | "options"
+    pollPaths: "title" | "created" | "creatorName" | "location" | "note" | "settings.fcfs" | "settings.deadline" | "settings.voteLimit" | "settings.voteLimitAmount" | "deadline" | "options"
 }
 
 export class PollGun {
@@ -12,6 +13,7 @@ export class PollGun {
     async createPoll(poll: Poll) {
         let createPoll = Object()
         await gun.encryptAndSave(poll.id, poll.password, poll.title, "title")
+        await gun.encryptAndSave(poll.id, poll.password, dayjs().toJSON(), "created")
         await gun.encryptAndSave(poll.id, poll.password, poll.creatorName, "creatorName")
         await gun.encryptAndSave(poll.id, poll.password, poll.location, "location")
         await gun.encryptAndSave(poll.id, poll.password, poll.note, "note")
@@ -19,7 +21,6 @@ export class PollGun {
         await gun.encryptAndSave(poll.id, poll.password, poll.settings.voteLimit, "settings.voteLimit")
         await gun.encryptAndSave(poll.id, poll.password, poll.settings.voteLimitAmount, "settings.voteLimitAmount")
         await gun.encryptAndSave(poll.id, poll.password, poll.settings.deadline, "settings.deadline")
-        console.log("DEADLINE", poll.deadline)
         await gun.encryptAndSave(poll.id, poll.password, poll.deadline?.toJSON(), "deadline")
         await gun.encryptAndSave(poll.id, poll.password, JSON.stringify(poll.options), "options")
         await gun.incrementPollCounter()
