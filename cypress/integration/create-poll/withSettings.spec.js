@@ -39,6 +39,7 @@ describe('Create Poll - with Settings', () => {
         // update the Poll
         cy.updatePoll();
         cy.reload();
+        cy.wait(1000)
         // Validate again after reload
         cy.checkOption(1, 1, "yes");
         cy.checkOption(1, 2, "ifNeededBe");

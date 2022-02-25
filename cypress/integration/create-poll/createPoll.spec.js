@@ -26,6 +26,7 @@ describe('Create Poll - Basic validation', () => {
         cy.checkOption(1, 3, "yes")
         cy.updatePoll();
         cy.reload();
+        cy.wait(1000)
         cy.checkOption(1, 1, "yes")
         cy.checkOption(1, 2, "yes")
         cy.checkOption(1, 3, "yes")
