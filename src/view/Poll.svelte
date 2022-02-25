@@ -82,6 +82,21 @@
                 }
             })
         }
+        if ($currentPoll.settings.fcfs) {
+            const me: Participant = $currentPoll.participants.find(m => m.name === lstore.getMyName())
+            const myYesIds: Array<number> = me.chosenOptions.filter(o => o.value === "yes").map(o => o.id)
+            // find another participant witch hash my id
+            $currentPoll.participants.forEach(p => {
+                if (p.name !== me.name) {
+                    const othersYesIds = p.chosenOptions.filter(o => o.value === "yes").map(o => o.id)
+                    console.log("My", myYesIds, "other", othersYesIds)
+                    if (myYesIds.find(id => othersYesIds.includes(id))) {
+                        NotificationControl.error("Cannot save", "You cannot choose the same as " + p.name)
+                        valid = false;
+                    }
+                }
+            })
+        }
         if (valid) {
             closeEditOnAllParticipants();
             $currentPoll = $currentPoll;
