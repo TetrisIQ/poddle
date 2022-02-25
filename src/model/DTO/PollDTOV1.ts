@@ -2,6 +2,7 @@ import {Poll} from "../Poll";
 import {Option} from "../Option";
 import {Participant} from "../PollParticipant";
 import {Comment} from "../Comment";
+import dayjs from "dayjs";
 
 export class PollDTOV1 {
     pollDTOversion: number = 1;
@@ -40,7 +41,7 @@ export class PollDTOV1 {
         this.location = poll.location;
         this.note = poll.note;
         if (poll.created === undefined) {
-            poll.created = new Date();
+            poll.created = dayjs();
         }
         //@ts-ignore
         this.created = poll.created;
@@ -61,7 +62,7 @@ export class PollDTOV1 {
         poll.comments?.forEach(c => this.comments.push({
             name: c.name,
             comment: c.comment,
-            time: c.time?.toDateString()
+            time: c.time?.toDate().toDateString()
         }))
         poll.options.forEach(o => this.options.push({id: o.id, option: o.option}))
         poll.participants.forEach(p => this.participant.push({name: p.name, chosenOptions: p.chosenOptions}))
@@ -70,8 +71,8 @@ export class PollDTOV1 {
     static getPoll(dto: PollDTOV1, id: string, password: string): Poll {
         const participant: Array<Participant> = dto.participant.map(p => new Participant(p.name, false, undefined, p.chosenOptions))
         const options: Array<Option> = dto.options.map(o => new Option(o.id, o.option))
-        const comments: Array<Comment> = dto.comments.map(c => new Comment(c.name, c.comment, new Date(c.time)));
-        return new Poll(id, password, dto.title, dto.creatorName, dto.location, dto.note, new Date(dto.created), new Date(dto.deadline), participant, comments, dto.settings, options)
+        const comments: Array<Comment> = dto.comments.map(c => new Comment(c.name, c.comment, dayjs(c.time)));
+        return new Poll(id, password, dto.title, dto.creatorName, dto.location, dto.note, dayjs(dto.created), dayjs(dto.deadline), participant, comments, dto.settings, options)
     }
 
 }

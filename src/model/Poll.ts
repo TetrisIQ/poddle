@@ -3,6 +3,7 @@ import type {Comment} from "./Comment";
 import {Settings} from "./PollSettings";
 import type {Option} from "./Option";
 import {lstore} from "../gun/LStore";
+import type {Dayjs} from "dayjs";
 
 export class Poll {
     id: string;
@@ -11,8 +12,8 @@ export class Poll {
     creatorName: string;
     location?: string;
     note?: string;
-    created: Date;
-    deadline: Date;
+    created: Dayjs;
+    deadline: Dayjs;
     participants: Array<Participant>;
     comments: Array<Comment>;
     settings: Settings;
@@ -24,8 +25,8 @@ export class Poll {
                 creatorName: string = lstore.getMyName(),
                 location: string = "",
                 note: string = "",
-                created: Date = undefined,
-                deadline: Date = undefined,
+                created: Dayjs = undefined,
+                deadline: Dayjs = undefined,
                 participants: Array<Participant> = new Array<Participant>(),
                 comments: Array<Comment> = new Array<Comment>(),
                 settings: Settings = new Settings(),
