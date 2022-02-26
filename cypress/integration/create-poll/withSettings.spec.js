@@ -96,5 +96,31 @@ describe('Create Poll - with Settings', () => {
         cy.firstNotificationHeaderContainsText("Poll saved").click()
     });
 
+    it('Vote Limit - 1', () => {
+        // Click on create Poll button in header
+        cy.get('button').contains("Create Poll").click();
+        cy.fillCreatePollPage1(title, location, note);
+        cy.fillCreatePollPage2(options);
+
+        // click on FCFS
+        cy.get("form").find("input").eq(1).click();
+        cy.get("form").submit();
+        cy.fillCreatePollPage4(user);
+        cy.clickOnOption(1, 2);
+        cy.checkOption(1, 2, "yes")
+        cy.updatePoll();
+        cy.clearAllNotifivationHeader()
+        cy.changeUser("New User", 2)
+        cy.updatePoll();
+        cy.editUser(2)
+        cy.clickOnOption(2, 2)
+        cy.clearAllNotifivationHeader()
+        cy.updatePoll()
+        cy.firstNotificationHeaderContainsText("Cannot save").click()
+        cy.clickOnOption(2, 2)
+        cy.clickOnOption(2, 1)
+        cy.updatePoll();
+        cy.firstNotificationHeaderContainsText("Poll saved");
+    })
 })
 
