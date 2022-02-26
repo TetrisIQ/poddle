@@ -1,6 +1,6 @@
 <script lang="ts">
-
-
+import {page} from "../store";
+import Contact from "../view/Contact.svelte";
 </script>
 
 
@@ -52,13 +52,13 @@
                     </li>
                 </nav>
             </div>
-            <!-- <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                 <h2 class="title-font font-medium dark:text-white text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
+             <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+                 <h2 class="title-font font-medium dark:text-white text-gray-900 tracking-widest text-sm mb-3">About</h2>
                  <nav class="list-none mb-10">
                      <li>
-                         <a class="dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800">First Link</a>
+                         <button on:click={() => page.set(Contact)} class="dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800">Contact</button>
                      </li>
-                     <li>
+                     <!--<li>
                          <a class=" dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800">Second Link</a>
                      </li>
                      <li>
@@ -66,9 +66,10 @@
                      </li>
                      <li>
                          <a class=" dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800">Fourth Link</a>
-                     </li>
+                     </li>-->
                  </nav>
              </div>
+            <!--
              <div class="lg:w-1/4 md:w-1/2 w-full px-4">
                  <h2 class="title-font font-medium dark:text-white text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
                  <nav class="list-none mb-10">
