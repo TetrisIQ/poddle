@@ -41,7 +41,7 @@ describe('Test poll comments', () => {
         cy.get(".text-right.col-end-2 > span").should("contain.text", "Anonymous");
         cy.get("div.text-left.ml-2").should("contain.text", comment);
         cy.reload();
-        cy.wait(1000)
+        cy.wait(2000)
         cy.get(".text-right.col-end-2 > span").should("contain.text", "Anonymous");
         cy.get("div.text-left.ml-2").should("contain.text", comment);
 
