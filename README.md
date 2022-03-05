@@ -11,7 +11,7 @@
 <!-- badges -->
 <div align="center">
   <!-- Version -->
-    <img src="https://img.shields.io/badge/Version-alpha-red?style=flat-square"
+    <img src="https://img.shields.io/badge/Version-beta-green?style=flat-square"
       alt="Version" />
   <!-- Build Status -->
     <img src="https://img.shields.io/github/checks-status/tetrisiq/poddle/main?style=flat-square"
