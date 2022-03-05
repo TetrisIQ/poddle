@@ -41,7 +41,6 @@
 - [FAQ](#faq)
 - [Installation](#installation)
 - [See Also](#see-also)
-- [Support](#support)
 
 ## Features
 - **Yes, No, If needed be** You can choose between three options. Yes this option is okay for me. No this is not acceptable. And if needed be.
