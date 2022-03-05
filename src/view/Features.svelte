@@ -11,7 +11,7 @@
     gun.getPollCounter().then(res => pollCounter = res)
 
     // Fetch github API
-    fetch("https://api.github.com/repos/tetrisiq/poll-dapp", {method: 'GET', redirect: 'follow'})
+    fetch("https://api.github.com/repos/tetrisiq/poddle", {method: 'GET', redirect: 'follow'})
         .then(response => response.json())
         .then(result => {
             gitStars = result.stargazers_count;
@@ -25,7 +25,7 @@
 <section class="dark:text-gray-400 dark:bg-gray-900 text-gray-600 body-font">
     <div class="container px-5 py-24 mx-auto">
         <h1 class="sm:text-3xl text-2xl font-medium title-font text-center dark:text-white text-gray-900 mb-20">
-            Poll-dApp has some awesome features and options
+            Poddle has some awesome features and options
             <br class="hidden sm:block"> everything you need to create the perfect poll
         </h1>
         <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6">
@@ -157,7 +157,7 @@
         <div class="flex flex-wrap -m-3 text-center justify-center">
             <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
                 <div class="border-2 dark:border-gray-800 border-gray-200 px-4 py-6 rounded-lg"
-                     on:click={() => window.open("https://github.com/tetrisiq/poll-dapp","_blank")}>
+                     on:click={() => window.open("https://github.com/tetrisiq/poddle","_blank")}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="dark:text-indigo-400 text-indigo-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 16 16">
                         <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
@@ -179,7 +179,7 @@
             </div>
             <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
                 <div class="border-2 dark:border-gray-800 border-gray-200 px-4 py-6 rounded-lg"
-                     on:click={() => window.open("https://github.com/tetrisiq/poll-dapp","_blank")}>
+                     on:click={() => window.open("https://github.com/tetrisiq/poddle","_blank")}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="dark:text-indigo-400 text-indigo-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>

@@ -1,10 +1,10 @@
-<h1 align="center">Poll dApp</h1>
+<h1 align="center">Poddle</h1>
 
 <div align="center">
   <strong>Meetings made simple! </strong>
 </div>
 <div align="center">
-  A <code>decentralized</code> doodle alternative
+  A <code>decentralized</code> and <code>encrypted</code> doodle alternative
 </div>
 
 <br />
@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/badge/Version-alpha-red?style=flat-square"
       alt="Version" />
   <!-- Build Status -->
-    <img src="https://img.shields.io/github/checks-status/tetrisiq/poll-dapp/main?style=flat-square"
+    <img src="https://img.shields.io/github/checks-status/tetrisiq/poddle/main?style=flat-square"
       alt="Build Status" />
   <!-- Test status -->
     <img src="https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/byzw5k&style=flat-square&logo=cypress" alt="Cypress Status" />
@@ -24,7 +24,7 @@
 
 <div align="center">
   <h3>
-    <a href="https://poll-dapp.netlify.app">
+    <a href="https://poddle.network">
       Website
     </a>
     <span> | </span>
@@ -41,7 +41,6 @@
 - [FAQ](#faq)
 - [Installation](#installation)
 - [See Also](#see-also)
-- [Support](#support)
 
 ## Features
 - **Yes, No, If needed be** You can choose between three options. Yes this option is okay for me. No this is not acceptable. And if needed be.
@@ -55,11 +54,7 @@
 ...
 
 ## FAQ
-### Why can nobody see my poll?
-Maybe you close your browser window, so that your participants cannot receive the data from you.   
-Poll dApp has no central server so your data are only stored in your browser (and in the browser of your Participants)
-
-> If you have any other issues, create an [issue on GitHub](https://github.com/TetrisIQ/poll-dapp/issues/new?assignees=&labels=&template=bug_report.md&title=)
+> If you have any issues, create an [issue on GitHub](https://github.com/TetrisIQ/poddle/issues/new?assignees=&labels=&template=bug_report.md&title=)
 
 ## Installation
 - Clone the git repo

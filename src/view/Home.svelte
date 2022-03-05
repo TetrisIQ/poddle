@@ -5,21 +5,20 @@
 
 </script>
 
-
 <section class="dark:text-gray-400 dark:bg-gray-900 min-h-full text-gray-600 body-font">
     <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
         <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
             <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium dark:text-white text-gray-900">Meetings made
                 simple!
-                <br class="hidden lg:inline-block">With Poll-dApp
+                <br class="hidden lg:inline-block">With Poddle
             </h1>
             <p class="mb-8 leading-relaxed">Save time scheduling your day<br>
-                All your information are secured and encrypted, with the power of gun.js</p>
+                All your information are encrypted. So only you decide who can view them!</p>
             <div class="flex justify-center">
                 <button on:click={() => page.set(CreatePoll1)} class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
                     Start now
                 </button>
-                <button on:click={() => window.open("https://github.com/tetrisiq/poll-dapp", "_blank")} class="ml-4 inline-flex dark:text-gray-400 dark:bg-gray-800 text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none dark:hover:bg-gray-700 dark:hover:text-white hover:bg-gray-200 rounded text-lg">
+                <button on:click={() => window.open("https://github.com/tetrisiq/poddle", "_blank")} class="ml-4 inline-flex dark:text-gray-400 dark:bg-gray-800 text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none dark:hover:bg-gray-700 dark:hover:text-white hover:bg-gray-200 rounded text-lg">
                     Learn more
                 </button>
             </div>
