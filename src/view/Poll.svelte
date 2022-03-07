@@ -205,111 +205,113 @@
                 {/if}
             </div>
 
-            <table class="border-collapse border mx-auto mt-8 border-slate-400">
-                <thead>
-                <tr>
-                    <th class="border border-slate-300 py-2 px-5"></th>
-                    {#each $currentPoll.options as option}
-                        {#if option.option !== ""}
-                            <th class="border border-slate-300 py-2 px-5">{option.option}</th>
-                        {/if}
-                    {/each}
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                <tr>
-                    <td class="border border-slate-300 py-2 px-5">
-                        <div class="grid grid-cols-6">
+            <div class="overflow-y-auto">
+                <table class="border-collapse border mx-auto mt-8 border-slate-400 overflow-x-auto">
+                    <thead>
+                    <tr>
+                        <th class="border border-slate-300 py-2 px-5"></th>
+                        {#each $currentPoll.options as option}
+                            {#if option.option !== ""}
+                                <th class="border border-slate-300 py-2 px-5">{option.option}</th>
+                            {/if}
+                        {/each}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    <tr>
+                        <td class="border border-slate-300 py-2 px-5">
+                            <div class="grid grid-cols-6 w-max">
                         <span class="col-start-1 my-auto col-end-6 text-left">{$currentPoll.participants.length}
                             participants</span>
-                            {#if deadlineIsNotReachedValue}
-                                <svg on:click={addNewParticipant} xmlns="http://www.w3.org/2000/svg" width="32"
-                                     height="32"
-                                     fill="currentColor"
-                                     class="text-right dark:hover:bg-gray-700 hover:bg-gray-200 inline ml-auto"
-                                     viewBox="0 0 16 16">
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                </svg>
-                            {/if}
-                        </div>
-
-
-                    </td>
-                    {#each $currentPoll.options as option}
-                        {#if option.option !== ""}
-                            <td class="border border-slate-300 py-2 px-5">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
-                                     fill="currentColor"
-                                     class="inline text-blue-700 " viewBox="0 0 16 16">
-                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
-                                </svg>
-                                <span class="ml-auto font-bold">{option.count}</span>
-                            </td>
-                        {/if}
-                    {/each}
-                </tr>
-                {#each $currentPoll.participants as participant}
-                    <tr>
-                        <td class="border border-slate-300 px-5">
-                            <div class="grid grid-cols-6 gap-4">
-                                {#if participant.edit}
-                                    <input bind:value={participant.name}
-                                           on:keypress={(key) => key.key === "Enter" ? nameEntered(participant) : ''}
-                                           style="height: 24px; width: 157px"
-                                           class="rounded-md col-start-1 h-min col-end-6 peer w-min px-2 py-2 border-2 border-gray-200 placeholder-gray-300"
-                                           type="text" name="nameInput" placeholder="Enter your name"/>
-                                {:else }
-                                    <span class="w-full col-start-1 col-end-6 text-left ml-auto">{participant.name}</span>
+                                {#if deadlineIsNotReachedValue}
+                                    <svg on:click={addNewParticipant} xmlns="http://www.w3.org/2000/svg" width="32"
+                                         height="32"
+                                         fill="currentColor"
+                                         class="text-right dark:hover:bg-gray-700 hover:bg-gray-200 inline ml-auto"
+                                         viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                    </svg>
                                 {/if}
                             </div>
+
+
                         </td>
-                        {#each $currentPoll.options as option, id}
+                        {#each $currentPoll.options as option}
                             {#if option.option !== ""}
-                                <td class="border justify-center">
-                                    {#if participant.edit && deadlineIsNotReachedValue}
-                                        <YNINB twoOptions={!$currentPoll.settings.treeOptions}
-                                               value={participant.chosenOptions.find(o => o.id === option.id)?.value}
-                                               participant={participant} option={option}/>
-                                    {:else }
-                                        <YNINB twoOptions={!$currentPoll.settings.treeOptions}
-                                               value={participant.chosenOptions.find(o => o.id === option.id)?.value}
-                                               participant={participant} option={option} disabled/>
-                                    {/if}
+                                <td class="border border-slate-300 py-2 px-5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+                                         fill="currentColor"
+                                         class="inline text-blue-700 " viewBox="0 0 16 16">
+                                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                    </svg>
+                                    <span class="ml-auto font-bold">{option.count}</span>
                                 </td>
                             {/if}
                         {/each}
-                        <td class="border-hidden pl-3" style="border-left-style: solid;">
-                            {#if deadlineIsNotReachedValue}
-                                {#if myName === participant.name || participant.edit}
-                                    <!-- Show ICON -->
-                                    <div on:click={() => nameEntered(participant)}
-                                         class="inline ml-auto dark:text-white dark:hover:text-gray-200 hover:bg-gray-200"
-                                         style="height: 32px; width: 32px">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                             fill="currentColor"
-                                             class="m-auto h-full" viewBox="0 0 16 16">
-                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                                        </svg>
-                                    </div>
-                                {:else }
-                                    <!-- Hide icon -->
-                                    <div on:click={() => nameEntered(participant)}
-                                         class="inline ml-auto dark:text-gray-900 text-white dark:hover:text-white dark:hover:bg-gray-200 hover:text-black hover:bg-gray-200"
-                                         style="height: 32px; width: 32px">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                             fill="currentColor"
-                                             class="m-auto h-full" viewBox="0 0 16 16">
-                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                                        </svg>
-                                    </div>
+                    </tr>
+                    {#each $currentPoll.participants as participant}
+                        <tr>
+                            <td class="border border-slate-300 px-5">
+                                <div class="grid grid-cols-6 gap-4">
+                                    {#if participant.edit}
+                                        <input bind:value={participant.name}
+                                               on:keypress={(key) => key.key === "Enter" ? nameEntered(participant) : ''}
+                                               style="height: 24px; width: 157px"
+                                               class="rounded-md col-start-1 h-min col-end-6 peer w-min px-2 py-2 border-2 border-gray-200 placeholder-gray-300"
+                                               type="text" name="nameInput" placeholder="Enter your name"/>
+                                    {:else }
+                                        <span class="w-full col-start-1 col-end-6 text-left ml-auto">{participant.name}</span>
+                                    {/if}
+                                </div>
+                            </td>
+                            {#each $currentPoll.options as option, id}
+                                {#if option.option !== ""}
+                                    <td class="border justify-center">
+                                        {#if participant.edit && deadlineIsNotReachedValue}
+                                            <YNINB twoOptions={!$currentPoll.settings.treeOptions}
+                                                   value={participant.chosenOptions.find(o => o.id === option.id)?.value}
+                                                   participant={participant} option={option}/>
+                                        {:else }
+                                            <YNINB twoOptions={!$currentPoll.settings.treeOptions}
+                                                   value={participant.chosenOptions.find(o => o.id === option.id)?.value}
+                                                   participant={participant} option={option} disabled/>
+                                        {/if}
+                                    </td>
                                 {/if}
-                            {/if}
-                        </td>
+                            {/each}
+                            <td class="border-hidden pl-3" style="border-left-style: solid;">
+                                {#if deadlineIsNotReachedValue}
+                                    {#if myName === participant.name || participant.edit}
+                                        <!-- Show ICON -->
+                                        <div on:click={() => nameEntered(participant)}
+                                             class="inline ml-auto dark:text-white dark:hover:text-gray-200 hover:bg-gray-200"
+                                             style="height: 32px; width: 32px">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                 fill="currentColor"
+                                                 class="m-auto h-full" viewBox="0 0 16 16">
+                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                            </svg>
+                                        </div>
+                                    {:else }
+                                        <!-- Hide icon -->
+                                        <div on:click={() => nameEntered(participant)}
+                                             class="inline ml-auto dark:text-gray-900 text-white dark:hover:text-white dark:hover:bg-gray-200 hover:text-black hover:bg-gray-200"
+                                             style="height: 32px; width: 32px">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                 fill="currentColor"
+                                                 class="m-auto h-full" viewBox="0 0 16 16">
+                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                            </svg>
+                                        </div>
+                                    {/if}
+                                {/if}
+                            </td>
 
-                {/each}
-                </tbody>
-            </table>
+                    {/each}
+                    </tbody>
+                </table>
+            </div>
             <button on:click={() => save()}
                     class="inline-flex mt-5 dark:bg-gray-800 bg-gray-300 border-0 py-2 px-6 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base md:mt-0"
                     style="margin-top: 1rem">
