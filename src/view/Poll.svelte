@@ -42,7 +42,6 @@
             await gun.getPoll(id, password);
             // Save as new Poll
 
-
         } else {
             $currentPoll.password = password;
             $currentPoll.id = id;
@@ -72,17 +71,7 @@
             const id = key.slice(0, 12);
             const password = key.slice(12);
             await getPoll(id, password);
-            let count = 0;
-            while ($currentPoll.title === "") {
-                // Title is empty so the poll is not loaded
-                // Try again
-                await getPoll(id, password);
-                if(count++ > 10) {
-                    break;
-                }
-            }
         }
-        console.log($currentPoll)
     })
 
     function save() {

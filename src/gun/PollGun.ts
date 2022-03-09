@@ -60,11 +60,11 @@ export class PollGun {
 
     async getAllParticipant(id: string, password: string) {
         this.init();
-        gun.db.get("poll").get(id).get("participants").on((data) => {
+        gun.db.get(`poll/${id}/participants`).on((data, key) => {
             if ((Object.keys(data).length - 1) !== this.poll.participants.length) {
                 for (let valueKey in data) {
                     if (valueKey !== "_") {
-                        gun.db.get("poll").get(id).get("participants").get(valueKey).on(async (data) => {
+                        gun.db.get(`poll/${id}/participants/${valueKey}`).on(async (data, key) => {
                             const name = await SEA.decrypt(data.name, password) as string;
                             const options = await SEA.decrypt(data.chosenOptions, password) as Array<{ id: number, value: "yes" | "no" | "ifNeededBe" }>;
                             currentPoll.update(arr => {
