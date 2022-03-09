@@ -45,7 +45,9 @@ class PollMutations {
     async detectOldPoll(key: string) {
         // @ts-ignore
         const encCreatorName: string = await this.db.get("poll").get(key).get("creatorName").once(data => data);
-        return encCreatorName === undefined;
+        // @ts-ignore
+        const encData: string = await this.db.get("poll").get(key).get("encryptedData").once(data => data);
+        return encCreatorName === undefined && encData !== undefined;
     }
 
     //Deprecated
@@ -98,13 +100,6 @@ class PollMutations {
         }
     }
 
-    async getAndDecrypt(id, password, firstPath) {
-        const value = await this.db.get("poll").get(id).get(firstPath)
-        const data = await SEA.decrypt(value, password);
-        return data
-
-    }
-
     async getPollCounter(): Promise<number> {
         const value = await this.db.get("poll-counter");
         let pollCount: number = 0;
@@ -112,7 +107,7 @@ class PollMutations {
             if (valueKey !== "_") {
                 // @ts-ignore
                 const counter: number = await this.db.get("poll-counter").get(valueKey).get("counter").once(counter => counter);
-                if(counter !== undefined) {
+                if (counter !== undefined) {
                     pollCount = pollCount + counter;
                 }
             }
