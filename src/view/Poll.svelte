@@ -35,40 +35,43 @@
         return "This poll is over since " + dayjs(date).fromNow(true)
     }
 
+    async function getPoll(id: string, password: string) {
+        if (await gun.detectOldPoll(id)) {
+            console.log("OLD POLL DETECTED")
+            // For old Polls
+            await gun.getPoll(id, password);
+            // Save as new Poll
+
+        } else {
+            $currentPoll.password = password;
+            $currentPoll.id = id;
+            pollGun.getEntity(id, "title").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.title = res as string))
+            pollGun.getEntity(id, "creatorName").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.creatorName = res as string))
+            pollGun.getEntity(id, "created").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.created = dayjs(res as string)))
+            pollGun.getEntity(id, "options").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.options = res as Array<Option>))
+            pollGun.getEntity(id, "location").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.location = res as string))
+            pollGun.getEntity(id, "note").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.note = res as string))
+            pollGun.getEntity(id, "settings.deadline").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.settings.deadline = res as boolean))
+            pollGun.getEntity(id, "settings.fcfs").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.settings.fcfs = res as boolean))
+            pollGun.getEntity(id, "settings.voteLimit").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.settings.voteLimit = res as boolean))
+            pollGun.getEntity(id, "settings.voteLimitAmount").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.settings.voteLimitAmount = res as number))
+            pollGun.getEntity(id, "deadline").on(t => pollGun.encrypt(t, password).then(res => $currentPoll.deadline = dayjs(res as string)))
+
+            pollGun.getAllParticipant(id, password)
+            $currentPoll.comments = []
+            commentGun.getAllComments(id, password)
+        }
+        $currentPoll = $currentPoll;
+    }
+
     onMount(async () => {
         if ($currentPoll.title !== "") {
             window.history.pushState("", `Poll ${$currentPoll.title}`, `${window.location.pathname}?k=${$currentPoll.id + $currentPoll.password}`);
         } else {
             const id = key.slice(0, 12);
             const password = key.slice(12);
-            if (await gun.detectOldPoll(id)) {
-                console.log("OLD POLL DETECTED")
-                // For old Polls
-                await gun.getPoll(id, password);
-                // Save as new Poll
-
-
-            } else {
-                $currentPoll.password = password;
-                $currentPoll.id = id;
-                pollGun.getEntity(id, password, "title").then(t => $currentPoll.title = t as string);
-                pollGun.getEntity(id, password, "creatorName").then(t => $currentPoll.creatorName = t as string);
-                pollGun.getEntity(id, password, "created").then(t => $currentPoll.created = dayjs(t as string));
-                pollGun.getEntity(id, password, "options").then(t => $currentPoll.options = t as Array<Option>);
-                pollGun.getEntity(id, password, "location").then(t => $currentPoll.location = t as string);
-                pollGun.getEntity(id, password, "note").then(t => $currentPoll.note = t as string);
-                pollGun.getEntity(id, password, "settings.deadline").then(t => $currentPoll.settings.deadline = t as boolean);
-                pollGun.getEntity(id, password, "settings.fcfs").then(t => $currentPoll.settings.fcfs = t as boolean);
-                pollGun.getEntity(id, password, "settings.voteLimit").then(t => $currentPoll.settings.voteLimit = t as boolean);
-                pollGun.getEntity(id, password, "settings.voteLimitAmount").then(t => $currentPoll.settings.voteLimitAmount = t as number);
-                pollGun.getEntity(id, password, "deadline").then(t => $currentPoll.deadline = dayjs(t as string));
-
-                $currentPoll.participants = await pollGun.getAllParticipant(id, password)
-                $currentPoll.comments = await commentGun.getAllComments(id, password)
-            }
-            $currentPoll = $currentPoll;
+            await getPoll(id, password);
         }
-        console.log($currentPoll)
     })
 
     function save() {
@@ -98,11 +101,13 @@
             })
         }
         if (valid) {
-            closeEditOnAllParticipants();
             $currentPoll = $currentPoll;
-            NotificationControl.info("Poll saved", "The Poll has been saved!");
-            const myParticipant = $currentPoll.participants.find(p => p.name === lstore.getMyName())
+            let myParticipant = $currentPoll.participants.filter(p => p.edit === true)[0]
+            if(myParticipant === undefined) {
+               myParticipant = $currentPoll.participants.filter(p => p.name === lstore.getMyName())[0]
+            }
             pollGun.addParticipant(myParticipant, $currentPoll.id, $currentPoll.password);
+            closeEditOnAllParticipants();
         }
     }
 
@@ -218,8 +223,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                    <tr>
+                  <tr>
                         <td class="border border-slate-300 py-2 px-5">
                             <div class="grid grid-cols-6 w-max">
                         <span class="col-start-1 my-auto col-end-6 text-left">{$currentPoll.participants.length}

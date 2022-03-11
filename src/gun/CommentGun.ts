@@ -2,6 +2,7 @@ import {Comment} from "../model/Comment";
 import {SEA} from "gun";
 import {gun} from "./index";
 import dayjs from "dayjs";
+import {currentPoll} from "../store";
 
 export class CommentGun {
 
@@ -21,21 +22,42 @@ export class CommentGun {
 
 
     async getAllComments(id: string, password: string) {
-        const value = await gun.db.get("poll").get(id).get("comment");
-        const returnArray: Array<Comment> = new Array<Comment>();
-        for (let valueKey in value) {
-            if (valueKey !== "_") {
-                const encName = await gun.db.get("poll").get(id).get("comment").get(valueKey).get("name");
-                const encCommentString = await gun.db.get("poll").get(id).get("comment").get(valueKey).get("comment");
-                const encTime = await gun.db.get("poll").get(id).get("comment").get(valueKey).get("time");
-                const name = await SEA.decrypt(encName, password) as string;
-                const commentString = await SEA.decrypt(encCommentString, password) as string;
-                const time = await SEA.decrypt(encTime, password) as string;
+        gun.db.get("poll").get(id).get("comment").on((data) => {
+            for (let valueKey in data) {
+                if (valueKey !== "_") {
+                    gun.db.get("poll").get(id).get("comment").get(valueKey).on(async (data) => {
+                        const name = await SEA.decrypt(data.name, password) as string;
+                        const commentString = await SEA.decrypt(data.comment, password) as string;
+                        const time = await SEA.decrypt(data.time, password) as string;
+                        // returnArray.push())
 
-                returnArray.push(new Comment(name, commentString, dayjs(time), valueKey))
+                        currentPoll.update(arr => {
+                            if (arr.comments.find(c => c.id === valueKey) === undefined) {
+                                arr.comments.push(new Comment(name, commentString, dayjs(time), valueKey));
+                                arr = arr;
+                            }
+                            return arr;
+                        })
+                    })
+                }
             }
-        }
-        return returnArray;
+        })
+
+        /* const value = await gun.db.get("poll").get(id).get("comment");
+         const returnArray: Array<Comment> = new Array<Comment>();
+         for (let valueKey in value) {
+             if (valueKey !== "_") {
+                 const encName = await gun.db.get("poll").get(id).get("comment").get(valueKey).get("name");
+                 const encCommentString = await gun.db.get("poll").get(id).get("comment").get(valueKey).get("comment");
+                 const encTime = await gun.db.get("poll").get(id).get("comment").get(valueKey).get("time");
+                 const name = await SEA.decrypt(encName, password) as string;
+                 const commentString = await SEA.decrypt(encCommentString, password) as string;
+                 const time = await SEA.decrypt(encTime, password) as string;
+
+                 returnArray.push(new Comment(name, commentString, dayjs(time), valueKey))
+             }
+         }
+         return returnArray;*/
     }
 
 }
