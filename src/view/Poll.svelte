@@ -223,8 +223,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                    <tr>
+                  <tr>
                         <td class="border border-slate-300 py-2 px-5">
                             <div class="grid grid-cols-6 w-max">
                         <span class="col-start-1 my-auto col-end-6 text-left">{$currentPoll.participants.length}
