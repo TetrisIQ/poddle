@@ -102,7 +102,10 @@
         }
         if (valid) {
             $currentPoll = $currentPoll;
-            const myParticipant = $currentPoll.participants.filter(p => p.edit === true)[0]
+            let myParticipant = $currentPoll.participants.filter(p => p.edit === true)[0]
+            if(myParticipant === undefined) {
+               myParticipant = $currentPoll.participants.filter(p => p.name === lstore.getMyName())[0]
+            }
             pollGun.addParticipant(myParticipant, $currentPoll.id, $currentPoll.password);
             closeEditOnAllParticipants();
         }
