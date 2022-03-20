@@ -7,6 +7,7 @@
     import {gun} from "./gun";
     import NewMessage from "./view/NewMessage.svelte";
     import dayjs from "dayjs";
+    import {onMount} from "svelte";
 
     if (window.location.search.includes("?k=")) {
         page.set(Poll)

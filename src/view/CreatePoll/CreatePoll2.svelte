@@ -1,8 +1,9 @@
 <script lang="ts">
-    import {currentPoll, page} from "../../store";
+    import {currentPoll, events, page} from "../../store";
     import CreatePoll3 from "./CreatePoll3.svelte";
     import {Option} from "../../model/Option";
     import NotificationControl from "../../lib/NotificationControl";
+    import WeekSelection from "../../lib/WeekSelection.svelte";
 
     let selectedTab = "text";
 
@@ -20,13 +21,17 @@
     }
 
     function next() {
-        //check if min. the first 2 options have content
-        if (pollOptions[0].option !== "" && pollOptions[1].option !== "") {
-            pollOptions = pollOptions.slice(0, -1)
-            $currentPoll.options = pollOptions;
-            page.set(CreatePoll3)
-        } else { // if not create a notification
-            NotificationControl.error("Cannot continue", "Please fill out at least tow options.")
+        if(selectedTab === "text") {
+            //check if min. the first 2 options have content
+            if (pollOptions[0].option !== "" && pollOptions[1].option !== "") {
+                pollOptions = pollOptions.slice(0, -1)
+                $currentPoll.options = pollOptions;
+                page.set(CreatePoll3)
+            } else { // if not create a notification
+                NotificationControl.error("Cannot continue", "Please fill out at least tow options.")
+            }
+        }else if(selectedTab === "week") {
+            console.log("Events: ", $events)
         }
     }
 
@@ -44,28 +49,31 @@
                     class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none {selectedTab === 'month' ? 'text-blue-500 border-b-2 font-medium border-blue-500' : ''}">
                 Month
             </button>
-            <button on:click={() => window.alert("Only Text is Supported for now")}
+            <button type="button" on:click={() => selectedTab = "week"}
                     class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none {selectedTab === 'week' ? 'text-blue-500 border-b-2 font-medium border-blue-500' : ''}">
                 Week
             </button>
-            <button on:click={() => selectedTab = "text"}
+            <button type="button" on:click={() => selectedTab = "text"}
                     class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none {selectedTab === 'text' ? 'text-blue-500 border-b-2 font-medium border-blue-500' : ''}">
                 Text
             </button>
         </nav>
-        {#each pollOptions as option, i}
-            <div class="flex flex-wrap gap-3 w-full pb-8 px-5">
-                <label class="relative w-full flex flex-col">
-                    <span class="font-bold mb-3 text-left">Option</span>
-                    <input bind:value={option.option}
-                           class="rounded-md peer pl-12 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300"
-                           type="text"
-                           name="title" placeholder="Enter option"/>
-                    <span class="absolute bottom-0 left-0 -mb-0.5 transform translate-x-1/2 -translate-y-1/2 text-black peer-placeholder-shown:text-gray-300 h-6 w-6">{i + 1}</span>
-                </label>
-            </div>
-
-        {/each}
+        {#if (selectedTab === "text")}
+            {#each pollOptions as option, i}
+                <div class="flex flex-wrap gap-3 w-full pb-8 px-5">
+                    <label class="relative w-full flex flex-col">
+                        <span class="font-bold mb-3 text-left">Option</span>
+                        <input bind:value={option.option}
+                               class="rounded-md peer pl-12 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300"
+                               type="text"
+                               name="title" placeholder="Enter option"/>
+                        <span class="absolute bottom-0 left-0 -mb-0.5 transform translate-x-1/2 -translate-y-1/2 text-black peer-placeholder-shown:text-gray-300 h-6 w-6">{i + 1}</span>
+                    </label>
+                </div>
+            {/each}
+        {:else if (selectedTab === "week")}
+            <WeekSelection/>
+        {/if}
 
     </div>
     <div class="px-6 pt-4 pb-2">
