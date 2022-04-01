@@ -5,3 +5,9 @@
 /.idea/
 /cypress/screenshots/
 /cypress/videos/
+/relay/dist/
+/relay/radata/
+/relay/data/
+/relay/data.json/
+/.env.local
+/**/node_modules/

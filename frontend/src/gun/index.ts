@@ -7,19 +7,58 @@ import type {def} from "./PollGun";
 import {pollGun} from "./PollGun";
 import {commentGun} from "./CommentGun";
 import {lstore} from "./LStore";
+import {writable} from "svelte/store";
+import NotificationControl from "../lib/NotificationControl";
+type relayInfo = {status: "UP" | "DOWN", name: string, country: string, address: string, connected: boolean}
+
+export const allRelays = writable([])
+
 
 class PollMutations {
     adminPubKey = "zgocnIYfpe41Rmocp1GI8OtN4rHVeG65T_V8QkhG0aA.rx0glUxtJUpxl1sc-AOh1tg3qhiykE7ektEHWkShFCA";
-    db = PollMutations.getGUN();
+    myRelays: Array<string> = [];
+    db;
 
-    private static getGUN() {
-        if (process.env.NODE_ENV === "development") {
-            return new GUN("http://localhost:8765/gun")
-            // return new GUN();
+    constructor() {
+        this.defaultRelays();
+    }
+
+    defaultRelays() {
+        if (import.meta.env.VITE_RELAY !== undefined) {
+            //@ts-ignore
+            const relays: Array<string> = (import.meta.env.VITE_RELAY as string).replaceAll(" ", "").split(",")
+            console.debug("Connection to: " + relays)
+            this.myRelays = relays
+            this.db = new GUN({peers: relays})
         } else {
-            return new GUN('https://gun.tetrisiq.de/gun')
+            this.db = new GUN();
         }
     }
+
+    setCustomRelays(newRelays: Array<relayInfo>) {
+        this.myRelays = []
+        newRelays.forEach(r => this.myRelays.push(r.address))
+        this.db = new GUN({peers: this.myRelays})
+        console.log(this.db)
+        NotificationControl.info("Changed relay server", "")
+    }
+
+
+    async getAllRelays() {
+        const allKeys = Object.keys(await this.db.get("peers"));
+        for (const key of allKeys) {
+            if (key !== "_") {
+                const host: relayInfo = await this.db.get(`peers/${key}`)
+                host.address = key;
+                host.connected = this.myRelays.includes(key)
+                allRelays.update(up => {
+                    up.push(host);
+                    return up;
+                })
+            }
+        }
+    }
+
 
     async getReleaseMessage() {
         this.db.get("message").once(async (message) => {
