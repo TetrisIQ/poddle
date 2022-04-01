@@ -1,11 +1,10 @@
-/node_modules/
 /dist/
 /.vscode/
 .DS_Store
 /.idea/
 /cypress/screenshots/
 /cypress/videos/
-/relay/dist/
+/**/dist/
 /relay/radata/
 /relay/data/
 /relay/data.json/

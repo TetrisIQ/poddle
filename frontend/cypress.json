@@ -1,0 +1,12 @@
+{
+  "projectId": "byzw5k",
+  "fixturesFolder": "../cypress/fixtures",
+  "integrationFolder": "../cypress/integration",
+  "pluginsFile": "../cypress/plugins/index.js",
+  "screenshotsFolder": "../cypress/screenshots",
+  "videosFolder": "../cypress/videos",
+  "downloadsFolder": "../cypress/downloads",
+  "supportFile": "../cypress/support/index.js"
+
+
+}
