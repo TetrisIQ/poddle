@@ -1,7 +1,12 @@
-/node_modules/
 /dist/
 /.vscode/
 .DS_Store
 /.idea/
 /cypress/screenshots/
 /cypress/videos/
+/**/dist/
+/relay/radata/
+/relay/data/
+/relay/data.json/
+/.env.local
+/**/node_modules/

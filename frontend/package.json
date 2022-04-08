@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "APP_ENV=local vite",
     "build": "vite build --base /",
     "preview": "vite preview",
     "cypressUI": "cypress open",
