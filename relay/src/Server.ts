@@ -72,6 +72,7 @@ app.get("/api/count", async (req: Request, res: Response): Promise<Response> => 
 if (connectToOtherPeers) {
     verifyOtherPeers().then(() => console.log("Initial verification success"))
     cron.schedule('0 0 * * *', () => verifyOtherPeers());
+    gun.opt({peers: ["https://gun.tetrisiq.de/gun"]})
 }
 
 gun.get("peers").get(myAddress).put({status: "UP", name: myName, country: myCountry})
@@ -113,6 +114,8 @@ async function verifyOtherPeers() {
                     console.log("RES", tmp)
                 }
             })
+
+            //TODO: add other peers to connection
         }
     }
     console.log("Verify other peers success")

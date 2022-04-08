@@ -31,6 +31,7 @@ class PollMutations {
             this.myRelays = relays
             this.db = new GUN({peers: relays})
         } else {
+            console.error("VITE_RELAY is not defined. Cannot connect to any network. You can only fix this in your deployment!")
             this.db = new GUN();
         }
     }

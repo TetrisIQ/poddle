@@ -3,17 +3,21 @@ FROM node:14-alpine as builder
 RUN mkdir /work
 WORKDIR /work
 #RUN apk add --no-cache alpine-sdk python3
-COPY * ./
+COPY frontend ./frontend
+WORKDIR /work/frontend
 RUN echo "Build frontend"
 RUN mkdir -p "node_modules"
 RUN yarn install
-RUN yarn build
+RUN VITE_RELAY=http://localhost:8765/gun yarn build
 
-#RUN echo "Build Relay Server"
-#RUN mkdir -p "relay/node_modules"
-#RUN cd relay
-#RUN yarn install
-#RUN yarn build
+WORKDIR /work
+COPY relay ./relay
+WORKDIR /work/relay
+RUN echo "Build Relay Server"
+RUN mkdir -p "node_modules"
+RUN yarn install
+RUN yarn build
+RUN ls
 
 # fresh image without dev packages
 FROM node:14-alpine
@@ -33,13 +37,14 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 ARG SHA
 RUN mkdir /work
 WORKDIR /work
-COPY --from=builder /work/node_modules ./node_modules
+COPY --from=builder /work/frontend/node_modules ./node_modules
 COPY --from=builder /work/relay/node_modules ./relay/node_modules
-COPY --from=builder /work/dist ./dist
+COPY --from=builder /work/frontend/dist ./dist
 COPY --from=builder /work/relay/dist ./relay/dist
-RUN cd relay
+COPY --from=builder /work/relay/package.json ./relay/package.json
 RUN echo "{ \"sha\": \"$SHA\" }" > version.json
 RUN cat version.json
-EXPOSE 8080
+WORKDIR /work/relay
+RUN ls
 EXPOSE 8765
 CMD ["npm","start"]

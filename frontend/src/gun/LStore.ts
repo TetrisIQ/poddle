@@ -1,4 +1,8 @@
 import {uuidv4} from "../lib/util";
+import type {Poll} from "../model/Poll";
+import type {Dayjs} from "dayjs";
+
+export type MyPoll = { id: string, password: string, title: string, participants: number, deadline: Dayjs, created: Dayjs, percent?: string }
 
 class LStore {
 
@@ -17,7 +21,7 @@ class LStore {
 
     getClientID() {
         const clientId = localStorage.getItem("clientID")
-        if(clientId === null) {
+        if (clientId === null) {
             const id = uuidv4().slice(0, 5)
             localStorage.setItem("clientID", id)
             return id
@@ -26,6 +30,74 @@ class LStore {
         }
     }
 
+    getMyPolls(): Array<MyPoll> {
+        const myPolls = localStorage.getItem("myPolls")
+        if (myPolls === null) {
+            return [];
+        }
+        return JSON.parse(myPolls)
+    }
+
+    addPercentToPoll(poll: MyPoll): Array<MyPoll> {
+        if (poll.percent !== undefined) {
+            const myPolls: Array<MyPoll> = this.getMyPolls();
+            const pollWithSameId: MyPoll = myPolls.find(p => p.id === poll.id);
+            const index = myPolls.indexOf(pollWithSameId)
+            if (index !== -1) {
+                myPolls[index] = poll;
+                localStorage.setItem("myPolls", JSON.stringify(myPolls))
+                return myPolls;
+            }
+        }
+        return this.getMyPolls()
+    }
+
+    addMyPoll(poll: Poll): boolean {
+        if (poll.id === "" && poll.password === "") {
+            return false;
+        }
+        const myPolls: Array<MyPoll> = this.getMyPolls();
+        if (myPolls.find(value => value.id === poll.id) !== undefined) {
+            // Update polls
+            const pollWithSameId: MyPoll = myPolls.find(p => p.id === poll.id);
+            const index = myPolls.indexOf(pollWithSameId)
+            if (index !== -1) {
+                myPolls[index] = {
+                    id: poll.id,
+                    title: poll.title,
+                    participants: poll.participants.length,
+                    password: poll.password,
+                    deadline: poll.deadline,
+                    created: poll.created
+                }
+            }
+        } else {
+            myPolls.push({
+                id: poll.id,
+                title: poll.title,
+                participants: poll.participants.length,
+                password: poll.password,
+                deadline: poll.deadline,
+                created: poll.created
+            })
+        }
+        localStorage.setItem("myPolls", JSON.stringify(myPolls))
+        return true;
+    }
+
+    removeMyPoll(poll) {
+        if (poll !== undefined) {
+            const myPolls: Array<MyPoll> = this.getMyPolls();
+            const pollWithSameId: MyPoll = myPolls.find(p => p.id === poll.id);
+            const index = myPolls.indexOf(pollWithSameId)
+            if (index > -1) {
+                myPolls.splice(index, 1); // 2nd parameter means remove one item only
+            }
+            localStorage.setItem("myPolls", JSON.stringify(myPolls))
+            return myPolls;
+        }
+        return this.getMyPolls();
+    }
 }
 
 
