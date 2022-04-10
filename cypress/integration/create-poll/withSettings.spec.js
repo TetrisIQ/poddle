@@ -39,12 +39,14 @@ describe('Create Poll - with Settings', () => {
         // update the Poll
         cy.updatePoll();
         cy.reload();
+        cy.wait(1000)
         // Validate again after reload
         cy.checkOption(1, 1, "yes");
         cy.checkOption(1, 2, "ifNeededBe");
         cy.checkOption(1, 3, "no");
 
     })
+
     it('Deadline', () => {
         // Click on create Poll button in header
         cy.get('button').contains("Create Poll").click();
@@ -64,6 +66,8 @@ describe('Create Poll - with Settings', () => {
         cy.checkOption(1, 2, "yes")
         cy.updatePoll();
         cy.clock(dayjs().add(2, "day").toDate())
+        cy.reload()
+        cy.wait(1000)
         cy.get(".grid").find("div").should("contain.text", "is over");
     })
 
@@ -85,12 +89,38 @@ describe('Create Poll - with Settings', () => {
         cy.firstNotificationHeaderContainsText("Poll Created").click();
         // should show notification "Cannot update Poll"
         cy.updatePoll();
-        cy.firstNotificationHeaderContainsText("Cannot update Poll").click()
+        cy.firstNotificationHeaderContainsText("Cannot save Poll").click()
         // fix poll (click on Option 1)
         cy.clickOnOption(1, 1);
         cy.updatePoll();
-        cy.firstNotificationHeaderContainsText("Poll updated").click()
+        cy.firstNotificationHeaderContainsText("Poll saved").click()
     });
 
+    it('Vote Limit - 1', () => {
+        // Click on create Poll button in header
+        cy.get('button').contains("Create Poll").click();
+        cy.fillCreatePollPage1(title, location, note);
+        cy.fillCreatePollPage2(options);
+
+        // click on FCFS
+        cy.get("form").find("input").eq(1).click();
+        cy.get("form").submit();
+        cy.fillCreatePollPage4(user);
+        cy.clickOnOption(1, 2);
+        cy.checkOption(1, 2, "yes")
+        cy.updatePoll();
+        cy.clearAllNotifivationHeader()
+        cy.changeUser("New User", 2)
+        cy.updatePoll();
+        cy.editUser(2)
+        cy.clickOnOption(2, 2)
+        cy.clearAllNotifivationHeader()
+        cy.updatePoll()
+        cy.firstNotificationHeaderContainsText("Cannot save").click()
+        cy.clickOnOption(2, 2)
+        cy.clickOnOption(2, 1)
+        cy.updatePoll();
+        cy.firstNotificationHeaderContainsText("Poll saved");
+    })
 })
 

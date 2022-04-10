@@ -1,11 +1,20 @@
 <script lang="ts">
-    import {InfoType} from "./NotificationControl";
-    import {createEventDispatcher} from "svelte";
+    import NotificationControl, {InfoType} from "./NotificationControl";
+    import {createEventDispatcher, onMount} from "svelte";
 
     export let kind: InfoType;
     export let title;
     export let subtitle;
     const dispatch = createEventDispatcher();
+    export let info;
+    export let duration: number = 3000;
+
+    onMount(async () => {
+        // -1 means stay forever
+        if (duration !== -1) {
+            window.setInterval(() => NotificationControl.removeInfo(info), duration)
+        }
+    })
 
 </script>
 

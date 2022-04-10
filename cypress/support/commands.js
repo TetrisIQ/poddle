@@ -1,29 +1,3 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
 Cypress.Commands.add('fillCreatePollPage1', (title, location, note) => {
     cy.get("form").find("input").eq(0).type(title);
     cy.get("form").find("input").eq(1).type(location);
@@ -64,14 +38,27 @@ Cypress.Commands.add('checkOption', (row, col, result = "yes" | "no" | "ifNeeded
     cy.get("body").should("not.exist") // must fail No valid enum
 })
 Cypress.Commands.add('updatePoll', () => {
-    cy.get("button").contains("Update").click()
+    cy.get("button").contains("Save").click()
 });
 
 Cypress.Commands.add('firstNotificationHeaderContainsText', (text = 1) => {
     return cy.get("#notificationArea > div > div > div > div > div").should("contain.text", text)
-
+});
+Cypress.Commands.add('clearAllNotifivationHeader', () => {
+    return cy.get("#notificationArea > div").each(el => el.click())
 });
 
+
+Cypress.Commands.add('changeUser', (newUserName , newIndexRow) => {
+    cy.get("table > tbody td").eq(0).find("svg").click();
+    cy.wait(100)
+    cy.get(`tbody tr:nth-child(${newIndexRow + 2}) > td:nth-child(${1})`).find("input").clear().type(newUserName+ "{enter}")
+});
+
+
+Cypress.Commands.add('editUser', (rowIndex) => {
+    cy.get(`tbody tr:nth-child(4) > td`).last().click()
+});
 
 
 

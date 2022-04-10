@@ -10,14 +10,18 @@ export class Info {
     public readonly title: string;
     public readonly text: string;
     public readonly id: number;
+    public duration: number = 3000;
 
     private static curId = 0;
 
-    constructor(type: InfoType, title: string, text: string) {
+    constructor(type: InfoType, title: string, text: string, duration: number) {
         this.type = type;
         this.title = title;
         this.text = text;
         this.id = Info.curId++;
+        if(duration !== undefined) {
+            this.duration = duration;
+        }
     }
 }
 
@@ -42,17 +46,17 @@ export default class NotificationControl {
         });
     }
 
-    private static addInfo = (type: InfoType, title: string, text: string): Info => {
-        const newInfo = new Info(type, title, text);
+    private static addInfo = (type: InfoType, title: string, text: string, duration: number): Info => {
+        const newInfo = new Info(type, title, text, duration);
         notificationStore.update(arr => [...arr, newInfo]);
         return newInfo;
     };
 
-    public static error(title: string, text: string): Info {
-        return NotificationControl.addInfo(InfoType.ERROR, title, text);
+    public static error(title: string, text: string, duration?: number): Info {
+        return NotificationControl.addInfo(InfoType.ERROR, title, text, duration);
     }
 
-    public static info = (title: string, text: string): Info => {
-        return NotificationControl.addInfo(InfoType.INFO, title, text);
+    public static info = (title: string, text: string, duration?: number): Info => {
+        return NotificationControl.addInfo(InfoType.INFO, title, text, duration);
     };
 }

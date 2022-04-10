@@ -7,7 +7,7 @@ const options = ["Option 1", "Option 2", "Option 3"]
 const user = "Cypress Test User";
 const comment = "Cypress writing comments and so on :)"
 
-describe('Create Poll - with Settings', () => {
+describe('Test poll comments', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000');
         cy.get('button').contains("Create Poll").click();
@@ -23,24 +23,30 @@ describe('Create Poll - with Settings', () => {
         // write comment
         cy.get('.mb-2 > .bg-gray-100').clear().type(comment)
         // Post comment
-        cy.get('.-mr-1 > .bg-white').click();
-        cy.firstNotificationHeaderContainsText("Poll updated").click();
+        cy.get('input[type=submit]').contains("Post").click();
         // Validate the result
-        cy.get(".my-2").should("contain.text", comment);
+        cy.get("div.text-left.ml-2").should("contain.text", comment);
         cy.reload();
-        cy.get(".my-2").should("contain.text", comment);
+        cy.wait(1000)
+        cy.get("div.text-left.ml-2").should("contain.text", comment);
     })
+
     it('Write a comment - change name', () => {
         // write comment
-        cy.get("form").find("input").parent().find("span").click()
-        cy.get("form").find("input").first().clear().type("Anon " + user)
+        cy.get("form").find("select").select(1)
         cy.get('.mb-2 > .bg-gray-100').clear().type(comment)
         // Post comment
-        cy.get('.-mr-1 > .bg-white').click();
-        cy.firstNotificationHeaderContainsText("Poll updated").click();
+        cy.get('input[type=submit]').contains("Post").click();
         // Validate the result
-        cy.get(".my-2").should("contain.text", "Anon " + user);
+        cy.get(".text-right.col-end-2 > span").should("contain.text", "Anonymous");
+        cy.get("div.text-left.ml-2").should("contain.text", comment);
         cy.reload();
-        cy.get(".my-2").should("contain.text", "Anon " + user);
+        cy.wait(2000)
+        cy.get(".text-right.col-end-2 > span").should("contain.text", "Anonymous");
+        cy.get("div.text-left.ml-2").should("contain.text", comment);
+
+
+
+
     })
 })

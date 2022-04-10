@@ -3,13 +3,12 @@
     import {uuidv4} from "../../lib/util";
     import Poll from "../Poll.svelte";
     import {Participant} from "../../model/PollParticipant";
-    import {gun} from "../../gun";
-    import {PollDTOV1} from "../../model/DTO/PollDTOV1";
     import {lstore} from "../../gun/LStore";
     import NotificationControl from "../../lib/NotificationControl";
+    import {pollGun} from "../../gun/PollGun";
 
     function finish() {
-        const uid = uuidv4().replace(/-/g, "");
+        const uid = uuidv4();
 
         $currentPoll.id = uid.slice(0, 12);
         $currentPoll.password = uid.slice(12);
@@ -18,7 +17,7 @@
         $currentPoll = $currentPoll;
         //save to DB
 
-        gun.createPoll(new PollDTOV1($currentPoll), $currentPoll.id, $currentPoll.password)
+        pollGun.createPoll($currentPoll)
         page.set(Poll)
         NotificationControl.info("Poll Created", "Leave your browser open so that the data can be synchronized")
     }

@@ -8,6 +8,8 @@
         kind={notification.type}
         title={notification.title}
         subtitle={notification.text}
+        info={notification}
+        duration={notification.duration}
         on:close={() => NotificationControl.removeInfo(notification)}/>
     {/each}
 </div>

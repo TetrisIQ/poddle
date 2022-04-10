@@ -26,6 +26,7 @@ describe('Create Poll - Basic validation', () => {
         cy.checkOption(1, 3, "yes")
         cy.updatePoll();
         cy.reload();
+        cy.wait(1000)
         cy.checkOption(1, 1, "yes")
         cy.checkOption(1, 2, "yes")
         cy.checkOption(1, 3, "yes")
@@ -47,5 +48,16 @@ describe('Create Poll - Basic validation', () => {
         cy.get("form").submit()
         // Check if notification contains red svg
         cy.firstNotificationHeaderContainsText("Cannot continue").click()
+    })
+
+    it('Create poll - with many and extra long Options', () => {
+        cy.viewport(1920, 1080)
+        cy.get('button').contains("Create Poll").click();
+        cy.fillCreatePollPage1(title, location, note);
+        cy.fillCreatePollPage2(["Option 1", "Option 2 is better than option 1", "But option 3 is still the best", "Option 4 is not the best, but works in most case", "This option is only the default fallback if we cannot agree with on of the others. So everyone should accept this."]);
+        cy.get("form").submit();
+        cy.fillCreatePollPage4(user);
+        cy.firstNotificationHeaderContainsText("Poll Created").click()
+        cy.screenshot()
     })
 })

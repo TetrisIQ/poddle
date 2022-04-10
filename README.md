@@ -1,28 +1,30 @@
-<h1 align="center">Poll dApp</h1>
+<h1 align="center">Poddle</h1>
 
 <div align="center">
   <strong>Meetings made simple! </strong>
 </div>
 <div align="center">
-  A <code>decentralized</code> doodle alternative
+  A <code>decentralized</code> and <code>encrypted</code> doodle alternative
 </div>
 
 <br />
 <!-- badges -->
 <div align="center">
-  <!-- Stability -->
-    <img src="https://img.shields.io/badge/Version-preAlpha-red?style=flat-square"
-      alt="API stability" />
+  <!-- Version -->
+    <img src="https://img.shields.io/badge/Version-beta-green?style=flat-square"
+      alt="Version" />
   <!-- Build Status -->
-    <img src="https://img.shields.io/github/checks-status/tetrisiq/poll-dapp/main?style=flat-square"
+    <img src="https://img.shields.io/github/checks-status/tetrisiq/poddle/main?style=flat-square"
       alt="Build Status" />
   <!-- Test status -->
-    <img src="https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/byzw5k&style=flat-square&logo=cypress" />
+    <img src="https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/byzw5k&style=flat-square&logo=cypress" alt="Cypress Status" />
+  <!-- Netlify Status -->
+      <img src="https://api.netlify.com/api/v1/badges/412902dd-d80b-474f-9f66-24619a932a73/deploy-status" alt="Netlify Status" />
 </div>
 
 <div align="center">
   <h3>
-    <a href="https://tetrisiq.github.io/poll-dapp/">
+    <a href="https://poddle.network">
       Website
     </a>
     <span> | </span>
@@ -35,11 +37,10 @@
 
 ## Table of Contents
 - [Features](#features)
-- [What means decentralized](#What means decentralized)
+- [What means decentralized](#what-means-decentralized)
 - [FAQ](#faq)
 - [Installation](#installation)
 - [See Also](#see-also)
-- [Support](#support)
 
 ## Features
 - **Yes, No, If needed be** You can choose between three options. Yes this option is okay for me. No this is not acceptable. And if needed be.
@@ -50,14 +51,10 @@
 > For planed features take a look at the GitHub issues
 
 ## What means decentralized
-tbd
+...
 
 ## FAQ
-### Why can nobody see my poll?
-Maybe you close your browser window, so that your participants cannot receive the data from you.   
-Poll dApp has no central server so your data are only stored in your browser (and in the browser of your Participants)
-
-> If you have any other issues, create an [issue on GitHub](https://github.com/TetrisIQ/poll-dapp/issues/new?assignees=&labels=&template=bug_report.md&title=)
+> If you have any issues, create an [issue on GitHub](https://github.com/TetrisIQ/poddle/issues/new?assignees=&labels=&template=bug_report.md&title=)
 
 ## Installation
 - Clone the git repo
@@ -66,7 +63,13 @@ Poll dApp has no central server so your data are only stored in your browser (an
 
 To start the test with cypress enter `cypress run` into your console.
 
+## Support 
+[![Foo](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/tetrisiq)  
+Or host a gun relay node and add it to the network. If you need help write me :mailbox:
+
 ## See Also
 - [gun.eco](https://gun.eco) - decentralised Database 
-- [Svelte in 100 sec.](https://www.youtube.com/watch?v=rv3Yq-B8qp4) - tiny library for modular UI
+- [Svelte in 100 Seconds](https://www.youtube.com/watch?v=rv3Yq-B8qp4) - video by Fireship
 - [svelte Tutorial](https://svelte.dev/tutorial/basics/) - A very good start point for learning svelte
+
+

@@ -1,3 +1,5 @@
+import {uuidv4} from "../lib/util";
+
 class LStore {
 
     setMyName(name: string) {
@@ -10,6 +12,17 @@ class LStore {
             return "Anonymous"
         } else {
             return name;
+        }
+    }
+
+    getClientID() {
+        const clientId = localStorage.getItem("clientID")
+        if(clientId === null) {
+            const id = uuidv4().slice(0, 5)
+            localStorage.setItem("clientID", id)
+            return id
+        } else {
+            return clientId;
         }
     }
 

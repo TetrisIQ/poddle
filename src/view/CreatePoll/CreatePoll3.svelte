@@ -45,7 +45,7 @@
                     <h2 class="font-bold">Limit the number of votes per option</h2>
                     <p>First come, first served. Once the spots are filled, the option is no longer available.</p>
                 </div>
-                <Checkbox disabled={settings.treeOptions || true} bind:checked={settings.fcfs}
+                <Checkbox disabled={settings.treeOptions} bind:checked={settings.fcfs}
                           primaryColor="#f7be00" class="my-auto ml-5"/>
             </div>
             <div class="grid justify-end grid-cols-3 gap-4 py-4">
