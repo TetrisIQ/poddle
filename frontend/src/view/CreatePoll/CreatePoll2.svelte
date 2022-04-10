@@ -21,7 +21,7 @@
     }
 
     function next() {
-        if(selectedTab === "text") {
+        if (selectedTab === "text") {
             //check if min. the first 2 options have content
             if (pollOptions[0].option !== "" && pollOptions[1].option !== "") {
                 pollOptions = pollOptions.slice(0, -1)
@@ -30,8 +30,17 @@
             } else { // if not create a notification
                 NotificationControl.error("Cannot continue", "Please fill out at least tow options.")
             }
-        }else if(selectedTab === "week") {
-            console.log("Events: ", $events)
+        } else if (selectedTab === "week") {
+            const weekOptions = new Array<Option>()
+            $events.forEach(o => weekOptions.push(new Option(Number(o.id), o.title + " | " + o.start + " | " + o.end, "week")));
+            //check if min. 2 options are given
+            if (weekOptions.length >= 2) {
+                $currentPoll.options = weekOptions;
+                page.set(CreatePoll3)
+            } else {
+                NotificationControl.error("Cannot continue", "Please select at least tow options.")
+            }
+            console.log("Events: ", weekOptions)
         }
     }
 

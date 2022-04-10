@@ -2,9 +2,11 @@
     import imgSrc from "../assets/Element1.png"
     import {page} from "../store";
     import CreatePoll1 from "./CreatePoll/CreatePoll1.svelte";
+    import WeekSelection from "../lib/WeekSelection.svelte";
+
 
 </script>
-
+<WeekSelection/>
 <section class="dark:text-gray-400 dark:bg-gray-900 min-h-full text-gray-600 body-font">
     <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
         <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
