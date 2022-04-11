@@ -47,8 +47,8 @@
         <!--MODAL BODY-->
         <div class="my-4">
             <!-- Side Slider -->
+            <p class="text-xl mb-4 mt-2">Share this link via</p>
             {#if !isOfficialPage}
-                <p class="text-xl mb-4 mt-2">Share this link via</p>
                 <div class="flex justify-between mx-12">
                     <span class="text-lg">Use this side</span>
                     <!-- Rounded switch -->
