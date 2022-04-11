@@ -14,6 +14,7 @@
     import {gun} from "../gun";
     // import RelativeTime from "dayjs/plugin/relativeTime"
     import LoadingPoll from "../lib/LoadingPoll.svelte";
+    import Share from "../lib/Share.svelte";
 
     // dayjs.extend(RelativeTime)
 
@@ -174,6 +175,7 @@
     {#if $currentPoll.title === ""}
         <LoadingPoll/>
     {:else }
+        <Share/>
         <div class="mx-auto max-w-4xl rounded overflow-hidden shadow-lg">
             <div class="px-6 py-4">
                 <div class="font-bold text-xl">{$currentPoll.title}</div>

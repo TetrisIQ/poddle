@@ -129,7 +129,7 @@
       </span>
     <span>{dayjs($tuiApi?.getDate().toDate()).weekday(1).format("D.M.YYYY") + ' - ' + dayjs($tuiApi?.getDate().toDate()).weekday(7).format("D.M.YYYY")}</span>
     <div class="ml-auto">
-        <button on:click={() => toggleWeekends()} class="dark:bg-gray-800 bg-gray-100 border-0 py-1 px-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded mt-4 md:mt-0">{workweek ? 'Display weekend': 'Hide weekend'}</button>
+        <button type="button" on:click={() => toggleWeekends()} class="dark:bg-gray-800 bg-gray-100 border-0 py-1 px-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded mt-4 md:mt-0">{workweek ? 'Display weekend': 'Hide weekend'}</button>
     </div>
 
 </div>
