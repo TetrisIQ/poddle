@@ -98,6 +98,30 @@ class LStore {
         }
         return this.getMyPolls();
     }
+
+    setUsername(name: string) {
+        if (name === null) {
+            localStorage.removeItem("username")
+        } else {
+            localStorage.setItem("username", name);
+        }
+    }
+
+    getUsername(): string {
+        return localStorage.getItem("username")
+    }
+
+    setPassword(password: string) {
+        if (password === null) {
+            localStorage.removeItem("_p")
+        } else {
+            localStorage.setItem("_p", btoa(password));
+        }
+    }
+
+    getPassword(): string {
+        return atob(localStorage.getItem("_p"))
+    }
 }
 
 

@@ -1,8 +1,9 @@
 <script lang="ts">
     import ChangeRelayServer from "../lib/ChangeRelayServer.svelte";
     import MyPolls from "../lib/MyPolls.svelte";
+    import Account from "../lib/Account.svelte";
 
-    let selected = "MyPolls";
+    let selected = "Account";
 
     function change(name: string) {
         selected = name;
@@ -65,11 +66,10 @@
     <!-- Start Content area -->
     <div class="w-full ml-16 text-left mt-14">
         {#if (selected === "Account")}
-            Account / if user is loggedIn; then show ChangeUsername(); else show LoginAndRegisterForm();
+            <Account/>
         {:else if (selected === "MyPolls")}
             <MyPolls/>
         {:else if (selected === "Settings")}
-            Settings / show switchTheme(); show changeRelays(); show deleteAccount();
             <ChangeRelayServer/>
         {:else }
             Fallback / show idkWhatIShowHere();
