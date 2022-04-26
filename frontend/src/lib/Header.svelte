@@ -5,8 +5,8 @@
     import Integrations from "../view/Integrations.svelte";
     import Home from "../view/Home.svelte";
     import {SvelteComponent} from "svelte";
-    import ToggleDarkMode from "./ToggleDarkMode.svelte";
     import PoddleLogo from "./PoddleLogo.svelte";
+    import UserList from "../view/UserList.svelte";
 
     function open(newPage: SvelteComponent, title: string = document.title, path: string = window.location.pathname) {
         page.set(newPage)
@@ -15,7 +15,6 @@
     }
 
 </script>
-
 <header class="dark:text-gray-400 dark:bg-gray-700 bg-gray-300 text-gray-600 body-font">
     <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <button on:click={() => open(Home)} class="flex title-font font-medium items-center dark:text-white text-gray-900 mb-4 md:mb-0">
@@ -33,7 +32,12 @@
                 </svg>
             </button>
         </nav>
-        <ToggleDarkMode/>
+        <button on:click={() => open(UserList)} class="inline-flex items-center border-0 py-1 p-3 mx-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+            </svg>
+        </button>
         <button on:click={() => open(CreateNewPoll)} class="inline-flex items-center dark:bg-gray-800 bg-gray-100 border-0 py-1 px-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-2 w-4 h-4 ml-1" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>

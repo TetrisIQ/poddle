@@ -1,0 +1,9 @@
+**/node_modules
+**/dist
+**/data.json
+**/data
+**/radata
+**/cypress
+.github
+.vscode
+.idea
