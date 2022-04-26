@@ -7,6 +7,8 @@
     import {gun} from "./gun";
     import NewMessage from "./view/NewMessage.svelte";
     import dayjs from "dayjs";
+    import {onMount} from "svelte";
+    import Modal from "./lib/Modal.svelte";
 
     if (window.location.search.includes("?k=")) {
         page.set(Poll)
@@ -55,6 +57,7 @@
     {/if}
     <main class="mx-auto flex-grow w-full xl:px-40 l:px-14 text-center">
         <NotificationArea/>
+        <Modal/>
         <svelte:component this={$page}/>
     </main>
     <Footer/>
