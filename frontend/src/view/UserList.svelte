@@ -1,9 +1,9 @@
 <script lang="ts">
-    import ChangeRelayServer from "../lib/ChangeRelayServer.svelte";
+    import Settings from "../lib/Settings.svelte";
     import MyPolls from "../lib/MyPolls.svelte";
     import Account from "../lib/Account.svelte";
 
-    let selected = "Account";
+    let selected = "MyPolls";
 
     function change(name: string) {
         selected = name;
@@ -15,7 +15,7 @@
     <!-- Start SideNav -->
     <div class="flex w-min ml-80 mt-12">
         <ul class="">
-            <li>
+        <!--    <li>
                 <button on:click={() => change("Account")} class="py-2 flex">
                     {#if selected === "Account"}
                         <span class="my-auto bg-indigo-400 h-4 w-1"></span>
@@ -31,7 +31,7 @@
                 Account
                 </span>
                 </button>
-            </li>
+            </li>-->
             <li class="">
                 <button on:click={() => change("MyPolls")} class="py-2 flex">
                     {#if selected === "MyPolls"}
@@ -70,7 +70,7 @@
         {:else if (selected === "MyPolls")}
             <MyPolls/>
         {:else if (selected === "Settings")}
-            <ChangeRelayServer/>
+            <Settings/>
         {:else }
             Fallback / show idkWhatIShowHere();
         {/if}

@@ -60,11 +60,8 @@
 
 <br>
 <h1 class="text-2xl">Settings</h1>
-<div class="mt-6 grid grid-flow-col justify-between auto-cols-max">
-    <p class="text-xl py-4">Toggle dark mode</p>
-    <ToggleDarkMode/>
-</div>
 
+<!--
 <p class="text-xl mb-2 mt-6">Change your relay servers</p>
 <table class="w-full">
     <tr class="w-1/2 bg-indigo-300">
@@ -78,7 +75,7 @@
             <tr class="{id % 2 === 0} bg-gray-100">
                 <td class="p-2">{relay.name}</td>
                 <td class="p-2 text-center {relay.status === 'UP' ? 'text-green-600' : 'text-red-600'}">{relay.status}</td>
-                <td class="p-2 pr-4 flex justify-between"><span class="incident text-red-500"><!-- TODO: Display Warnings --></span><span
+                <td class="p-2 pr-4 flex justify-between"><span class="incident text-red-500">&lt;!&ndash; TODO: Display Warnings &ndash;&gt;</span><span
                         class="text-center">{relay.country}</span><span
                         class="pl-3">{getRelayFlag(relay.country)}</span></td>
                 <td class="text-center">
@@ -111,6 +108,7 @@
         Update server list
     </button>
 </div>
+-->
 
 <div class="mt-6 grid grid-flow-col justify-between auto-cols-max">
     <p class="text-xl py-4">Delete browser data</p>
