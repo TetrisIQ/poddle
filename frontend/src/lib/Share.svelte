@@ -1,4 +1,6 @@
 <script lang="ts">
+import { onMount } from "svelte";
+
 
     import {currentPoll} from "../store";
 
@@ -34,6 +36,10 @@
     function shareFacebook() {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${pollUrl}&quote=${shareText}`)
     }
+
+    onMount(() => {
+        pollUrl = useOfficial ? "https://poddle.network" + window.location.search : window.location;
+    })
 
 
 </script>
