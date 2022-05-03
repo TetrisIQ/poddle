@@ -8,12 +8,12 @@
   import NotificationControl from "../lib/NotificationControl";
   import dayjs, { Dayjs } from "dayjs";
   import { pollGun } from "../gun/PollGun";
-  import type { Option } from "../model/Option";
   import { commentGun } from "../gun/CommentGun";
   import { gun } from "../gun";
   // import RelativeTime from "dayjs/plugin/relativeTime"
   import LoadingPoll from "../lib/LoadingPoll.svelte";
   import Share from "../lib/Share.svelte";
+  import type { Option } from "../model/Option";
 
   // dayjs.extend(RelativeTime)
 
@@ -21,6 +21,30 @@
   let key = params.get("k");
   let newComment: Comment = new Comment(lstore.getMyName());
   let myName: string = lstore.getMyName();
+
+  $: {
+    // update poll count
+    // const optionCount : Array<number> = [];
+    $currentPoll.options.forEach((o) => {
+      o.count = 0;
+      o.ifNeeded = 0;
+    });
+    $currentPoll.participants.forEach((p) => {
+      // p.chosenOptions.forEach(co => optionCount.push(co.id))
+      p.chosenOptions.forEach((co) => {
+        switch (co.value) {
+          case "yes":
+            let option = $currentPoll.options.find((o) => o.id === co.id);
+            option.count = option.count + 1;
+            break;
+          case "ifNeededBe":
+            let inbOption = $currentPoll.options.find((o) => o.id === co.id);
+            inbOption.ifNeeded = inbOption.ifNeeded + 1;
+            break;
+        }
+      });
+    });
+  }
 
   function formatCreated(date: Dayjs) {
     return dayjs(date).fromNow();
@@ -93,6 +117,13 @@
           pollGun
             .encrypt(t, password)
             .then((res) => ($currentPoll.settings.deadline = res as boolean))
+        );
+      pollGun
+        .getEntity(id, "settings.threeOptions")
+        .on((t) =>
+          pollGun
+            .encrypt(t, password)
+            .then((res) => ($currentPoll.settings.treeOptions = res as boolean))
         );
       pollGun
         .getEntity(id, "settings.fcfs")
@@ -432,6 +463,22 @@
                         />
                       </svg>
                       <span class="ml-auto font-bold">{option.count}</span>
+                      <!-- If needed be counter -->
+                      {#if $currentPoll.settings.treeOptions}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="28"
+                          height="28"
+                          fill="currentColor"
+                          class="inline text-yellow-500 "
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
+                          />
+                        </svg>
+                        <span class="ml-auto font-bold">{option.ifNeeded}</span>
+                      {/if}
                     </td>
                   {/if}
                 {/each}
@@ -575,16 +622,16 @@
               >
               <select
                 bind:value={newComment.name}
-                class="bg-transparent my-auto h-min border-solid border-2  border rounded border-gray-400"
+                class="bg-transparent my-auto h-min border-solid border-2 rounded border-gray-400"
               >
                 <option
                   value={myName}
-                  class="bg-transparent border-solid border-2  border rounded border-gray-400"
+                  class="bg-transparent border-solid border-2 rounded border-gray-400"
                   >{myName}</option
                 >
                 <option
                   value="Anonymous"
-                  class="bg-transparent border-solid border-2  border rounded border-gray-400"
+                  class="bg-transparent border-solid border-2 rounded border-gray-400"
                 >
                   Anonymous
                 </option>
@@ -598,7 +645,7 @@
                   required
                 />
               </div>
-              <div class="w-full md:w-full flex items-start md:w-full px-3">
+              <div class="w-full flex items-start md:w-full px-3">
                 <!-- Maybe we support MD in future-->
                 <!--<div class="flex items-start w-1/2 text-gray-700 px-2 mr-auto">
                                     <svg fill="none" class="w-5 h-5 text-gray-600 mr-1" viewBox="0 0 24 24"
