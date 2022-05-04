@@ -6,7 +6,6 @@ import type {ReleaseMessage} from "./model/ReleaseMessage";
 import type {ISchedule} from "tui-calendar";
 import type Calendar from "tui-calendar";
 
-
 export const page = writable(Home);
 export const currentPoll = writable<Poll>(new Poll())
 export const pollDTO = writable<PollDTOV1>()
