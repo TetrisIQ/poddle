@@ -1,26 +1,29 @@
 <script lang="ts">
-  import { currentPoll } from "../store";
-  import { Participant } from "../model/PollParticipant";
-  import YNINB from "../lib/YNINB.svelte";
-  import { lstore } from "../gun/LStore";
-  import { Comment } from "../model/Comment";
-  import { onMount } from "svelte";
-  import NotificationControl from "../lib/NotificationControl";
-  import dayjs, { Dayjs } from "dayjs";
-  import { pollGun } from "../gun/PollGun";
-  import { commentGun } from "../gun/CommentGun";
-  import { gun } from "../gun";
+  import { currentPoll } from '../store';
+  import { Participant } from '../model/PollParticipant';
+  import YNINB from '../lib/YNINB.svelte';
+  import CheckboxYNINB from '../lib/CheckboxYNINB.svelte';
+  import { lstore } from '../gun/LStore';
+  import { Comment } from '../model/Comment';
+  import { onMount } from 'svelte';
+  import NotificationControl from '../lib/NotificationControl';
+  import dayjs, { Dayjs } from 'dayjs';
+  import { pollGun } from '../gun/PollGun';
+  import { commentGun } from '../gun/CommentGun';
+  import { gun } from '../gun';
   // import RelativeTime from "dayjs/plugin/relativeTime"
-  import LoadingPoll from "../lib/LoadingPoll.svelte";
-  import Share from "../lib/Share.svelte";
-  import type { Option } from "../model/Option";
+  import LoadingPoll from '../lib/LoadingPoll.svelte';
+  import Share from '../lib/Share.svelte';
+  import type { Option } from '../model/Option';
+  import { select_options } from 'svelte/internal';
 
   // dayjs.extend(RelativeTime)
 
   let params = new URLSearchParams(document.location.search);
-  let key = params.get("k");
+  let key = params.get('k');
   let newComment: Comment = new Comment(lstore.getMyName());
   let myName: string = lstore.getMyName();
+  let mobileSelectedName: string;
 
   $: {
     // update poll count
@@ -33,11 +36,11 @@
       // p.chosenOptions.forEach(co => optionCount.push(co.id))
       p.chosenOptions.forEach((co) => {
         switch (co.value) {
-          case "yes":
+          case 'yes':
             let option = $currentPoll.options.find((o) => o.id === co.id);
             option.count = option.count + 1;
             break;
-          case "ifNeededBe":
+          case 'ifNeededBe':
             let inbOption = $currentPoll.options.find((o) => o.id === co.id);
             inbOption.ifNeeded = inbOption.ifNeeded + 1;
             break;
@@ -52,17 +55,17 @@
 
   function formatDate(date: Dayjs): string {
     if (date === undefined) {
-      return "undefined";
+      return 'undefined';
     }
     if (deadlineIsNotReachedValue) {
-      return "Deadline ends in " + dayjs(date).toNow(false);
+      return 'Deadline ends in ' + dayjs(date).toNow(false);
     }
-    return "This poll is over since " + dayjs(date).fromNow(true);
+    return 'This poll is over since ' + dayjs(date).fromNow(true);
   }
 
   async function getPoll(id: string, password: string) {
     if (await gun.detectOldPoll(id)) {
-      console.log("OLD POLL DETECTED");
+      console.log('OLD POLL DETECTED');
       // For old Polls
       await gun.getPoll(id, password);
       // Save as new Poll
@@ -70,91 +73,41 @@
       $currentPoll.password = password;
       $currentPoll.id = id;
       pollGun
-        .getEntity(id, "title")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.title = res as string))
-        );
+        .getEntity(id, 'title')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.title = res as string)));
       pollGun
-        .getEntity(id, "creatorName")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.creatorName = res as string))
-        );
+        .getEntity(id, 'creatorName')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.creatorName = res as string)));
       pollGun
-        .getEntity(id, "created")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.created = dayjs(res as string)))
-        );
+        .getEntity(id, 'created')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.created = dayjs(res as string))));
       pollGun
-        .getEntity(id, "options")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.options = res as Array<Option>))
-        );
+        .getEntity(id, 'options')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.options = res as Array<Option>)));
       pollGun
-        .getEntity(id, "location")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.location = res as string))
-        );
+        .getEntity(id, 'location')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.location = res as string)));
       pollGun
-        .getEntity(id, "note")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.note = res as string))
-        );
+        .getEntity(id, 'note')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.note = res as string)));
       pollGun
-        .getEntity(id, "settings.deadline")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.settings.deadline = res as boolean))
-        );
+        .getEntity(id, 'settings.deadline')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.settings.deadline = res as boolean)));
       pollGun
-        .getEntity(id, "settings.threeOptions")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.settings.treeOptions = res as boolean))
-        );
+        .getEntity(id, 'settings.threeOptions')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.settings.treeOptions = res as boolean)));
       pollGun
-        .getEntity(id, "settings.fcfs")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.settings.fcfs = res as boolean))
-        );
+        .getEntity(id, 'settings.fcfs')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.settings.fcfs = res as boolean)));
       pollGun
-        .getEntity(id, "settings.voteLimit")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.settings.voteLimit = res as boolean))
-        );
+        .getEntity(id, 'settings.voteLimit')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.settings.voteLimit = res as boolean)));
       pollGun
-        .getEntity(id, "settings.voteLimitAmount")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then(
-              (res) => ($currentPoll.settings.voteLimitAmount = res as number)
-            )
-        );
+        .getEntity(id, 'settings.voteLimitAmount')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.settings.voteLimitAmount = res as number)));
       pollGun
-        .getEntity(id, "deadline")
-        .on((t) =>
-          pollGun
-            .encrypt(t, password)
-            .then((res) => ($currentPoll.deadline = dayjs(res as string)))
-        );
+        .getEntity(id, 'deadline')
+        .on((t) => pollGun.encrypt(t, password).then((res) => ($currentPoll.deadline = dayjs(res as string))));
 
       pollGun.getAllParticipant(id, password);
       $currentPoll.comments = [];
@@ -164,13 +117,11 @@
   }
 
   onMount(async () => {
-    if ($currentPoll.title !== "") {
+    if ($currentPoll.title !== '') {
       window.history.pushState(
-        "",
+        '',
         `Poll ${$currentPoll.title}`,
-        `${window.location.pathname}?k=${
-          $currentPoll.id + $currentPoll.password
-        }`
+        `${window.location.pathname}?k=${$currentPoll.id + $currentPoll.password}`
       );
     } else {
       const id = key.slice(0, 12);
@@ -183,10 +134,10 @@
     let valid = true;
     if ($currentPoll.settings.voteLimit) {
       $currentPoll.participants.forEach((p) => {
-        let amount = p.chosenOptions.filter((o) => o.value === "yes").length;
+        let amount = p.chosenOptions.filter((o) => o.value === 'yes').length;
         if (amount > $currentPoll.settings.voteLimitAmount) {
           NotificationControl.error(
-            "Cannot save Poll",
+            'Cannot save Poll',
             `${p.name} cannot select more than ${$currentPoll.settings.voteLimitAmount} option`
           );
           valid = false;
@@ -194,24 +145,15 @@
       });
     }
     if ($currentPoll.settings.fcfs) {
-      const me: Participant = $currentPoll.participants.find(
-        (m) => m.name === lstore.getMyName()
-      );
-      const myYesIds: Array<number> = me.chosenOptions
-        .filter((o) => o.value === "yes")
-        .map((o) => o.id);
+      const me: Participant = $currentPoll.participants.find((m) => m.name === lstore.getMyName());
+      const myYesIds: Array<number> = me.chosenOptions.filter((o) => o.value === 'yes').map((o) => o.id);
       // find another participant witch hash my id
       $currentPoll.participants.forEach((p) => {
         if (p.name !== me.name) {
-          const othersYesIds = p.chosenOptions
-            .filter((o) => o.value === "yes")
-            .map((o) => o.id);
-          console.log("My", myYesIds, "other", othersYesIds);
+          const othersYesIds = p.chosenOptions.filter((o) => o.value === 'yes').map((o) => o.id);
+          console.log('My', myYesIds, 'other', othersYesIds);
           if (myYesIds.find((id) => othersYesIds.includes(id))) {
-            NotificationControl.error(
-              "Cannot save",
-              "You cannot choose the same as " + p.name
-            );
+            NotificationControl.error('Cannot save', 'You cannot choose the same as ' + p.name);
             valid = false;
           }
         }
@@ -219,19 +161,11 @@
     }
     if (valid) {
       $currentPoll = $currentPoll;
-      let myParticipant = $currentPoll.participants.filter(
-        (p) => p.edit === true
-      )[0];
+      let myParticipant = $currentPoll.participants.filter((p) => p.edit === true)[0];
       if (myParticipant === undefined) {
-        myParticipant = $currentPoll.participants.filter(
-          (p) => p.name === lstore.getMyName()
-        )[0];
+        myParticipant = $currentPoll.participants.filter((p) => p.name === lstore.getMyName())[0];
       }
-      pollGun.addParticipant(
-        myParticipant,
-        $currentPoll.id,
-        $currentPoll.password
-      );
+      pollGun.addParticipant(myParticipant, $currentPoll.id, $currentPoll.password);
       closeEditOnAllParticipants();
     }
   }
@@ -242,9 +176,7 @@
   }
 
   function addNewParticipant() {
-    $currentPoll.participants.push(
-      new Participant(myName, true, $currentPoll.options)
-    );
+    $currentPoll.participants.push(new Participant(myName, true, $currentPoll.options));
     $currentPoll = $currentPoll;
   }
 
@@ -269,8 +201,7 @@
   }
 
   function nameEntered(participant: Participant) {
-    $currentPoll.participants.find((p) => p.name === participant.name).edit =
-      !participant.edit;
+    $currentPoll.participants.find((p) => p.name === participant.name).edit = !participant.edit;
     myName = participant.name;
     lstore.setMyName(participant.name);
     $currentPoll = $currentPoll;
@@ -278,28 +209,28 @@
 
   function getTitleFromTimeSlot(slot: string) {
     //Option 1 | 1649165400000 | 1649178000000
-    return slot.split(" | ")[0];
+    return slot.split(' | ')[0];
   }
   function getStartFromTimeSlot(slot: string) {
     //Option 1 | 1649165400000 | 1649178000000
-    return dayjs(Number(slot.split(" | ")[1])).format("H:mm");
+    return dayjs(Number(slot.split(' | ')[1])).format('H:mm');
   }
   function getEndFromTimeSlot(slot: string) {
     //Option 1 | 1649165400000 | 1649178000000
-    return dayjs(Number(slot.split(" | ")[2])).format("H:mm");
+    return dayjs(Number(slot.split(' | ')[2])).format('H:mm');
   }
 
   function getDateFromTimeSlot(slot: string) {
-    return dayjs(Number(slot.split(" | ")[1])).format("DD.MM.YY");
+    return dayjs(Number(slot.split(' | ')[1])).format('DD.MM.YY');
   }
 </script>
 
 {#if $currentPoll !== undefined}
-  {#if $currentPoll.title === ""}
+  {#if $currentPoll.title === ''}
     <LoadingPoll />
   {:else}
     <Share />
-    <div class="mx-auto max-w-4xl rounded overflow-hidden shadow-lg">
+    <div class="mx-auto max-w-4xl rounded overflow-hidden">
       <div class="px-6 py-4">
         <div class="font-bold text-xl">{$currentPoll.title}</div>
         <div class="font-normal mb-8">
@@ -307,7 +238,7 @@
           • {formatCreated($currentPoll.created)}
         </div>
         <div class="space-y-8">
-          {#if $currentPoll.location !== ""}
+          {#if $currentPoll.location !== ''}
             <div class="grid grid-cols-3 gap-4">
               <div class="text-right col-end-2">
                 <svg
@@ -321,15 +252,13 @@
                   <path
                     d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"
                   />
-                  <path
-                    d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
-                  />
+                  <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                 </svg>
               </div>
               <span class="text-left">{$currentPoll.location}</span>
             </div>
           {/if}
-          {#if $currentPoll.note !== ""}
+          {#if $currentPoll.note !== ''}
             <div class="grid grid-cols-3 gap-4">
               <div class="text-right col-end-2">
                 <svg
@@ -395,32 +324,124 @@
             </div>
           {/if}
         </div>
-
-        <div class="overflow-y-auto">
-          <table
-            class="border-collapse border mx-auto mt-8 border-slate-400 overflow-x-auto"
+        <!-- View for mobile -->
+        <div class="flex">
+          <select
+            bind:value={mobileSelectedName}
+            class="{deadlineIsNotReachedValue
+              ? 'w-3/4'
+              : 'w-full'} rounded-md mx-1 border-2 bg-transparent border-gray-200 placeholder-gray-300"
           >
+            <option value="none">{$currentPoll.participants.length} participants</option>
+            {#each $currentPoll.participants as participant}
+              <option value={participant.randomKey}>{participant.name}</option>
+            {/each}
+          </select>
+          {#if deadlineIsNotReachedValue}
+            {#if mobileSelectedName !== 'none'}
+              <button on:click={() => addNewParticipant()} class="w-1/4 bg-indigo-500 text-white mx-1 rounded"
+                >Edit</button
+              >
+              <button on:click={() => addNewParticipant()} class="w-1/4 bg-red-500 text-white mx-1 rounded"
+                >Delete</button
+              >
+            {:else}
+              <button
+                on:click={() => addNewParticipant()}
+                class="inline-flex justify-center w-1/4 bg-indigo-500 mx-1 text-white rounded"
+                >New
+              </button>
+            {/if}
+          {/if}
+        </div>
+        <!-- List the Options -->
+        <div class="divide-y mt-4">
+          {#each $currentPoll.options as option}
+            {#if option.option !== ''}
+              <div class="flex">
+                <div class="flex grow">
+                  <div class="grow text-left my-auto py-2">
+                    {#if option.type === 'week'}
+                      <p>{getTitleFromTimeSlot(option.option)}</p>
+                      <p>{getDateFromTimeSlot(option.option)}</p>
+                      <p>
+                        {getStartFromTimeSlot(option.option)} - {getEndFromTimeSlot(option.option)}
+                      </p>
+                    {:else if option.option !== ''}
+                      <p class="border border-slate-300 py-2 px-5">{option.option}</p>
+                    {/if}
+                  </div>
+                  {#if mobileSelectedName === 'none'}
+                    <div class="flex flex-col items-end">
+                      <div class="mt-1 -mr-1">
+                        <div class="-space-x-1">
+                          {#each $currentPoll.participants as participant}
+                            {#if participant.chosenOptions
+                              .filter((p) => p.value === 'yes')
+                              .filter((p) => p.id === option.id).length > 0}
+                              <span
+                                class="inline-block h-5 w-5 shrink-0 rounded-full text-center text-gray-600 bg-green-400 text-xs leading-5 ring-1 ring-white"
+                                >{participant.name.slice(0, 1)}</span
+                              >
+                            {/if}
+                            {#if participant.chosenOptions
+                              .filter((p) => p.value === 'ifNeededBe')
+                              .filter((p) => p.id === option.id).length > 0}
+                              <span
+                                class="inline-block h-5 w-5 shrink-0 rounded-full text-center text-gray-600 bg-yellow-400 text-xs leading-5 ring-1 ring-white"
+                                >{participant.name.slice(0, 1)}</span
+                              >
+                            {/if}
+                          {/each}
+                        </div>
+                      </div>
+                    </div>
+                  {/if}
+                  {#if deadlineIsNotReachedValue && mobileSelectedName !== 'none'}
+                    <CheckboxYNINB
+                      twoOptions={!$currentPoll.settings.treeOptions}
+                      value={$currentPoll.participants
+                        .find((p) => p.randomKey === mobileSelectedName)
+                        ?.chosenOptions.find((o) => o.id === option.id)?.value}
+                      participant={$currentPoll.participants.find((p) => p.randomKey === mobileSelectedName)}
+                      {option}
+                    />
+                    <!--  <YNINB
+                      twoOptions={!$currentPoll.settings.treeOptions}
+                      value={$currentPoll.participants
+                        .find((p) => p.randomKey === mobileSelectedName)
+                        ?.chosenOptions.find((o) => o.id === option.id)?.value}
+                      participant={$currentPoll.participants.find((p) => p.randomKey === mobileSelectedName)}
+                      {option}
+                    /> -->
+                  {/if}
+                </div>
+              </div>
+            {/if}
+          {/each}
+        </div>
+
+        <!-- View for Desktop -->
+        <div class="overflow-y-auto hidden ">
+          <table class="border-collapse border mx-auto mt-8 border-slate-400 overflow-x-auto">
             <thead>
               <tr>
                 <th class="border border-slate-300 py-2 px-5" />
                 {#each $currentPoll.options as option}
-                  {#if option.type === "week"}
+                  {#if option.type === 'week'}
                     <th class="border border-slate-300 py-2 px-5">
                       <p>{getTitleFromTimeSlot(option.option)}</p>
                       <p>{getDateFromTimeSlot(option.option)}</p>
                       <p>
-                        {getStartFromTimeSlot(option.option)} - {getEndFromTimeSlot(
-                          option.option
-                        )}
+                        {getStartFromTimeSlot(option.option)} - {getEndFromTimeSlot(option.option)}
                       </p>
                     </th>
-                  {:else if option.option !== ""}
-                    <th class="border border-slate-300 py-2 px-5"
-                      >{option.option}</th
-                    >
+                  {:else if option.option !== ''}
+                    <th class="border border-slate-300 py-2 px-5">{option.option}</th>
                   {/if}
                 {/each}
               </tr>
+              <tr />
             </thead>
             <tbody>
               <tr>
@@ -448,7 +469,7 @@
                   </div>
                 </td>
                 {#each $currentPoll.options as option}
-                  {#if option.option !== ""}
+                  {#if option.option !== ''}
                     <td class="border border-slate-300 py-2 px-5">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -490,8 +511,7 @@
                       {#if participant.edit}
                         <input
                           bind:value={participant.name}
-                          on:keypress={(key) =>
-                            key.key === "Enter" ? nameEntered(participant) : ""}
+                          on:keypress={(key) => (key.key === 'Enter' ? nameEntered(participant) : '')}
                           style="height: 24px; width: 157px"
                           class="rounded-md col-start-1 h-min col-end-6 peer w-min px-2 py-2 border-2 border-gray-200 placeholder-gray-300"
                           type="text"
@@ -499,31 +519,24 @@
                           placeholder="Enter your name"
                         />
                       {:else}
-                        <span
-                          class="w-full col-start-1 col-end-6 text-left ml-auto"
-                          >{participant.name}</span
-                        >
+                        <span class="w-full col-start-1 col-end-6 text-left ml-auto">{participant.name}</span>
                       {/if}
                     </div>
                   </td>
                   {#each $currentPoll.options as option, id}
-                    {#if option.option !== ""}
+                    {#if option.option !== ''}
                       <td class="border justify-center">
                         {#if participant.edit && deadlineIsNotReachedValue}
                           <YNINB
                             twoOptions={!$currentPoll.settings.treeOptions}
-                            value={participant.chosenOptions.find(
-                              (o) => o.id === option.id
-                            )?.value}
+                            value={participant.chosenOptions.find((o) => o.id === option.id)?.value}
                             {participant}
                             {option}
                           />
                         {:else}
                           <YNINB
                             twoOptions={!$currentPoll.settings.treeOptions}
-                            value={participant.chosenOptions.find(
-                              (o) => o.id === option.id
-                            )?.value}
+                            value={participant.chosenOptions.find((o) => o.id === option.id)?.value}
                             {participant}
                             {option}
                             disabled
@@ -532,10 +545,7 @@
                       </td>
                     {/if}
                   {/each}
-                  <td
-                    class="border-hidden pl-3"
-                    style="border-left-style: solid;"
-                  >
+                  <td class="border-hidden pl-3" style="border-left-style: solid;">
                     {#if deadlineIsNotReachedValue}
                       {#if myName === participant.name || participant.edit}
                         <!-- Show ICON -->
@@ -608,31 +618,21 @@
           {/each}
         {/if}
 
-        <div
-          class="flex mx-auto items-center justify-center shadow-lg mt-t max-w-lg"
-        >
+        <div class="flex mx-auto items-center justify-center mt-t max-w-lg">
           <form
             on:submit|preventDefault={addComment}
             class="w-full max-w-xl dark:bg-gray-700 bg-white rounded-lg px-4 pt-2"
           >
             <div class="flex flex-wrap -mx-3 mb-6">
-              <span
-                class="px-4 dark:text-gray-200 pt-3 pb-2 text-gray-800 text-lg"
-                >Add a new comment as</span
-              >
+              <span class="px-4 dark:text-gray-200 pt-3 pb-2 text-gray-800 text-lg">Add a new comment as</span>
               <select
                 bind:value={newComment.name}
                 class="bg-transparent my-auto h-min border-solid border-2 rounded border-gray-400"
               >
-                <option
-                  value={myName}
-                  class="bg-transparent border-solid border-2 rounded border-gray-400"
+                <option value={myName} class="bg-transparent border-solid border-2 rounded border-gray-400"
                   >{myName}</option
                 >
-                <option
-                  value="Anonymous"
-                  class="bg-transparent border-solid border-2 rounded border-gray-400"
-                >
+                <option value="Anonymous" class="bg-transparent border-solid border-2 rounded border-gray-400">
                   Anonymous
                 </option>
               </select>

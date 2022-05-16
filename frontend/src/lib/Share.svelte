@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount } from 'svelte';
 
-  import { currentPoll } from "../store";
+  import { currentPoll } from '../store';
 
   export let big = true;
   let facebook = true;
@@ -12,25 +12,21 @@
   let email = true;
   let useOfficial = false;
   let linkCopyed = false;
-  $: pollUrl = useOfficial
-    ? "https://poddle.network" + window.location.search
-    : window.location;
-  let isOfficialPage = window.location.hostname.includes("poddle.network");
+  $: pollUrl = useOfficial ? 'https://poddle.network' + window.location.search : window.location;
+  let isOfficialPage = window.location.hostname.includes('poddle.network');
   const creator = $currentPoll.creatorName;
   const title = $currentPoll.title;
   $: shareText = `${creator} ask you for you Opinion ${title}. Give him Feedback on ${pollUrl} @poddle.network`;
   function shareTwitter() {
-    window.open("https://twitter.com/messages/compose?text=" + shareText);
+    window.open('https://twitter.com/messages/compose?text=' + shareText);
   }
 
   function openMailTo() {
-    window.open("mailto:?subject=Poll via poddle.network&body=" + shareText);
+    window.open('mailto:?subject=Poll via poddle.network&body=' + shareText);
   }
 
   function shareTelegram() {
-    window.open(
-      `https://telegram.me/share/url?url=${pollUrl}&text=I need your opinion. Please answer my poll.`
-    );
+    window.open(`https://telegram.me/share/url?url=${pollUrl}&text=I need your opinion. Please answer my poll.`);
   }
 
   function shareWhatsApp() {
@@ -39,9 +35,7 @@
   }
 
   function shareFacebook() {
-    window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${pollUrl}&quote=${shareText}`
-    );
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${pollUrl}&quote=${shareText}`);
   }
 
   function copyLink() {
@@ -50,9 +44,7 @@
   }
 
   onMount(() => {
-    pollUrl = useOfficial
-      ? "https://poddle.network" + window.location.search
-      : window.location;
+    pollUrl = useOfficial ? 'https://poddle.network' + window.location.search : window.location;
   });
 </script>
 
@@ -63,16 +55,13 @@
     <!--MODAL BODY-->
     <div class="my-4">
       <!-- Side Slider -->
-      <p class="text-xl mb-4 mt-2">Share this link via</p>
+      <p class="text-xl mb-4 mt-2">Share this link</p>
       {#if !isOfficialPage}
         <div class="flex justify-between mx-12">
           <span class="text-lg">Use this side</span>
           <!-- Rounded switch -->
           <label class="switch mx-auto">
-            <input
-              on:click={() => (useOfficial = !useOfficial)}
-              type="checkbox"
-            />
+            <input on:click={() => (useOfficial = !useOfficial)} type="checkbox" />
             <span class="slider round" />
           </label>
           <span class="text-lg">Use poddle.network</span>
@@ -85,12 +74,7 @@
             on:click={() => shareFacebook()}
             class="border hover:bg-[#1877f2] w-12 h-12 fill-[#1877f2] hover:fill-white border-blue-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-blue-500/50 cursor-pointer"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path
                 d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22.336 22.336 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z"
               />
@@ -103,12 +87,7 @@
             on:click={() => shareTwitter()}
             class="border hover:bg-[#1d9bf0] w-12 h-12 fill-[#1d9bf0] hover:fill-white border-blue-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-sky-500/50 cursor-pointer"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path
                 d="M19.633 7.997c.013.175.013.349.013.523 0 5.325-4.053 11.461-11.46 11.461-2.282 0-4.402-.661-6.186-1.809.324.037.636.05.973.05a8.07 8.07 0 0 0 5.001-1.721 4.036 4.036 0 0 1-3.767-2.793c.249.037.499.062.761.062.361 0 .724-.05 1.061-.137a4.027 4.027 0 0 1-3.23-3.953v-.05c.537.299 1.16.486 1.82.511a4.022 4.022 0 0 1-1.796-3.354c0-.748.199-1.434.548-2.032a11.457 11.457 0 0 0 8.306 4.215c-.062-.3-.1-.611-.1-.923a4.026 4.026 0 0 1 4.028-4.028c1.16 0 2.207.486 2.943 1.272a7.957 7.957 0 0 0 2.556-.973 4.02 4.02 0 0 1-1.771 2.22 8.073 8.073 0 0 0 2.319-.624 8.645 8.645 0 0 1-2.019 2.083z"
               />
@@ -120,12 +99,7 @@
           <div
             class="border hover:bg-[#bc2a8d] w-12 h-12 fill-[#bc2a8d] hover:fill-white border-pink-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-pink-500/50 cursor-pointer"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path
                 d="M11.999 7.377a4.623 4.623 0 1 0 0 9.248 4.623 4.623 0 0 0 0-9.248zm0 7.627a3.004 3.004 0 1 1 0-6.008 3.004 3.004 0 0 1 0 6.008z"
               />
@@ -144,12 +118,7 @@
             on:click={() => shareWhatsApp()}
             class="border hover:bg-[#25D366] w-12 h-12 fill-[#25D366] hover:fill-white border-green-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-green-500/50 cursor-pointer"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path
                 fill-rule="evenodd"
                 clip-rule="evenodd"
@@ -165,12 +134,7 @@
             on:click={() => shareTelegram()}
             class="border hover:bg-[#229ED9] w-12 h-12 fill-[#229ED9] hover:fill-white border-sky-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-sky-500/50 cursor-pointer"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path
                 d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"
               />
@@ -183,12 +147,7 @@
             on:click={() => openMailTo()}
             class="border hover:bg-red-400 w-12 h-12 fill-red-400 hover:fill-white border-red-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-sky-500/50 cursor-pointer"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 16 16"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16">
               <path
                 d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"
               />
@@ -198,16 +157,8 @@
       </div>
       <!--                <p class="text-sm">Or copy link</p>-->
       <!--BOX LINK-->
-      <div
-        class="border-2 border-gray-200 w-full flex justify-between items-center mt-4 py-2"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          class="fill-gray-500 ml-2"
-        >
+      <div class="border-2 border-gray-200 w-full flex justify-between items-center mt-4 py-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-gray-500 ml-2">
           <path
             d="M8.465 11.293c1.133-1.133 3.109-1.133 4.242 0l.707.707 1.414-1.414-.707-.707c-.943-.944-2.199-1.465-3.535-1.465s-2.592.521-3.535 1.465L4.929 12a5.008 5.008 0 0 0 0 7.071 4.983 4.983 0 0 0 3.535 1.462A4.982 4.982 0 0 0 12 19.071l.707-.707-1.414-1.414-.707.707a3.007 3.007 0 0 1-4.243 0 3.005 3.005 0 0 1 0-4.243l2.122-2.121z"
           />
@@ -216,12 +167,7 @@
           />
         </svg>
 
-        <input
-          class="w-full outline-none bg-transparent"
-          type="text"
-          placeholder="link"
-          value={pollUrl}
-        />
+        <input class="w-full outline-none bg-transparent" type="text" placeholder="link" value={pollUrl} />
 
         <button
           on:click={() => copyLink()}
@@ -266,7 +212,7 @@
 
   .slider:before {
     position: absolute;
-    content: "";
+    content: '';
     height: 26px;
     width: 26px;
     left: 4px;

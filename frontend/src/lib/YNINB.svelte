@@ -1,8 +1,8 @@
 <script lang="ts">
 
 
-    import {Participant} from "../model/PollParticipant";
-    import {Option} from "../model/Option";
+    import type {Participant} from "../model/PollParticipant";
+    import type {Option} from "../model/Option";
     import {currentPoll} from "../store";
 
     export let disabled = false;

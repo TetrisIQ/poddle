@@ -27,7 +27,6 @@
   on:submit|preventDefault={() => finish()}
   class="mx-auto max-w-4xl rounded overflow-hidden min-h-screen md:min-h-0"
 >
-  <!--    <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains">-->
   <div class="px-6 py-4">
     <div class="font-bold text-xl mb-2">Tell your participants who you are</div>
     <div class="flex flex-wrap gap-3 w-full p-5">
