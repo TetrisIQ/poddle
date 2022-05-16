@@ -1,25 +1,35 @@
 <script lang="ts">
-  import { currentPoll, page } from '../../store';
-  import { uuidv4 } from '../../lib/util';
-  import Poll from '../Poll.svelte';
-  import { Participant } from '../../model/PollParticipant';
-  import { lstore } from '../../gun/LStore';
-  import NotificationControl from '../../lib/NotificationControl';
-  import { pollGun } from '../../gun/PollGun';
+  import { currentPoll, page } from "../../store";
+  import { uuidv4 } from "../../lib/util";
+  import Poll from "../Poll.svelte";
+  import { Participant } from "../../model/PollParticipant";
+  import { myName } from "../../storeLocal";
+  import NotificationControl from "../../lib/NotificationControl";
+  import { pollGun } from "../../gun/PollGun";
+  import { onMount } from "svelte";
+
+  onMount(() => {
+    $currentPoll.creatorName = $myName;
+  });
 
   function finish() {
     const uid = uuidv4();
 
     $currentPoll.id = uid.slice(0, 12);
     $currentPoll.password = uid.slice(12);
-    $currentPoll.participants.push(new Participant($currentPoll.creatorName, true, $currentPoll.options));
-    lstore.setMyName($currentPoll.creatorName);
+    $currentPoll.participants.push(
+      new Participant($currentPoll.creatorName, true, $currentPoll.options)
+    );
+    myName.set($currentPoll.creatorName);
     $currentPoll = $currentPoll;
     //save to DB
 
     pollGun.createPoll($currentPoll);
     page.set(Poll);
-    NotificationControl.info('Poll Created', 'Leave your browser open so that the data can be synchronized');
+    NotificationControl.info(
+      "Poll Created",
+      "Leave your browser open so that the data can be synchronized"
+    );
   }
 </script>
 

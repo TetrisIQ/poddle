@@ -99,8 +99,6 @@ export class PollGun {
         password
       );
       const name = await SEA.encrypt(participant.name, password);
-
-      console.log("ENC Ready", participant, name);
       gun.db
         .get(`poll/${id}/participants`)
         .get(participant.randomKey)
@@ -121,11 +119,6 @@ export class PollGun {
                 participant,
                 name,
                 options
-              );
-            } else {
-              NotificationControl.info(
-                "Poll saved",
-                "The Poll has been saved!"
               );
             }
           }

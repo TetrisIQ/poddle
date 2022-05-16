@@ -6,7 +6,6 @@ import type { ReleaseMessage } from "../model/ReleaseMessage";
 import type { def } from "./PollGun";
 import { pollGun } from "./PollGun";
 import { commentGun } from "./CommentGun";
-import { lstore } from "./LStore";
 import { writable } from "svelte/store";
 import NotificationControl from "../lib/NotificationControl";
 type relayInfo = {
@@ -197,26 +196,8 @@ class PollMutations {
   }
 
   async incrementPollCounter() {
-    // @ts-ignore
-    const promis: Promise<number> = this.db
-      .get("poll-counter")
-      .get(lstore.getClientID())
-      .get("counter")
-      .on((counter) => counter);
-    let currentCount: number;
-    await promis.then((res) => (currentCount = res));
-    if (currentCount === undefined) {
-      // counter is 0
-      await this.db
-        .get("poll-counter")
-        .get(lstore.getClientID())
-        .put({ counter: 1 });
-    } else {
-      await this.db
-        .get("poll-counter")
-        .get(lstore.getClientID())
-        .put({ counter: (currentCount + 1) as number });
-    }
+    //TODO: the relay server has now an endpoint for counting polls
+    // This is a better way to count the amount of polls
   }
 }
 
