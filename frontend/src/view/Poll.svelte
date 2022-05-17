@@ -1,6 +1,6 @@
 <script lang="ts">
   import { currentPoll, modalData } from "../store";
-  import { myName } from "../storeLocal";
+  import { myName, MyPoll, myPolls } from "../storeLocal";
   import { Participant } from "../model/PollParticipant";
   import CheckboxYNINB from "../lib/CheckboxYNINB.svelte";
   import { lstore } from "../gun/LStore";
@@ -17,38 +17,17 @@
   import type { Option } from "../model/Option";
   import ModalControl from "../lib/ModalControl";
   import ChangeName from "../lib/ChangeName.svelte";
+  import type { Poll } from "../model/Poll";
+  import MyPolls from "../lib/MyPolls.svelte";
+  import DeleteParticipant from "../lib/DeleteParticipant.svelte";
 
   // dayjs.extend(RelativeTime)
 
   let params = new URLSearchParams(document.location.search);
   let key = params.get("k");
   let newComment: Comment = new Comment(lstore.getMyName());
-  let mobileSelectedName: string;
+  $: mobileSelectedName = "none";
   let deadlineIsNotReachedValue: boolean;
-
-  $: {
-    // update poll count
-    // const optionCount : Array<number> = [];
-    $currentPoll.options.forEach((o) => {
-      o.count = 0;
-      o.ifNeeded = 0;
-    });
-    $currentPoll.participants.forEach((p) => {
-      // p.chosenOptions.forEach(co => optionCount.push(co.id))
-      p.chosenOptions.forEach((co) => {
-        switch (co.value) {
-          case "yes":
-            let option = $currentPoll.options.find((o) => o.id === co.id);
-            option.count = option.count + 1;
-            break;
-          case "ifNeededBe":
-            let inbOption = $currentPoll.options.find((o) => o.id === co.id);
-            inbOption.ifNeeded = inbOption.ifNeeded + 1;
-            break;
-        }
-      });
-    });
-  }
 
   function formatCreated(date: Dayjs) {
     return dayjs(date).fromNow();
@@ -181,7 +160,43 @@
       const password = key.slice(12);
       await getPoll(id, password);
     }
+    if ($currentPoll.settings.deadline) {
+      deadlineIsNotReachedValue = dayjs($currentPoll.deadline).isAfter(dayjs());
+    } else {
+      deadlineIsNotReachedValue = true;
+    }
+    window.setTimeout(() => addMyPoll($currentPoll), 2000); //After 2 secounds add the poll to myPolls Array (the poll is loaded then, if not - only id and password are beeing saved)
   });
+
+  function addMyPoll(poll: Poll) {
+    if (poll.id === "" && poll.password === "") {
+      return;
+    }
+    if ($myPolls.find((value) => value.id === poll.id) !== undefined) {
+      // Update polls
+      const pollWithSameId: MyPoll = $myPolls.find((p) => p.id === poll.id);
+      const index = $myPolls.indexOf(pollWithSameId);
+      if (index !== -1) {
+        $myPolls[index] = {
+          id: poll.id,
+          title: poll.title,
+          participants: poll.participants.length,
+          password: poll.password,
+          deadline: poll.deadline,
+          created: poll.created,
+        };
+      }
+    } else {
+      $myPolls.push({
+        id: poll.id,
+        title: poll.title,
+        participants: poll.participants.length,
+        password: poll.password,
+        deadline: poll.deadline,
+        created: poll.created,
+      });
+    }
+  }
 
   function save() {
     let valid = true;
@@ -210,7 +225,6 @@
           const othersYesIds = p.chosenOptions
             .filter((o) => o.value === "yes")
             .map((o) => o.id);
-          console.log("My", myYesIds, "other", othersYesIds);
           if (myYesIds.find((id) => othersYesIds.includes(id))) {
             NotificationControl.error(
               "Cannot save",
@@ -237,15 +251,6 @@
     $currentPoll = $currentPoll;
   }
 
-  $: {
-    if ($currentPoll.settings.deadline) {
-      deadlineIsNotReachedValue = dayjs($currentPoll.deadline).isAfter(dayjs());
-    } else {
-      deadlineIsNotReachedValue = true;
-    }
-    lstore.addMyPoll($currentPoll);
-  }
-
   function addComment() {
     newComment.updateTime();
     commentGun.addComment(newComment, $currentPoll.id, $currentPoll.password);
@@ -255,22 +260,17 @@
     save();
   }
 
-  $: console.log($currentPoll);
-
-  function nameEntered(participant: Participant) {
-    $currentPoll.participants.find((p) => p.name === participant.name).edit =
-      !participant.edit;
-    myName.set(participant.name);
-    $currentPoll = $currentPoll;
-  }
-
   function openEdit() {
     modalData.set(mobileSelectedName);
     ModalControl.open("Change Name", "").setCustomBody(ChangeName);
   }
 
   function openDelete() {
-    ModalControl.open("Delete Participant", "");
+    modalData.set(mobileSelectedName);
+    ModalControl.open(
+      "Delete Participant",
+      "Deleting Participants is currently not supported. <br> Vote for it here: <a href='https://github.com/TetrisIQ/poddle/issues/75' target='_blank' alt='github link'>#75</a>"
+    ).setCustomButtonBar(DeleteParticipant);
   }
 
   function getTitleFromTimeSlot(slot: string) {

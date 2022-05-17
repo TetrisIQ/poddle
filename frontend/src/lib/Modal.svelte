@@ -37,11 +37,11 @@
           {/if}
         </div>
         <hr />
-        <div class="ml-auto">
+        <div class="w-full">
           {#if $modalStore.customButtonBar === undefined}
             <button
               on:click={() => closeMe()}
-              class="bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              class="bg-transparent ml-auto hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
             >
               Close
             </button>
