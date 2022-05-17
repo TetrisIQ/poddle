@@ -304,7 +304,7 @@
           by {$currentPoll.creatorName}
           • {formatCreated($currentPoll.created)}
         </div>
-        <div class="space-y-8">
+        <div class="space-y-8 mb-8">
           {#if $currentPoll.location !== ""}
             <div class="grid grid-cols-3 gap-4">
               <div class="text-right col-end-2">
