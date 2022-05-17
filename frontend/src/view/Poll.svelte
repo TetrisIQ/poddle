@@ -169,6 +169,7 @@
   });
 
   function addMyPoll(poll: Poll) {
+    console.log("Adding poll to myPolls");
     if (poll.id === "" && poll.password === "") {
       return;
     }
@@ -176,7 +177,7 @@
       // Update polls
       const pollWithSameId: MyPoll = $myPolls.find((p) => p.id === poll.id);
       const index = $myPolls.indexOf(pollWithSameId);
-      console.log("Adding poll to myPolls");
+      console.log("Update List", pollWithSameId, index);
       if (index !== -1) {
         $myPolls[index] = {
           id: poll.id,
@@ -188,6 +189,7 @@
         };
       }
     } else {
+      console.log("Add to list");
       $myPolls.push({
         id: poll.id,
         title: poll.title,
