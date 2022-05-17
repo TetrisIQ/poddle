@@ -54,7 +54,7 @@
       <div class="flex">
         <button
           on:click={() => logout()}
-          class="px-4 py-2 rounded inline-block dark:bg-gray-800 bg-gray-100 border-0 py-1 px-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
+          class="inline-block dark:bg-gray-800 bg-gray-100 border-0 py-1 px-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
           type="button"
           >Logout
         </button>
@@ -152,7 +152,7 @@
           </button>
           <button
             on:click={() => register()}
-            class="px-4 py-2 rounded inline-block dark:bg-gray-800 bg-gray-100 border-0 py-1 px-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
+            class="inline-block dark:bg-gray-800 bg-gray-100 border-0 py-1 px-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
             type="button"
             >Register
           </button>

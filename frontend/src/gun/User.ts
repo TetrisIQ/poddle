@@ -58,7 +58,7 @@ class UserClass {
   delete(u: string, pass: string) {
     password.set("");
     username.set("");
-    user.delete(username, pass, (cb) => {
+    user.delete(u, pass, (cb) => {
       console.log(cb);
     });
   }
