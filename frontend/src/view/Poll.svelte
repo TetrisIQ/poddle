@@ -442,7 +442,7 @@
                         )}
                       </p>
                     {:else if option.option !== ""}
-                      <p class="border border-slate-300 py-2 px-5">
+                      <p class="py-2 px-5">
                         {option.option}
                       </p>
                     {/if}
