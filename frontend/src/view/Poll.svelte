@@ -176,6 +176,7 @@
       // Update polls
       const pollWithSameId: MyPoll = $myPolls.find((p) => p.id === poll.id);
       const index = $myPolls.indexOf(pollWithSameId);
+      console.log("Adding poll to myPolls");
       if (index !== -1) {
         $myPolls[index] = {
           id: poll.id,
