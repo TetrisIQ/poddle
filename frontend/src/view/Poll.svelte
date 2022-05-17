@@ -26,7 +26,7 @@
   let params = new URLSearchParams(document.location.search);
   let key = params.get("k");
   let newComment: Comment = new Comment(lstore.getMyName());
-  $: mobileSelectedName = "none";
+  $: selectedNameKey = "none";
   let deadlineIsNotReachedValue: boolean;
 
   function formatCreated(date: Dayjs) {
@@ -241,14 +241,14 @@
       $currentPoll.participants.forEach((p) => {
         pollGun.addParticipant(p, $currentPoll.id, $currentPoll.password);
       });
-      mobileSelectedName = "none";
+      selectedNameKey = "none";
     }
   }
 
   function addNewParticipant() {
-    $currentPoll.participants.push(
-      new Participant($myName, true, $currentPoll.options)
-    );
+    const newParticipant = new Participant($myName, true, $currentPoll.options);
+    $currentPoll.participants.push(newParticipant);
+    selectedNameKey = newParticipant.randomKey;
     $currentPoll = $currentPoll;
   }
 
@@ -262,12 +262,12 @@
   }
 
   function openEdit() {
-    modalData.set(mobileSelectedName);
+    modalData.set(selectedNameKey);
     ModalControl.open("Change Name", "").setCustomBody(ChangeName);
   }
 
   function openDelete() {
-    modalData.set(mobileSelectedName);
+    modalData.set(selectedNameKey);
     ModalControl.open(
       "Delete Participant",
       "Deleting Participants is currently not supported. <br> Vote for it here: <a href='https://github.com/TetrisIQ/poddle/issues/75' target='_blank' alt='github link'>#75</a>"
@@ -396,7 +396,7 @@
         <!-- View for mobile -->
         <div class="flex">
           <select
-            bind:value={mobileSelectedName}
+            bind:value={selectedNameKey}
             class="{deadlineIsNotReachedValue
               ? 'w-3/4'
               : 'w-full'} rounded-md mx-1 border-2 bg-transparent border-gray-200 placeholder-gray-300"
@@ -409,7 +409,7 @@
             {/each}
           </select>
           {#if deadlineIsNotReachedValue}
-            {#if mobileSelectedName !== "none"}
+            {#if selectedNameKey !== "none"}
               <button
                 on:click={() => openEdit()}
                 class="w-1/4 bg-indigo-500 text-white mx-1 rounded">Edit</button
@@ -448,7 +448,7 @@
                       </p>
                     {/if}
                   </div>
-                  {#if mobileSelectedName === "none"}
+                  {#if selectedNameKey === "none"}
                     <div class="flex flex-col items-end">
                       <div class="mt-1 -mr-1">
                         <div class="-space-x-1">
@@ -474,14 +474,14 @@
                       </div>
                     </div>
                   {/if}
-                  {#if deadlineIsNotReachedValue && mobileSelectedName !== "none"}
+                  {#if deadlineIsNotReachedValue && selectedNameKey !== "none"}
                     <CheckboxYNINB
                       twoOptions={!$currentPoll.settings.treeOptions}
                       value={$currentPoll.participants
-                        .find((p) => p.randomKey === mobileSelectedName)
+                        .find((p) => p.randomKey === selectedNameKey)
                         ?.chosenOptions.find((o) => o.id === option.id)?.value}
                       participant={$currentPoll.participants.find(
-                        (p) => p.randomKey === mobileSelectedName
+                        (p) => p.randomKey === selectedNameKey
                       )}
                       {option}
                     />
