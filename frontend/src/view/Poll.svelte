@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { currentPoll } from "../store";
+  import { currentPoll, modalData } from "../store";
+  import { myName, MyPoll, myPolls } from "../storeLocal";
   import { Participant } from "../model/PollParticipant";
-  import YNINB from "../lib/YNINB.svelte";
+  import CheckboxYNINB from "../lib/CheckboxYNINB.svelte";
   import { lstore } from "../gun/LStore";
   import { Comment } from "../model/Comment";
   import { onMount } from "svelte";
@@ -14,37 +15,19 @@
   import LoadingPoll from "../lib/LoadingPoll.svelte";
   import Share from "../lib/Share.svelte";
   import type { Option } from "../model/Option";
+  import ModalControl from "../lib/ModalControl";
+  import ChangeName from "../lib/ChangeName.svelte";
+  import type { Poll } from "../model/Poll";
+  import MyPolls from "../lib/MyPolls.svelte";
+  import DeleteParticipant from "../lib/DeleteParticipant.svelte";
 
   // dayjs.extend(RelativeTime)
 
   let params = new URLSearchParams(document.location.search);
   let key = params.get("k");
   let newComment: Comment = new Comment(lstore.getMyName());
-  let myName: string = lstore.getMyName();
-
-  $: {
-    // update poll count
-    // const optionCount : Array<number> = [];
-    $currentPoll.options.forEach((o) => {
-      o.count = 0;
-      o.ifNeeded = 0;
-    });
-    $currentPoll.participants.forEach((p) => {
-      // p.chosenOptions.forEach(co => optionCount.push(co.id))
-      p.chosenOptions.forEach((co) => {
-        switch (co.value) {
-          case "yes":
-            let option = $currentPoll.options.find((o) => o.id === co.id);
-            option.count = option.count + 1;
-            break;
-          case "ifNeededBe":
-            let inbOption = $currentPoll.options.find((o) => o.id === co.id);
-            inbOption.ifNeeded = inbOption.ifNeeded + 1;
-            break;
-        }
-      });
-    });
-  }
+  $: selectedNameKey = "none";
+  let deadlineIsNotReachedValue: boolean;
 
   function formatCreated(date: Dayjs) {
     return dayjs(date).fromNow();
@@ -177,7 +160,44 @@
       const password = key.slice(12);
       await getPoll(id, password);
     }
+    if ($currentPoll.settings.deadline) {
+      deadlineIsNotReachedValue = dayjs($currentPoll.deadline).isAfter(dayjs());
+    } else {
+      deadlineIsNotReachedValue = true;
+    }
+    window.setTimeout(() => addMyPoll($currentPoll), 2000); //After 2 secounds add the poll to myPolls Array (the poll is loaded then, if not - only id and password are beeing saved)
   });
+
+  function addMyPoll(poll: Poll) {
+    if (poll.id === "" && poll.password === "") {
+      return;
+    }
+    if ($myPolls.find((value) => value.id === poll.id) !== undefined) {
+      // Update polls
+      const pollWithSameId: MyPoll = $myPolls.find((p) => p.id === poll.id);
+      const index = $myPolls.indexOf(pollWithSameId);
+      if (index !== -1) {
+        $myPolls[index] = {
+          id: poll.id,
+          title: poll.title,
+          participants: poll.participants.length,
+          password: poll.password,
+          deadline: poll.deadline,
+          created: poll.created,
+        };
+      }
+    } else {
+      $myPolls.push({
+        id: poll.id,
+        title: poll.title,
+        participants: poll.participants.length,
+        password: poll.password,
+        deadline: poll.deadline,
+        created: poll.created,
+      });
+      $myPolls = $myPolls;
+    }
+  }
 
   function save() {
     let valid = true;
@@ -195,7 +215,7 @@
     }
     if ($currentPoll.settings.fcfs) {
       const me: Participant = $currentPoll.participants.find(
-        (m) => m.name === lstore.getMyName()
+        (m) => m.name === $myName
       );
       const myYesIds: Array<number> = me.chosenOptions
         .filter((o) => o.value === "yes")
@@ -206,7 +226,6 @@
           const othersYesIds = p.chosenOptions
             .filter((o) => o.value === "yes")
             .map((o) => o.id);
-          console.log("My", myYesIds, "other", othersYesIds);
           if (myYesIds.find((id) => othersYesIds.includes(id))) {
             NotificationControl.error(
               "Cannot save",
@@ -218,62 +237,41 @@
       });
     }
     if (valid) {
-      $currentPoll = $currentPoll;
-      let myParticipant = $currentPoll.participants.filter(
-        (p) => p.edit === true
-      )[0];
-      if (myParticipant === undefined) {
-        myParticipant = $currentPoll.participants.filter(
-          (p) => p.name === lstore.getMyName()
-        )[0];
-      }
-      pollGun.addParticipant(
-        myParticipant,
-        $currentPoll.id,
-        $currentPoll.password
-      );
-      closeEditOnAllParticipants();
+      // save all participants
+      $currentPoll.participants.forEach((p) => {
+        pollGun.addParticipant(p, $currentPoll.id, $currentPoll.password);
+      });
+      selectedNameKey = "none";
     }
-  }
-
-  function closeEditOnAllParticipants() {
-    $currentPoll.participants.forEach((p) => (p.edit = false));
-    $currentPoll = $currentPoll;
   }
 
   function addNewParticipant() {
-    $currentPoll.participants.push(
-      new Participant(myName, true, $currentPoll.options)
-    );
+    const newParticipant = new Participant($myName, true, $currentPoll.options);
+    $currentPoll.participants.push(newParticipant);
+    selectedNameKey = newParticipant.randomKey;
     $currentPoll = $currentPoll;
-  }
-
-  let deadlineIsNotReachedValue: boolean;
-
-  $: {
-    if ($currentPoll.settings.deadline) {
-      deadlineIsNotReachedValue = dayjs($currentPoll.deadline).isAfter(dayjs());
-    } else {
-      deadlineIsNotReachedValue = true;
-    }
-    lstore.addMyPoll($currentPoll);
   }
 
   function addComment() {
     newComment.updateTime();
     commentGun.addComment(newComment, $currentPoll.id, $currentPoll.password);
     $currentPoll.comments.push(newComment);
-    newComment = new Comment(myName);
+    newComment = new Comment($myName);
     $currentPoll = $currentPoll;
     save();
   }
 
-  function nameEntered(participant: Participant) {
-    $currentPoll.participants.find((p) => p.name === participant.name).edit =
-      !participant.edit;
-    myName = participant.name;
-    lstore.setMyName(participant.name);
-    $currentPoll = $currentPoll;
+  function openEdit() {
+    modalData.set(selectedNameKey);
+    ModalControl.open("Change Name", "").setCustomBody(ChangeName);
+  }
+
+  function openDelete() {
+    modalData.set(selectedNameKey);
+    ModalControl.open(
+      "Delete Participant",
+      "Deleting Participants is currently not supported. <br> Vote for it here: <a href='https://github.com/TetrisIQ/poddle/issues/75' target='_blank' alt='github link'>#75</a>"
+    ).setCustomButtonBar(DeleteParticipant);
   }
 
   function getTitleFromTimeSlot(slot: string) {
@@ -299,14 +297,14 @@
     <LoadingPoll />
   {:else}
     <Share />
-    <div class="mx-auto max-w-4xl rounded overflow-hidden shadow-lg">
+    <div class="mx-auto max-w-4xl rounded overflow-hidden">
       <div class="px-6 py-4">
         <div class="font-bold text-xl">{$currentPoll.title}</div>
         <div class="font-normal mb-8">
           by {$currentPoll.creatorName}
           • {formatCreated($currentPoll.created)}
         </div>
-        <div class="space-y-8">
+        <div class="space-y-8 mb-8">
           {#if $currentPoll.location !== ""}
             <div class="grid grid-cols-3 gap-4">
               <div class="text-right col-end-2">
@@ -395,17 +393,48 @@
             </div>
           {/if}
         </div>
-
-        <div class="overflow-y-auto">
-          <table
-            class="border-collapse border mx-auto mt-8 border-slate-400 overflow-x-auto"
+        <!-- View for mobile -->
+        <div class="flex">
+          <select
+            bind:value={selectedNameKey}
+            class="{deadlineIsNotReachedValue
+              ? 'w-3/4'
+              : 'w-full'} rounded-md mx-1 border-2 bg-transparent border-gray-200 placeholder-gray-300"
           >
-            <thead>
-              <tr>
-                <th class="border border-slate-300 py-2 px-5" />
-                {#each $currentPoll.options as option}
-                  {#if option.type === "week"}
-                    <th class="border border-slate-300 py-2 px-5">
+            <option value="none"
+              >{$currentPoll.participants.length} participants</option
+            >
+            {#each $currentPoll.participants as participant}
+              <option value={participant.randomKey}>{participant.name}</option>
+            {/each}
+          </select>
+          {#if deadlineIsNotReachedValue}
+            {#if selectedNameKey !== "none"}
+              <button
+                on:click={() => openEdit()}
+                class="w-1/4 bg-indigo-500 text-white mx-1 rounded">Edit</button
+              >
+              <button
+                on:click={() => openDelete()}
+                class="w-1/4 bg-red-500 text-white mx-1 rounded">Delete</button
+              >
+            {:else}
+              <button
+                on:click={() => addNewParticipant()}
+                class="inline-flex justify-center w-1/4 bg-indigo-500 mx-1 text-white rounded"
+                >New
+              </button>
+            {/if}
+          {/if}
+        </div>
+        <!-- List the Options -->
+        <div class="divide-y mt-4">
+          {#each $currentPoll.options as option}
+            {#if option.option !== ""}
+              <div class="flex">
+                <div class="flex grow">
+                  <div class="grow text-left my-auto py-2">
+                    {#if option.type === "week"}
                       <p>{getTitleFromTimeSlot(option.option)}</p>
                       <p>{getDateFromTimeSlot(option.option)}</p>
                       <p>
@@ -413,177 +442,56 @@
                           option.option
                         )}
                       </p>
-                    </th>
-                  {:else if option.option !== ""}
-                    <th class="border border-slate-300 py-2 px-5"
-                      >{option.option}</th
-                    >
-                  {/if}
-                {/each}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="border border-slate-300 py-2 px-5">
-                  <div class="grid grid-cols-6 w-max">
-                    <span class="col-start-1 my-auto col-end-6 text-left"
-                      >{$currentPoll.participants.length}
-                      participants</span
-                    >
-                    {#if deadlineIsNotReachedValue}
-                      <svg
-                        on:click={addNewParticipant}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        fill="currentColor"
-                        class="text-right dark:hover:bg-gray-700 hover:bg-gray-200 inline ml-auto"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
-                        />
-                      </svg>
+                    {:else if option.option !== ""}
+                      <p class="py-2 px-5">
+                        {option.option}
+                      </p>
                     {/if}
                   </div>
-                </td>
-                {#each $currentPoll.options as option}
-                  {#if option.option !== ""}
-                    <td class="border border-slate-300 py-2 px-5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="28"
-                        height="28"
-                        fill="currentColor"
-                        class="inline text-blue-700 "
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
-                        />
-                      </svg>
-                      <span class="ml-auto font-bold">{option.count}</span>
-                      <!-- If needed be counter -->
-                      {#if $currentPoll.settings.treeOptions}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="28"
-                          height="28"
-                          fill="currentColor"
-                          class="inline text-yellow-500 "
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
-                          />
-                        </svg>
-                        <span class="ml-auto font-bold">{option.ifNeeded}</span>
-                      {/if}
-                    </td>
-                  {/if}
-                {/each}
-              </tr>
-              {#each $currentPoll.participants as participant}
-                <tr>
-                  <td class="border border-slate-300 px-5">
-                    <div class="grid grid-cols-6 gap-4">
-                      {#if participant.edit}
-                        <input
-                          bind:value={participant.name}
-                          on:keypress={(key) =>
-                            key.key === "Enter" ? nameEntered(participant) : ""}
-                          style="height: 24px; width: 157px"
-                          class="rounded-md col-start-1 h-min col-end-6 peer w-min px-2 py-2 border-2 border-gray-200 placeholder-gray-300"
-                          type="text"
-                          name="nameInput"
-                          placeholder="Enter your name"
-                        />
-                      {:else}
-                        <span
-                          class="w-full col-start-1 col-end-6 text-left ml-auto"
-                          >{participant.name}</span
-                        >
-                      {/if}
+                  {#if selectedNameKey === "none"}
+                    <div class="flex flex-col items-end">
+                      <div class="mt-1 -mr-1">
+                        <div class="-space-x-1">
+                          {#each $currentPoll.participants as participant}
+                            {#if participant.chosenOptions
+                              .filter((p) => p.value === "yes")
+                              .filter((p) => p.id === option.id).length > 0}
+                              <span
+                                class="inline-block h-5 w-5 shrink-0 rounded-full text-center text-gray-600 bg-green-400 text-xs leading-5 ring-1 ring-white"
+                                >{String(participant.name).slice(0, 1)}</span
+                              >
+                            {/if}
+                            {#if participant.chosenOptions
+                              .filter((p) => p.value === "ifNeededBe")
+                              .filter((p) => p.id === option.id).length > 0}
+                              <span
+                                class="inline-block h-5 w-5 shrink-0 rounded-full text-center text-gray-600 bg-yellow-400 text-xs leading-5 ring-1 ring-white"
+                                >{String(participant.name).slice(0, 1)}</span
+                              >
+                            {/if}
+                          {/each}
+                        </div>
+                      </div>
                     </div>
-                  </td>
-                  {#each $currentPoll.options as option, id}
-                    {#if option.option !== ""}
-                      <td class="border justify-center">
-                        {#if participant.edit && deadlineIsNotReachedValue}
-                          <YNINB
-                            twoOptions={!$currentPoll.settings.treeOptions}
-                            value={participant.chosenOptions.find(
-                              (o) => o.id === option.id
-                            )?.value}
-                            {participant}
-                            {option}
-                          />
-                        {:else}
-                          <YNINB
-                            twoOptions={!$currentPoll.settings.treeOptions}
-                            value={participant.chosenOptions.find(
-                              (o) => o.id === option.id
-                            )?.value}
-                            {participant}
-                            {option}
-                            disabled
-                          />
-                        {/if}
-                      </td>
-                    {/if}
-                  {/each}
-                  <td
-                    class="border-hidden pl-3"
-                    style="border-left-style: solid;"
-                  >
-                    {#if deadlineIsNotReachedValue}
-                      {#if myName === participant.name || participant.edit}
-                        <!-- Show ICON -->
-                        <div
-                          on:click={() => nameEntered(participant)}
-                          class="inline ml-auto dark:text-white dark:hover:text-gray-200 hover:bg-gray-200"
-                          style="height: 32px; width: 32px"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            fill="currentColor"
-                            class="m-auto h-full"
-                            viewBox="0 0 16 16"
-                          >
-                            <path
-                              d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
-                            />
-                          </svg>
-                        </div>
-                      {:else}
-                        <!-- Hide icon -->
-                        <div
-                          on:click={() => nameEntered(participant)}
-                          class="inline ml-auto dark:text-gray-900 text-white dark:hover:text-white dark:hover:bg-gray-200 hover:text-black hover:bg-gray-200"
-                          style="height: 32px; width: 32px"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            fill="currentColor"
-                            class="m-auto h-full"
-                            viewBox="0 0 16 16"
-                          >
-                            <path
-                              d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
-                            />
-                          </svg>
-                        </div>
-                      {/if}
-                    {/if}
-                  </td>
-                </tr>{/each}
-            </tbody>
-          </table>
+                  {/if}
+                  {#if deadlineIsNotReachedValue && selectedNameKey !== "none"}
+                    <CheckboxYNINB
+                      twoOptions={!$currentPoll.settings.treeOptions}
+                      value={$currentPoll.participants
+                        .find((p) => p.randomKey === selectedNameKey)
+                        ?.chosenOptions.find((o) => o.id === option.id)?.value}
+                      participant={$currentPoll.participants.find(
+                        (p) => p.randomKey === selectedNameKey
+                      )}
+                      {option}
+                    />
+                  {/if}
+                </div>
+              </div>
+            {/if}
+          {/each}
         </div>
+
         <button
           on:click={() => save()}
           class="inline-flex mt-5 dark:bg-gray-800 bg-gray-300 border-0 py-2 px-6 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base md:mt-0"
@@ -608,9 +516,7 @@
           {/each}
         {/if}
 
-        <div
-          class="flex mx-auto items-center justify-center shadow-lg mt-t max-w-lg"
-        >
+        <div class="flex mx-auto items-center justify-center mt-t max-w-lg">
           <form
             on:submit|preventDefault={addComment}
             class="w-full max-w-xl dark:bg-gray-700 bg-white rounded-lg px-4 pt-2"
@@ -625,9 +531,9 @@
                 class="bg-transparent my-auto h-min border-solid border-2 rounded border-gray-400"
               >
                 <option
-                  value={myName}
+                  value={$myName}
                   class="bg-transparent border-solid border-2 rounded border-gray-400"
-                  >{myName}</option
+                  >{$myName}</option
                 >
                 <option
                   value="Anonymous"

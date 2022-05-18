@@ -1,55 +1,67 @@
-import "gun/sea"
-import {gun} from "./index";
+import "gun/sea";
+import { gun } from "./index";
 import NotificationControl from "../lib/NotificationControl";
-import {lstore} from "./LStore";
+import { password, username } from "../storeLocal";
 
 const user = gun.db.user();
-
 class UserClass {
+  uname: string;
+  pw: string;
 
-    login(username: string, password: string) {
-        return user.auth(username, password, (ack) => {
-            if (ack.err !== undefined) {
-                NotificationControl.error("Cannot Login", ack.err)
-                lstore.setPassword(null) // in case auto login doesn't work
-                lstore.setUsername(null)
-            } else {
-                lstore.setUsername(username)
-                lstore.setPassword(password)
-            }
-        })
-    }
+  constructor() {
+    username.subscribe((value) => {
+      this.uname = value;
+    });
+    password.subscribe((value) => {
+      if (value !== undefined) {
+        this.pw = atob(value);
+      }
+    });
+  }
 
-    register(username: string, password: string) {
-        user.create(username, password, (ack) => {
-            if (ack.err !== undefined) {
-                NotificationControl.error("Cannot Register", ack.err)
-            }
-        })
-    }
+  login(u: string, p: string) {
+    return user.auth(u, p, (ack) => {
+      if (ack.err !== undefined) {
+        NotificationControl.error("Cannot Login", ack.err);
+        password.set(""); // in case auto login doesn't work
+        username.set("");
+      } else {
+        username.set(u);
+        password.set(btoa(p));
+      }
+    });
+  }
 
-    isLoggedIn(): boolean {
-        if (lstore.getUsername() !== null && lstore.getPassword() !== null) {
-            // Perform auto login
-            this.login(lstore.getUsername(), lstore.getPassword())
-            return true;
-        }
-        return user.is
-    }
+  register(u: string, p: string) {
+    user.create(u, p, (ack) => {
+      if (ack.err !== undefined) {
+        NotificationControl.error("Cannot Register", ack.err);
+      }
+    });
+  }
 
-    logout() {
-        lstore.setUsername(null);
-        lstore.setPassword(null);
-        user.leave()
+  isLoggedIn(): boolean {
+    if (this.uname !== null && this.pw !== null) {
+      // Perform auto login
+      this.login(this.uname, this.pw);
+      return true;
     }
+    return user.is;
+  }
 
-    delete(username: string, pass: string) {
-        lstore.setUsername(null);
-        lstore.setPassword(null);
-        user.delete(username, pass, (cb => {
-            console.log(cb)
-        }))
-    }
+  logout() {
+    password.set("");
+    username.set("");
+    user.leave();
+  }
+
+  delete(u: string, pass: string) {
+    password.set("");
+    username.set("");
+    user.delete(u, pass, (cb) => {
+      console.log(cb);
+    });
+  }
 }
 
 export const users = new UserClass();
