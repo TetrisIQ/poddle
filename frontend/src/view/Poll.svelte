@@ -38,7 +38,7 @@
       return "undefined";
     }
     if (deadlineIsNotReachedValue) {
-      return "Deadline ends in " + dayjs(date).toNow(false);
+      return "Deadline ends in " + dayjs(date).toNow(false).replace("ago", "");
     }
     return "This poll is over since " + dayjs(date).fromNow(true);
   }
