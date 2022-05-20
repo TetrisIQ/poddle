@@ -17,7 +17,10 @@
     page.set(NewMessage);
   }
 
-  if (!localStorage.getItem("clientID").startsWith('"')) {
+  if (
+    localStorage.getItem("clientID") != null &&
+    !localStorage.getItem("clientID").startsWith('"')
+  ) {
     // Migrate Localstorage to parsable JS Objects
     localStorage.setItem(
       "clientID",
