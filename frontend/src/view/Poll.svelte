@@ -306,7 +306,7 @@
         </div>
         <div class="space-y-8 mb-8">
           {#if $currentPoll.location !== ""}
-            <div class="grid grid-cols-3 gap-4">
+            <div class="flex gap-4">
               <div class="text-right col-end-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -328,7 +328,7 @@
             </div>
           {/if}
           {#if $currentPoll.note !== ""}
-            <div class="grid grid-cols-3 gap-4">
+            <div class="flex gap-4">
               <div class="text-right col-end-2">
                 <svg
                   class="ml-auto h-full bi bi-geo-alt"
@@ -349,7 +349,7 @@
           {/if}
 
           {#if $currentPoll.settings.deadline}
-            <div class="grid grid-cols-3 gap-4">
+            <div class="flex gap-4">
               <div class="text-right col-end-2">
                 <svg
                   class="ml-auto h-full bi bi-geo-alt"
@@ -371,7 +371,7 @@
           {/if}
 
           {#if $currentPoll.settings.voteLimit}
-            <div class="grid grid-cols-3 gap-4">
+            <div class="flex gap-4">
               <div class="text-right col-end-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -502,7 +502,7 @@
         <h2 class="text-2xl mt-8">Comments</h2>
         {#if $currentPoll.comments !== undefined}
           {#each $currentPoll.comments as comment}
-            <div class="grid my-4 grid-cols-3 gap-4">
+            <div class="flex my-4 gap-4">
               <div class="text-right col-end-2">
                 <span class="text-gray-500"
                   >{comment.name}
