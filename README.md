@@ -34,15 +34,16 @@
   </h3>
 </div>
 
-
-## Table of Contents
-- [Features](#features)
+- [Available options](#available-options)
 - [What means decentralized](#what-means-decentralized)
 - [FAQ](#faq)
 - [Installation](#installation)
+  - [From DockerHub](#from-dockerhub)
+- [Support](#support)
 - [See Also](#see-also)
 
-## Features
+## Available options
+
 - **Yes, No, If needed be** You can choose between three options. Yes this option is okay for me. No this is not acceptable. And if needed be.
 - **Set deadlines** After the deadline is reached. Your Poll cannot be edited. Comments are still possible. But the answers are locked.
 - **Add Comments** You can add Anonymous comments to the Poll and discuss about the answers and topics.
@@ -51,25 +52,35 @@
 > For planed features take a look at the GitHub issues
 
 ## What means decentralized
+
 ...
 
 ## FAQ
+
 > If you have any issues, create an [issue on GitHub](https://github.com/TetrisIQ/poddle/issues/new?assignees=&labels=&template=bug_report.md&title=)
 
 ## Installation
+
+### From DockerHub
+
+Pull the latest poddle image from docker hub and run it with  
+//TODO: ADD CONFIG
+`docker volume create poddle_data`  
+`docker run -d -p 8080:8765 --name=poddle --restart=always -v poddle_data:/. tetrisiq/poddle`
+
 - Clone the git repo
 - Install the dependency's with `yarn install`
 - Start the application `yarn dev`
 
 To start the test with cypress enter `cypress run` into your console.
 
-## Support 
+## Support
+
 [![Foo](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/tetrisiq)  
 Or host a gun relay node and add it to the network. If you need help write me :mailbox:
 
 ## See Also
-- [gun.eco](https://gun.eco) - decentralised Database 
+
+- [gun.eco](https://gun.eco) - decentralised Database
 - [Svelte in 100 Seconds](https://www.youtube.com/watch?v=rv3Yq-B8qp4) - video by Fireship
 - [svelte Tutorial](https://svelte.dev/tutorial/basics/) - A very good start point for learning svelte
-
-
