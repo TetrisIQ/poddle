@@ -8,7 +8,7 @@ WORKDIR /work/frontend
 RUN echo "Build frontend"
 RUN mkdir -p "node_modules"
 RUN yarn install
-RUN VITE_RELAY=http://localhost:8765/gun yarn build
+RUN yarn build
 
 WORKDIR /work
 COPY relay ./relay

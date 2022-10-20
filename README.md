@@ -31,17 +31,29 @@
       Cypress Dashboard
     </a>
   </h3>
+<<<<<<< HEAD
 </div> -->
 
 ## Table of Contents
 
 - [Features](#features)
+=======
+</div>
+
+- [Available options](#available-options)
+>>>>>>> e4d9798c8671695c6f8e751b420485744a45a4b1
 - [What means decentralized](#what-means-decentralized)
 - [FAQ](#faq)
 - [Installation](#installation)
+  - [From DockerHub](#from-dockerhub)
+- [Support](#support)
 - [See Also](#see-also)
 
+<<<<<<< HEAD
 ## Features
+=======
+## Available options
+>>>>>>> e4d9798c8671695c6f8e751b420485744a45a4b1
 
 - **Yes, No, If needed be** You can choose between three options. Yes this option is okay for me. No this is not acceptable. And if needed be.
 - **Set deadlines** After the deadline is reached. Your Poll cannot be edited. Comments are still possible. But the answers are locked.
@@ -60,6 +72,16 @@
 
 ## Installation
 
+<<<<<<< HEAD
+=======
+### From DockerHub
+
+Pull the latest poddle image from docker hub and run it with  
+//TODO: ADD CONFIG
+`docker volume create poddle_data`  
+`docker run -d -p 8080:8765 --name=poddle --restart=always -v poddle_data:/. tetrisiq/poddle`
+
+>>>>>>> e4d9798c8671695c6f8e751b420485744a45a4b1
 - Clone the git repo
 - Install the dependency's with `yarn install`
 - Start the application `yarn dev`
