@@ -5,7 +5,7 @@ services:
     ports:
       - "5000:8765"
     environment:
-      - PUBLIC_ADDRESS=http://localhost:8080/gun
-      - SERVER_NAME=ReplaceMe
-      - CONNECT_TO_PEERS=false
-      - OTHER_PEERS=["https://gun.tetrisiq.de/gun"]
+      - PUBLIC_ADDRESS=${PUBLIC_ADDRESS}
+      - SERVER_NAME=${SERVER_NAME}
+      - CONNECT_TO_PEERS=${CONNECT_TO_PEERS}
+      - OTHER_PEERS=${OTHER_PEERS}
