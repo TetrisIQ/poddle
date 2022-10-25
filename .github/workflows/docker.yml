@@ -34,10 +34,6 @@ jobs:
       #     username: ${{ github.actor }}
       #     password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Create .env file
-      - name: Copy env file
-        run: echo "PUBLIC_ADDRESS=http://localhost:8080/gun\nSERVER_NAME=LocalTest\nCONNECT_TO_PEERS=false\nOTHER_PEERS=["https://gun.tetrisiq.de/gun"]" > .env
-
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v2
 
