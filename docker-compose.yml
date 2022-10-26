@@ -3,7 +3,7 @@ services:
   poddle:
     image: "tetrisiq/poddle"
     ports:
-      - "5000:8765"
+      - "8765:8765"
     environment:
       - PUBLIC_ADDRESS=${PUBLIC_ADDRESS}
       - SERVER_NAME=${SERVER_NAME}
