@@ -12,7 +12,7 @@
     "tsc": "tsc",
     "dev:start": "npm-run-all build start",
     "build": "npm-run-all clean tsc",
-    "dev": "nodemon --watch src -e ts --exec npm run dev:start",
+    "dev": "env $(cat .env) nodemon --watch src -e ts --exec npm run dev:start",
     "dev:example": "nodemon --watch src -e ts --exec npm run dev:start",
     "start": "node ."
   },
