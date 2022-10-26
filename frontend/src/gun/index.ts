@@ -39,7 +39,10 @@ class PollMutations {
       this.db = new GUN({ peers: relays });
     } else {
       // craft the relay from your url
-      this.db = new GUN(location.host + "/gun");
+      const locationSplitted = location.href.split("/");
+      const relay = locationSplitted[0] + "//" + locationSplitted[2] + "/gun";
+      this.db = new GUN(relay);
+      console.debug("Connection to: " + relay);
     }
   }
 
@@ -47,7 +50,6 @@ class PollMutations {
     this.myRelays = [];
     newRelays.forEach((r) => this.myRelays.push(r.address));
     this.db = new GUN({ peers: this.myRelays });
-    console.log(this.db);
     NotificationControl.info("Changed relay server", "");
   }
 
