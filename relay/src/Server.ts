@@ -2,12 +2,8 @@ let port = 8765;
 let express = require("express");
 const cron = require("node-cron");
 let Gun = require("gun");
-require("isomorphic-fetch");
+// require("isomorphic-fetch");
 // require('gun/axe');
-
-let app = express();
-app.use(Gun.serve);
-app.use("/", express.static("../dist"));
 
 let myAddress = process.env.PUBLIC_ADDRESS || undefined;
 let myCountry = process.env.COUNTRY || "UNKNOWN";
@@ -26,9 +22,11 @@ if (!myAddress.startsWith("http")) {
   throw new Error("Public address should end with /gun");
 }
 
+let app = express();
 let server = app.listen(port);
 let gun = Gun({ file: "data", web: server });
-
+app.use(Gun.serve);
+app.use("/", express.static("../dist"));
 console.log("Server started on port " + port + " with /gun");
 
 app.get(
@@ -83,8 +81,8 @@ app.get(
 );
 
 if (connectToOtherPeers) {
-  verifyOtherPeers().then(() => console.log("Initial verification success"));
-  cron.schedule("0 0 * * *", () => verifyOtherPeers());
+  // verifyOtherPeers().then(() => console.log("Initial verification success"));
+  // cron.schedule("0 0 * * *", () => verifyOtherPeers());
   gun.opt({ peers: otherPeers });
 }
 
@@ -99,53 +97,53 @@ process.on("exit", function () {
   gun.get("peers").get(myAddress).put({ address: myAddress, status: "DOWN" });
 });
 
-async function verifyOtherPeers() {
-  const allKeys = Object.keys(await gun.get("peers"));
-  for (const key of allKeys) {
-    if (key !== "_" && !key.includes("localhost")) {
-      // Don't verify localhost
-      const host = await gun.get(`peers/${key}`);
-      // Check if peers are up
-      fetch(key).then((res) => {
-        if (res.ok) {
-          if (host.status !== "UP") {
-            // Update GUN
-            gun.get(`peers/${key}`).put({ status: "UP" });
-          }
-        } else {
-          if (host.status !== "DOWN") {
-            // Update GUN
-            gun.get(`peers/${key}`).put({ status: "DOWN" });
-          }
-        }
-      });
+// async function verifyOtherPeers() {
+//   const allKeys = Object.keys(await gun.get("peers"));
+//   for (const key of allKeys) {
+//     if (key !== "_" && !key.includes("localhost")) {
+//       // Don't verify localhost
+//       const host = await gun.get(`peers/${key}`);
+//       // Check if peers are up
+//       fetch(key).then((res) => {
+//         if (res.ok) {
+//           if (host.status !== "UP") {
+//             // Update GUN
+//             gun.get(`peers/${key}`).put({ status: "UP" });
+//           }
+//         } else {
+//           if (host.status !== "DOWN") {
+//             // Update GUN
+//             gun.get(`peers/${key}`).put({ status: "DOWN" });
+//           }
+//         }
+//       });
 
-      // Check Country http://ip-api.com/json/gun.tetrisiq.de
-      // sometime fetch throw an TypeError, but the request work
-      fetch(
-        `http://ip-api.com/json/${key
-          .replace("http://", "")
-          .replace("https://", "")
-          .replace(
-            "/gun",
-            ""
-          )}?fields=status,message,country,countryCode,timezone`
-      )
-        .then((res) => res.json())
-        .then(async (res) => {
-          if (res.status === "fail") {
-            console.log(res);
-          } else {
-            // Update GUN
-            const tmp = await gun
-              .get(`peers/${key}`)
-              .put({ country: res.country });
-            console.log("RES", tmp);
-          }
-        });
+//       // Check Country http://ip-api.com/json/gun.tetrisiq.de
+//       // sometime fetch throw an TypeError, but the request work
+//       fetch(
+//         `http://ip-api.com/json/${key
+//           .replace("http://", "")
+//           .replace("https://", "")
+//           .replace(
+//             "/gun",
+//             ""
+//           )}?fields=status,message,country,countryCode,timezone`
+//       )
+//         .then((res) => res.json())
+//         .then(async (res) => {
+//           if (res.status === "fail") {
+//             console.log(res);
+//           } else {
+//             // Update GUN
+//             const tmp = await gun
+//               .get(`peers/${key}`)
+//               .put({ country: res.country });
+//             console.log("RES", tmp);
+//           }
+//         });
 
-      //TODO: add other peers to connection
-    }
-  }
-  console.log("Verify other peers success");
-}
+//       //TODO: add other peers to connection
+//     }
+//   }
+//   console.log("Verify other peers success");
+// }
