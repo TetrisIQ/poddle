@@ -10,4 +10,4 @@ services:
       - CONNECT_TO_PEERS=${CONNECT_TO_PEERS}
       - OTHER_PEERS=${OTHER_PEERS}
     volumes:
-      - relay/data:~/data
+      - ./data:/work/relay/data/
