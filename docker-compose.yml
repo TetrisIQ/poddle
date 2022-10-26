@@ -9,3 +9,5 @@ services:
       - SERVER_NAME=${SERVER_NAME}
       - CONNECT_TO_PEERS=${CONNECT_TO_PEERS}
       - OTHER_PEERS=${OTHER_PEERS}
+    volumes:
+      - relay/data:~/data
