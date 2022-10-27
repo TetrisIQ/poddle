@@ -10,4 +10,7 @@ services:
       - CONNECT_TO_PEERS=${CONNECT_TO_PEERS}
       - OTHER_PEERS=${OTHER_PEERS}
     volumes:
-      - ./data:/work/relay/data/
+      - poddle_data:/work/relay/data/
+
+volumes:
+  poddle_data:
