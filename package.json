@@ -1,5 +1,5 @@
 {
-	"name": "sveltekit-gun-example",
+	"name": "poddle.network",
 	"version": "1.0.0",
 	"scripts": {
 		"dev": "node server/dev/index.js",
@@ -11,14 +11,18 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"clearData": "rm data radata -dr"
 	},
 	"devDependencies": {
+		"@beyonk/svelte-datepicker": "^5.0.4",
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-node": "^1.2.3",
 		"@sveltejs/kit": "^1.5.0",
+		"@types/express": "^4.17.17",
 		"autoprefixer": "^10.4.14",
+		"dayjs": "^1.11.7",
 		"postcss": "^8.4.21",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
@@ -26,12 +30,16 @@
 		"svelte-check": "^3.0.1",
 		"tailwindcss": "^3.3.1",
 		"tslib": "^2.4.1",
-		"@types/express": "^4.17.17",
-		"typescript": "^5.0.0"
+		"tui-calendar": "^1.15.3",
+		"typescript": "^5.0.0",
+		"unique-username-generator": "^1.1.3",
+		"uuid": "^9.0.0"
 	},
 	"type": "module",
 	"dependencies": {
 		"express": "^4.18.2",
-		"gun": "^0.2020.1239"
+		"gun": "^0.2020.1239",
+		"svelte-local-storage-store": "^0.4.0",
+		"svelte-overlay": "^1.4.1"
 	}
 }

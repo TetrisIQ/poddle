@@ -1,12 +1,12 @@
 <script lang="ts">
 </script>
 
-<section class="dark:text-gray-400 dark:bg-gray-900 min-h-full text-gray-600 body-font">
+<section class="  min-h-full text-gray-600 body-font">
 	<div class="container mx-auto flex px-5 pt-12 sm:pt-24 pb-16 md:flex-row flex-col items-center">
 		<div
 			class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left md:mb-0 items-center text-center"
 		>
-			<h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium dark:text-white text-gray-900">
+			<h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
 				Meetings made simple!
 				<br class="hidden lg:inline-block" />With Poddle
 			</h1>
@@ -23,7 +23,7 @@
 				</button>
 				<button
 					on:click={() => window.open('https://github.com/tetrisiq/poddle', '_blank')}
-					class="ml-4 inline-flex dark:text-gray-400 dark:bg-gray-800 text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none dark:hover:bg-gray-700 dark:hover:text-white hover:bg-gray-200 rounded text-lg"
+					class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg"
 				>
 					Learn more
 				</button>
@@ -43,7 +43,7 @@
 </section>
 
 <section class="container text-left mx-auto px-5 md:flex-row flex-col items-center">
-	<h2 class="text-2xl text-left sm:text-3xl mb-8 font-medium dark:text-white text-gray-900">
+	<h2 class="text-2xl text-left sm:text-3xl mb-8 font-medium text-gray-900">
 		Everything you need to know
 	</h2>
 	<div class="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-12 mb-20">

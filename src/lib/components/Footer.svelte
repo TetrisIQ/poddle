@@ -2,16 +2,14 @@
 	import Logo from './Logo.svelte';
 </script>
 
-<footer
-	class="dark:text-gray-400 dark:bg-gray-700 bg-gray-300 text-gray-600 body-font {$$props.class}"
->
+<footer class="  bg-gray-300 text-gray-600 body-font {$$props.class}">
 	<div
 		class="container px-5 py-12 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col"
 	>
 		<div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
 			<a
 				href="/"
-				class="flex title-font font-medium items-center md:justify-start justify-center dark:text-white text-gray-900"
+				class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900"
 			>
 				<Logo size={40} />
 				<span class="ml-3 text-xl">Poddle</span>
@@ -23,7 +21,7 @@
 				<a
 					href="https://github.com/TetrisIQ/poddle"
 					target="_blank"
-					class="title-font font-medium dark:text-white text-gray-900 tracking-widest text-sm mb-3"
+					class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3"
 				>
 					GitHub <svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -43,40 +41,30 @@
 						<a
 							href="https://github.com/TetrisIQ/poddle/blob/main/CONTRIBUTING.md"
 							target="_blank"
-							class="dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800"
-							>How to Contribute</a
+							class="  text-gray-600 hover:text-gray-800">How to Contribute</a
 						>
 					</li>
 					<li>
 						<a
 							href="https://github.com/TetrisIQ/poddle/issues/new?assignees=&labels=bug,UI&template=bug_report.md&title="
 							target="_blank"
-							class="dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800"
-							>Report a bug</a
+							class="  text-gray-600 hover:text-gray-800">Report a bug</a
 						>
 					</li>
 					<li>
 						<a
 							href="https://github.com/TetrisIQ/poddle/issues/new?assignees=&labels=UI&template=feature_request.md&title="
 							target="_blank"
-							class="dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800"
-							>Submit a new Feature</a
+							class="  text-gray-600 hover:text-gray-800">Submit a new Feature</a
 						>
 					</li>
 				</nav>
 			</div>
 			<div class="lg:w-1/4 md:w-1/2 w-full px-4">
-				<h2
-					class="title-font font-medium dark:text-white text-gray-900 tracking-widest text-sm mb-3"
-				>
-					Wiki's
-				</h2>
+				<h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">Wiki's</h2>
 				<nav class="list-none mb-10">
 					<li>
-						<a
-							href="https://gun.eco"
-							target="_blank"
-							class="dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800"
+						<a href="https://gun.eco" target="_blank" class="  text-gray-600 hover:text-gray-800"
 							>About gun.js</a
 						>
 					</li>
@@ -84,16 +72,14 @@
 						<a
 							href="https://github.com/TetrisIQ/poddle/wiki"
 							target="_blank"
-							class="dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800"
-							>Docs</a
+							class="  text-gray-600 hover:text-gray-800">Docs</a
 						>
 					</li>
 					<li>
 						<a
 							href="https://github.com/TetrisIQ/poddle/discussions"
 							target="_blank"
-							class="dark:text-gray-400 dark:hover:text-white text-gray-600 hover:text-gray-800"
-							>Discussion</a
+							class="  text-gray-600 hover:text-gray-800">Discussion</a
 						>
 					</li>
 				</nav>

@@ -6,7 +6,6 @@ import { createServer as createViteServer } from 'vite';
 import Gun from 'gun';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 async function createServer() {
 	const app = express();
 	const port = 8765;
@@ -63,10 +62,10 @@ async function createServer() {
 	const server = app.listen(port, '127.0.0.1');
 	console.log('Server started on port ' + port + ' with /gun');
 
-	var gun = Gun({ file: 'data', web: server });
+	let gun = Gun({ file: 'data', web: server });
 
-	global.Gun = Gun; /// make global to `node --inspect` - debug only
-	global.gun = gun; /// make global to `node --inspect` - debug only
+	global.Gun = Gun; /// make global to `node --inspect`
+	global.gun = gun; /// make global to `node --inspect` to get the gun instance on the backend side
 }
 
 createServer();

@@ -1,22 +1,24 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { user } from '$lib/store/userStore';
 	import Logo from './Logo.svelte';
 </script>
 
-<header class="dark:text-gray-400 dark:bg-gray-700 bg-gray-300 text-gray-600 body-font">
+<header class=" bg-gray-300 text-gray-600 body-font">
 	<div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
 		<nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 flex flex-wrap items-center text-base w-full">
 			<a
 				href="/"
-				class="flex title-font font-medium items-center dark:text-white justify-center w-full mx-auto sm:mx-0 sm:w-min sm:justify-start text-gray-900 mb-4 md:mb-0 pr-4"
+				class="flex title-font font-medium items-center justify-center w-full mx-auto sm:mx-0 sm:w-min sm:justify-start text-gray-900 mb-4 md:mb-0 pr-4"
 			>
 				<Logo />
 				<span class="ml-3 text-xl">Poddle</span>
 			</a>
 			<div class="justify-center inline-flex w-full mx-auto sm:mx-0 sm:w-min sm:justify-start">
-				<a href="/feature" class="mx-2 dark:hover:text-white hover:text-gray-900">Features</a>
+				<a href="/feature" class="mx-2 hover:text-gray-900">Features</a>
 				<button
 					on:click={() => window.open('https://github.com/tetrisiq/poddle', '_blank')}
-					class="flex mx-2 dark:hover:text-white hover:text-gray-900"
+					class="flex mx-2 hover:text-gray-900"
 					>GitHub
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +37,7 @@
 			<div class="justify-end inline-flex mx-auto sm:mx-0 sm:ml-auto">
 				<a
 					href="/user"
-					class="inline-flex ml-auto items-center border-0 py-1 p-3 mx-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
+					class="inline-flex ml-auto items-center border-0 py-1 p-3 mx-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +56,7 @@
 				</a>
 				<a
 					href="/create"
-					class="inline-flex items-center dark:bg-gray-800 bg-gray-100 border-0 py-1 px-3 focus:outline-none dark:hover:bg-gray-700 hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
+					class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
 				>
 					<svg
 						fill="none"

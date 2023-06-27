@@ -17,8 +17,8 @@ var gun = Gun({ file: 'data', web: server });
 // app.use(handler);
 app.use(handler);
 
-global.Gun = Gun; /// make global to `node --inspect` - debug only
-global.gun = gun; /// make global to `node --inspect` - debug only
+global.Gun = Gun; /// make global to `node --inspect`
+global.gun = gun; /// make global to `node --inspect` - to get the gun instance on the backend side
 
 console.log('Server started on port ' + port + ' with /gun');
 server.listen(port, '0.0.0.0');
