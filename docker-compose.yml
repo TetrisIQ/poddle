@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   app:
-    image: "ghcr.io/tetrisiq/sveltekit-gunjs:latest"
+    image: "docker pull ghcr.io/tetrisiq/poddle:latest"
     ports:
       - "8765:8765" 
     # volumes: 
