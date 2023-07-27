@@ -11,11 +11,11 @@
 <!-- badges -->
 <div align="center">
   <!-- Build Status -->
-    <img src="https://img.shields.io/docker/v/tetrisiq/poddle?logo=docker&style=flat-square"
-      alt="Docker Status" />
+    <!-- <img src="https://img.shields.io/docker/v/tetrisiq/poddle?logo=docker&style=flat-square"
+      alt="Docker Status" /> -->
   <!-- Docker pulls -->
-    <img src="https://img.shields.io/docker/pulls/tetrisiq/poddle?logo=docker&style=flat-square"
-      alt="Docker pulls" />
+    <!-- <img src="https://img.shields.io/docker/pulls/tetrisiq/poddle?logo=docker&style=flat-square"
+      alt="Docker pulls" /> -->
 </div>
 
 ## Table of Contents
@@ -52,68 +52,33 @@ So in the end, Poddle is a decentralized p2p and E2EE tool.
 
 ## Installation
 
-### From Docker Hub
+### Docker
 
-### Docker Compose
-
-Create a `docker-compose.yml` with the content below
-
-```yaml
-version: '3'
-services:
-  poddle:
-    image: 'tetrisiq/poddle'
-    ports:
-      - '8765:8765'
-    environment:
-      - PUBLIC_ADDRESS=#YOUR_URL#
-      - SERVER_NAME=#YOUR_SERVER_NAME#
-      - CONNECT_TO_PEERS=#true OR false#
-      - OTHER_PEERS=#ARRAY_OF_PEERS#
-    volumes:
-      - ./data:/work/relay/data/
-```
-
-Replace the placeholder to specify the environment variables
-
-- `PUBLIC_ADDRESS` your address from where you access your instance (For Example: `https://YOURDOMAIN.XYZ/gun`)
-- `SERVER_NAME` Give your service a name
-- `CONNECT_TO_PEERS` true if you want to connect your instance to other peers
-- `OTHER_PEERS` if `CONNECT_TO_PEERS` is true, your instance will try to connect to this peers
-
-Start your instance with `docker compose up -d`
-
-### Docker run
-
-Create a .env file and fill out the blanks
+You can use a Docker compose file (you can find an example in this repo) or use docker directly to spin up an instance.
 
 ```
-PUBLIC_ADDRESS=
-SERVER_NAME=
-OTHER_PEERS=[]
-CONNECT_TO_PEERS=false
+docker run ghcr.io/tetrisiq/poddle:latest
 ```
 
-You can start the docker with `docker run -p 8765:8765 --env-file .env --name=poddle tetrisiq/poddle:latest`
+### Manual
 
-### Development Setup
-
-- Clone the git repo
-- Install the dependency’s in the `frontend` and `relay` folder with `yarn install`
-- Create an env file under `relay/.env` and use this example config
+Once you have checked out this project and installed dependencies with npm install (or pnpm install or yarn), start a development server:
 
 ```
-PUBLIC_ADDRESS=http://localhost:8765/gun
-SERVER_NAME=LocalDevelopment
-OTHER_PEERS=[]
-CONNECT_TO_PEERS=false
+npm run dev
 ```
 
-- Start the `relay` with `yarn dev`
-- Create a config file for the frontend under `frontend/.env.local` with `VITE_RELAY=http://localhost:8765/gun` (Because frontend and backend are not served over the same port, we need to specify the backend separately)
-- Start the `frontend` also with `yarn dev`
+The dev server binds to http://127.0.0.1:8765. To configure the dev server, take a look at server/dev/index.js
 
-You don’t need to start the relay itself. You can also use a hosted relay or don’t specify any relay. But if you don’t connect to a relay, then you will not be able to sync content between browsers.
+#### Building
+
+To create a production version of your app:
+
+```
+npm run build
+```
+
+Run the production build with `npm run start` or `node server` To configure the production server, take a look at `server/index.js`
 
 ## See Also
 
