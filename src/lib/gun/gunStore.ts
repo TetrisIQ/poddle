@@ -7,7 +7,7 @@ import 'gun/lib/open.js';
 import NotificationControl from '$lib/components/Notification/NotificationControl';
 
 export const gun = browser
-	? new GUN({ peers: [`http://${window.location.host}/gun`] })
+	? new GUN({ peers: [`https://${window.location.host}/gun`] })
 	: global.gun;
 
 export const messages = writable<Array<string>>([]);
