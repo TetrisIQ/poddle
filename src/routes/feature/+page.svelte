@@ -1,11 +1,12 @@
 <script lang="ts">
+	import type { PageData } from './feature/$types';
 	import dayjs from 'dayjs';
 	import RelativeTime from 'dayjs/plugin/relativeTime';
 
+	export let data: PageData;
+
 	dayjs.extend(RelativeTime);
 
-	let gitStars = -1;
-	let lastUpdate = dayjs();
 	let features = [
 		'Vote with "maybe" option',
 		'Set deadlines',
@@ -15,15 +16,6 @@
 		'Full end-to-end encryption (E2EE)',
 		'No google analytics'
 	];
-
-	// Fetch github API
-	fetch('https://api.github.com/repos/tetrisiq/poddle', { method: 'GET', redirect: 'follow' })
-		.then((response) => response.json())
-		.then((result) => {
-			gitStars = result.stargazers_count;
-			lastUpdate = dayjs(result.pushed_at);
-		})
-		.catch((error) => console.log('error', error));
 </script>
 
 <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-600 pt-5">Features</h1>
@@ -86,7 +78,7 @@
 							d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"
 						/></svg
 					>
-					<h2 class="title-font font-medium text-3xl text-gray-900">16</h2>
+					<h2 class="title-font font-medium text-3xl text-gray-900">{data.gitStars}</h2>
 					<p class="leading-relaxed">GitHub Stars</p>
 				</div>
 			</div>
@@ -130,7 +122,9 @@
 							d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"
 						/></svg
 					>
-					<h2 class="title-font font-medium text-3xl text-gray-900">4 months ago</h2>
+					<h2 class="title-font font-medium text-3xl text-gray-900">
+						{dayjs(data.lastUpdate).fromNow()}
+					</h2>
 					<p class="leading-relaxed">Last update</p>
 				</div>
 			</div>
