@@ -1,0 +1,19 @@
+name: Integration
+on:
+  push:
+
+jobs:
+  test_on_node_versions:
+    runs-on: 'ubuntu-22.04'
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run build
+    #   - run: npm run test # Curretnly there are no playwrite tests
