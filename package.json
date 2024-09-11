@@ -36,7 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"express": "^4.18.2",
+		"express": "^5.0.0",
 		"gun": "^0.2020.1239",
 		"svelte-local-storage-store": "^0.6.0",
 		"svelte-overlay": "^1.4.1"
