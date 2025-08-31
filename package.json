@@ -32,7 +32,7 @@
 		"tui-calendar": "^1.15.3",
 		"typescript": "^5.2.2",
 		"unique-username-generator": "^1.2.0",
-		"uuid": "^9.0.0"
+		"uuid": "^11.0.0"
 	},
 	"type": "module",
 	"dependencies": {
