@@ -4,7 +4,7 @@ on:
 
 jobs:
   test_on_node_versions:
-    runs-on: 'ubuntu-22.04'
+    runs-on: 'ubuntu-24.04'
     strategy:
       matrix:
         node-version: [18.x, 20.x]
